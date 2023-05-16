@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.ServiceInfoMapper">
+    <resultMap id="serviceInfoResultMap" type="persistence.dto.ServiceInfoDTO">
+        <id property="serviceInfoPK" column="serviceInfoPK"/>
+        <result property="actWkdy" column="actWkdy"/>
+        <result property="appTotal" column="appTotal"/>
+        <result property="srvcCLCode" column="srvcCLCode"/>
+        <result property="adultPosblAt" column="adultPosblAt"/>
+        <result property="yngbgsPosblAt" column="yngbgsPosblAt"/>
+        <result property="grpPosblAt" column="grpPosblAt"/>
+        <result property="mnnstNm" column="mnnstNm"/>
+        <result property="nanmmbyNm" column="nanmmbyNm"/>
+        <result property="actPlace" column="actPlace"/>
+        <result property="nanmmbyNmAdmn" column="nanmmbyNmAdmn"/>
+        <result property="telno" column="telno"/>
+        <result property="postAdres" column="postAdres"/>
+        <result property="email" column="email"/>
+        <result property="progrmCn" column="progrmCn"/>
+        <result property="progrmSj" column="progrmSj"/>
+        <result property="progrmSttusSe" column="progrmSttusSe"/>
+        <result property="progrmBgnde" column="progrmBgnde"/>
+        <result property="progrmEndde" column="progrmEndde"/>
+        <result property="actBeginTm" column="actBeginTm"/>
+        <result property="actEndTm" column="actEndTm"/>
+        <result property="noticeBgnde" column="noticeBgnde"/>
+        <result property="noticeEndde" column="noticeEndde"/>
+        <result property="rcritNmpr" column="rcritNmpr"/>
+        <result property="sidoCd" column="sidoCd"/>
+    </resultMap>
+
+    <select id="getServiceInfoList" resultMap="serviceInfoResultMap">
+        SELECT *
+        FROM serviceInfo
+        ORDER BY serviceInfoPK
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    <select id="getAllServiceInfo" resultMap="serviceInfoResultMap">
+        SELECT *
+        FROM serviceInfo
+    </select>
+    <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
+        INSERT INTO serviceInfo (serviceInfoPK, actWkdy, appTotal, srvcCLCode, adultPosblAt, yngbgsPosblAt, grpPosblAt, mnnstNm, nanmmbyNm, actPlace, nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj, progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm, noticeBgnde, noticeEndde, rcritNmpr, sidoCd)
+        VALUES (#{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode}, #{adultPosblAt}, #{yngbgsPosblAt}, #{grpPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace}, #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj}, #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm}, #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd})
+    </insert>
+</mapper>
