@@ -1,0 +1,134 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8mb3 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`serviceinfo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`serviceinfo` (
+  `ServiceInfoPK` INT NOT NULL,
+  `actWkdy` VARCHAR(45) NOT NULL,
+  `appTotal` INT NOT NULL,
+  `srvcCLCode` VARCHAR(45) NOT NULL,
+  `srvcCSCode` VARCHAR(45) NOT NULL,
+  `adultPosblAt` TINYINT NOT NULL,
+  `yngbgsPosblAt` TINYINT NOT NULL,
+  `grpPosblAt` TINYINT NOT NULL,
+  `mnnstNm` VARCHAR(45) NOT NULL,
+  `nanmmbyNm` VARCHAR(45) NOT NULL,
+  `actPlace` VARCHAR(100) NOT NULL,
+  `nanmmbyNmAdmn` VARCHAR(45) NOT NULL,
+  `telno` VARCHAR(45) NOT NULL,
+  `postAdres` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `progrmCn` VARCHAR(1000) NOT NULL,
+  `progrmSj` VARCHAR(100) NOT NULL,
+  `progrmSttusSe` INT NOT NULL,
+  `progrmBgnde` DATE NOT NULL,
+  `progrmEndde` DATE NOT NULL,
+  `actBeginTm` TIME NOT NULL,
+  `actEndTm` TIME NOT NULL,
+  `noticeBgnde` DATE NOT NULL,
+  `noticeEndde` DATE NOT NULL,
+  `rcritNmpr` INT NOT NULL,
+  `sidoCd` MEDIUMTEXT NOT NULL,
+  PRIMARY KEY (`ServiceInfoPK`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`user` (
+  `UserPK` INT NOT NULL,
+  `ID` VARCHAR(45) NULL DEFAULT NULL,
+  `PW` VARCHAR(45) NULL DEFAULT NULL,
+  `PhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
+  `Address` VARCHAR(45) NULL DEFAULT NULL,
+  `MannerTemperature` INT NULL DEFAULT NULL,
+  `Type` INT NULL DEFAULT NULL,
+  `Name` VARCHAR(45) NULL DEFAULT NULL,
+  `ServiceInfo_ServiceInfoPK` INT NOT NULL,
+  PRIMARY KEY (`UserPK`),
+  INDEX `fk_User_ServiceInfo_idx` (`ServiceInfo_ServiceInfoPK` ASC) VISIBLE,
+  CONSTRAINT `fk_User_ServiceInfo`
+    FOREIGN KEY (`ServiceInfo_ServiceInfoPK`)
+    REFERENCES `mydb`.`serviceinfo` (`ServiceInfoPK`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`messageheader`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`messageheader` (
+  `MessageHeaderPK` INT NOT NULL,
+  `Sender` VARCHAR(45) NULL DEFAULT NULL,
+  `Receiver` VARCHAR(45) NULL DEFAULT NULL,
+  `LastMessage` VARCHAR(45) NULL DEFAULT NULL,
+  `LastSender` VARCHAR(45) NULL DEFAULT NULL,
+  `Time` DATETIME NULL DEFAULT NULL,
+  `User_UserPK` INT NOT NULL,
+  PRIMARY KEY (`MessageHeaderPK`),
+  INDEX `fk_MessageHeader_User1_idx` (`User_UserPK` ASC) VISIBLE,
+  CONSTRAINT `fk_MessageHeader_User1`
+    FOREIGN KEY (`User_UserPK`)
+    REFERENCES `mydb`.`user` (`UserPK`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`message` (
+  `MessagePK` INT NOT NULL,
+  `MessageContent` VARCHAR(45) NULL DEFAULT NULL,
+  `Time` DATETIME NULL DEFAULT NULL,
+  `MessageHeader_MessageHeaderPK` INT NOT NULL,
+  PRIMARY KEY (`MessagePK`),
+  INDEX `fk_Message_MessageHeader1_idx` (`MessageHeader_MessageHeaderPK` ASC) VISIBLE,
+  CONSTRAINT `fk_Message_MessageHeader1`
+    FOREIGN KEY (`MessageHeader_MessageHeaderPK`)
+    REFERENCES `mydb`.`messageheader` (`MessageHeaderPK`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`volunteer`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`volunteer` (
+  `VolunteerPK` INT NOT NULL,
+  `ProcessingResult` VARCHAR(45) NULL DEFAULT NULL,
+  `ServiceInfo_ServiceInfoPK` INT NOT NULL,
+  `User_UserPK` INT NOT NULL,
+  PRIMARY KEY (`VolunteerPK`),
+  INDEX `fk_Volunteer_ServiceInfo1_idx` (`ServiceInfo_ServiceInfoPK` ASC) VISIBLE,
+  INDEX `fk_Volunteer_User1_idx` (`User_UserPK` ASC) VISIBLE,
+  CONSTRAINT `fk_Volunteer_ServiceInfo1`
+    FOREIGN KEY (`ServiceInfo_ServiceInfoPK`)
+    REFERENCES `mydb`.`serviceinfo` (`ServiceInfoPK`),
+  CONSTRAINT `fk_Volunteer_User1`
+    FOREIGN KEY (`User_UserPK`)
+    REFERENCES `mydb`.`user` (`UserPK`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

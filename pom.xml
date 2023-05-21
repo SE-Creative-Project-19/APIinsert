@@ -3,6 +3,7 @@
   <groupId>creative-1group</groupId>
   <artifactId>participateProject</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
@@ -14,6 +15,7 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.11.3</version>
 		</dependency>
+
 	  <dependency>
 		  <groupId>org.apache.maven.plugins</groupId>
 		  <artifactId>maven-resources-plugin</artifactId>
@@ -27,6 +29,7 @@
 			<version>5.8.1</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -69,6 +72,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
+
 	  <dependency>
 		  <groupId>org.slf4j</groupId>
 		  <artifactId>slf4j-simple</artifactId>
