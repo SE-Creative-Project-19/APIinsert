@@ -8,6 +8,7 @@
         <result property="actWkdy" column="actWkdy"/>
         <result property="appTotal" column="appTotal"/>
         <result property="srvcCLCode" column="srvcCLCode"/>
+        <result property="srvcCSCode" column="srvcCSCode"/>
         <result property="adultPosblAt" column="adultPosblAt"/>
         <result property="yngbgsPosblAt" column="yngbgsPosblAt"/>
         <result property="grpPosblAt" column="grpPosblAt"/>
@@ -42,7 +43,7 @@
         FROM serviceInfo
     </select>
     <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
-        INSERT INTO serviceInfo (serviceInfoPK, actWkdy, appTotal, srvcCLCode, adultPosblAt, yngbgsPosblAt, grpPosblAt, mnnstNm, nanmmbyNm, actPlace, nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj, progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm, noticeBgnde, noticeEndde, rcritNmpr, sidoCd)
-        VALUES (#{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode}, #{adultPosblAt}, #{yngbgsPosblAt}, #{grpPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace}, #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj}, #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm}, #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd})
+        INSERT INTO serviceInfo (serviceInfoPK, actWkdy, appTotal, srvcCLCode,srvcCSCode, adultPosblAt, yngbgsPosblAt, grpPosblAt, mnnstNm, nanmmbyNm, actPlace, nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj, progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm, noticeBgnde, noticeEndde, rcritNmpr, sidoCd)
+        VALUES (#{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode},#{srvcCSCode}, #{adultPosblAt}, #{yngbgsPosblAt}, #{grpPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace}, #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj}, #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm}, #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd})
     </insert>
 </mapper>

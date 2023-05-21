@@ -118,8 +118,12 @@ public class XMLParser {
 
 			// srvcCLCode
 			Elements srvcCLCodeElements = doc.getElementsByTag("srvcCLCode");
-			String srvcCLCode = srvcCLCodeElements.first().text();
-			serviceInfoDTO.setSrvcCLCode(srvcCLCode);
+			String[] parts = srvcCLCodeElements.first().text().split(">");
+			String srvcCLCode = parts[0];
+			serviceInfoDTO.setSrvcCLCode(srvcCLCode); //분류
+
+			String srvcCSCode = parts[1];
+			serviceInfoDTO.setSrvcCSCode(srvcCSCode); //상세 분류
 
 			// adultPosblAt
 			Elements adultPosblAtElements = doc.getElementsByTag("adultPosblAt");

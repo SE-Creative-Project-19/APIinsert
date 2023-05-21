@@ -17,6 +17,7 @@ public class ServiceInfoDTO {
     private String actWkdy; //활동요일
     private int appTotal; //신청인원수
     private String srvcCLCode; //봉사분야
+    private String srvcCSCode; //봉사 상세 분야
     private boolean adultPosblAt; //성인가능여부
     private boolean yngbgsPosblAt; //청소년가능여부
     private boolean grpPosblAt; //단체가능여부
@@ -42,7 +43,7 @@ public class ServiceInfoDTO {
     private int rcritNmpr; //모집인원
     private String sidoCd; //시도코드
 
-    public ServiceInfoDTO(int serviceInfoPK, String actWkdy, int appTotal, String srvcCLCode, boolean adultPosblAt,
+    public ServiceInfoDTO(int serviceInfoPK, String actWkdy, int appTotal, String srvcCLCode,String srvcCSCode, boolean adultPosblAt,
                           boolean yngbgsPosblAt, boolean grpPosblAt, String mnnstNm, String nanmmbyNm, String actPlace,
                           String nanmmbyNmAdmn, String telno, String postAdres, String email, String progrmCn, String progrmSj,
                           int progrmSttusSe, Date progrmBgnde, Date progrmEndde, LocalTime actBeginTm, LocalTime actEndTm,
@@ -51,6 +52,7 @@ public class ServiceInfoDTO {
         this.actWkdy = actWkdy;
         this.appTotal = appTotal;
         this.srvcCLCode = srvcCLCode;
+        this.srvcCSCode = srvcCSCode;
         this.adultPosblAt = adultPosblAt;
         this.yngbgsPosblAt = yngbgsPosblAt;
         this.grpPosblAt = grpPosblAt;
