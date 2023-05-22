@@ -11,7 +11,6 @@
         <result property="srvcCSCode" column="srvcCSCode"/>
         <result property="adultPosblAt" column="adultPosblAt"/>
         <result property="yngbgsPosblAt" column="yngbgsPosblAt"/>
-        <result property="grpPosblAt" column="grpPosblAt"/>
         <result property="mnnstNm" column="mnnstNm"/>
         <result property="nanmmbyNm" column="nanmmbyNm"/>
         <result property="actPlace" column="actPlace"/>
@@ -35,7 +34,7 @@
     <select id="getServiceInfoList" resultMap="serviceInfoResultMap">
         SELECT *
         FROM serviceInfo
-        ORDER BY serviceInfoPK
+        ORDER BY noticeEndde
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
     <select id="getAllServiceInfo" resultMap="serviceInfoResultMap">
@@ -43,7 +42,7 @@
         FROM serviceInfo
     </select>
     <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
-        INSERT INTO serviceInfo (serviceInfoPK, actWkdy, appTotal, srvcCLCode,srvcCSCode, adultPosblAt, yngbgsPosblAt, grpPosblAt, mnnstNm, nanmmbyNm, actPlace, nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj, progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm, noticeBgnde, noticeEndde, rcritNmpr, sidoCd)
-        VALUES (#{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode},#{srvcCSCode}, #{adultPosblAt}, #{yngbgsPosblAt}, #{grpPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace}, #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj}, #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm}, #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd})
+        INSERT INTO serviceInfo (serviceInfoPK, actWkdy, appTotal, srvcCLCode,srvcCSCode, adultPosblAt, yngbgsPosblAt, mnnstNm, nanmmbyNm, actPlace, nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj, progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm, noticeBgnde, noticeEndde, rcritNmpr, sidoCd)
+        VALUES (#{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode},#{srvcCSCode}, #{adultPosblAt}, #{yngbgsPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace}, #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj}, #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm}, #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd})
     </insert>
 </mapper>

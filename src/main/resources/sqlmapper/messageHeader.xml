@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="persistence.dto.MessageHeaderDTO">
+
+    <resultMap id="messageHeaderResultMap" type="MessageHeaderDTO">
+        <id property="messageHeaderPK" column="messageHeaderPK" />
+        <result property="sender" column="sender" />
+        <result property="receiver" column="receiver" />
+        <result property="lastMessage" column="lastMessage" />
+        <result property="lastSender" column="lastSender" />
+        <result property="time" column="time" />
+        <result property="userPK" column="userPK" />
+    </resultMap>
+
+    <!-- 추가적인 쿼리들... -->
+
+</mapper>

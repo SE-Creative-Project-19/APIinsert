@@ -7,6 +7,11 @@
     <typeAliases>
         <!-- DTO 클래스의 별칭을 설정합니다. -->
         <typeAlias type="persistence.dto.ServiceInfoDTO" alias="ServiceInfoDTO"/>
+        <typeAlias type="persistence.dto.MessageDTO" alias="MessageDTO"/>
+        <typeAlias type="persistence.dto.MessageHeaderDTO" alias="MessageHeaderDTO"/>
+        <typeAlias type="persistence.dto.UserDTO" alias="UserDTO"/>
+        <typeAlias type="persistence.dto.VolunteerDTO" alias="VolunteerDTO"/>
+
     </typeAliases>
 
     <environments default="development">
@@ -25,5 +30,9 @@
     </environments>
     <mappers>
         <mapper resource="sqlmapper/serviceInfo.xml"/>
+        <mapper resource="sqlmapper/message.xml"/>
+        <mapper resource="sqlmapper/messageHeader.xml"/>
+        <mapper resource="sqlmapper/user.xml"/>
+        <mapper resource="sqlmapper/volunteer.xml"/>
     </mappers>
 </configuration>

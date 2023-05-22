@@ -18,36 +18,23 @@ public class ServiceInfoDAO {
     }
 
     //수정 필요
-
     public List<ServiceInfoDTO> getServiceInfoList(int pageNo) {
         int pageSize = 10;
         int offset = (pageNo - 1) * pageSize;
 
-        Map<String, Object> parameterMap = new HashMap<>();
-        parameterMap.put("pageSize", pageSize);
-        parameterMap.put("offset", offset);
-
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            List<Map<String, Object>> resultMap = session.selectList("mapper.ServiceInfoMapper.getServiceInfoList", parameterMap);
-            List<ServiceInfoDTO> serviceInfoList = new ArrayList<>();
+            Map<String, Object> parameterMap = new HashMap<>();
+            parameterMap.put("pageSize", pageSize);
+            parameterMap.put("offset", offset);
 
-            for (Map<String, Object> result : resultMap) {
-                ServiceInfoDTO serviceInfoDTO = new ServiceInfoDTO();
-                // Map의 값을 ServiceInfoDTO에 매핑하여 설정
-                serviceInfoDTO.setServiceInfoPK((Integer) result.get("serviceInfoPK"));
-                serviceInfoDTO.setActWkdy((String) result.get("actWkdy"));
-                // 나머지 필드들에 대해서도 매핑 작업 수행
-
-                serviceInfoList.add(serviceInfoDTO);
-            }
-
+            List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoList", parameterMap);
             return serviceInfoList;
         } catch (Exception e) {
-            // 예외 처리
             e.printStackTrace();
             return null;
         }
     }
+
     public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO){
         SqlSession session = sqlSessionFactory.openSession();
         try{

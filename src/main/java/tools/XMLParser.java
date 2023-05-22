@@ -17,10 +17,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.sql.Date;
+
 
 import persistence.dao.ServiceInfoDAO;
 import persistence.dto.ServiceInfoDTO;
@@ -87,29 +87,17 @@ public class XMLParser {
 		if (name.text().equals("")) {
 			System.out.println("null");
 		} else {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
-/*
-			Elements address = doc.getElementsByTag("postAdres"); // Get Address
-			Elements tel = doc.getElementsByTag("telno"); // Get Telephone Number
-			Elements part = doc.getElementsByTag("srvcClCode");
-			Elements sido = doc.getElementsByTag("sidoCd");
-
-			System.out.println(name.text());
-			System.out.println(address.text());
-			System.out.println(tel.text());
-			System.out.println(part.text());
-			System.out.println(sido.text());*/
-
 			//serviceInfoPK
 			int serviceInfoPK = Integer.parseInt(code);
 			serviceInfoDTO.setServiceInfoPK(serviceInfoPK);
-
+			System.out.println(serviceInfoPK);
 
 			// actWkdy
 			Elements actWkdyElements = doc.getElementsByTag("actWkdy");
-			String actWkdy = actWkdyElements.first().text();
-			serviceInfoDTO.setActWkdy(actWkdy);
+			if(!actWkdyElements.isEmpty()){
+				String actWkdy = actWkdyElements.first().text();
+				serviceInfoDTO.setActWkdy(actWkdy);
+			}
 
 			// appTotal
 			Elements appTotalElements = doc.getElementsByTag("appTotal");
@@ -134,11 +122,6 @@ public class XMLParser {
 			Elements yngbgsPosblAtElements = doc.getElementsByTag("yngbgsPosblAt");
 			boolean yngbgsPosblAt = Boolean.parseBoolean(yngbgsPosblAtElements.first().text());
 			serviceInfoDTO.setYngbgsPosblAt(yngbgsPosblAt);
-
-			// grpPosblAt
-			Elements grpPosblAtElements = doc.getElementsByTag("grpPosblAt");
-			boolean grpPosblAt = Boolean.parseBoolean(grpPosblAtElements.first().text());
-			serviceInfoDTO.setGrpPosblAt(grpPosblAt);
 
 			// mnnstNm
 			Elements mnnstNmElements = doc.getElementsByTag("mnnstNm");
@@ -194,13 +177,15 @@ public class XMLParser {
 			// progrmBgnde
 			Elements progrmBgndeElements = doc.getElementsByTag("progrmBgnde");
 			String progrmBgndeString = progrmBgndeElements.first().text();
-			Date progrmBgnde = dateFormat.parse(progrmBgndeString);
+			progrmBgndeString = progrmBgndeString.substring(0, 4) + "-" + progrmBgndeString.substring(4, 6) + "-" + progrmBgndeString.substring(6);
+			Date progrmBgnde = Date.valueOf(progrmBgndeString);
 			serviceInfoDTO.setProgrmBgnde(progrmBgnde);
 
 			// progrmEndde
 			Elements progrmEnddeElements = doc.getElementsByTag("progrmEndde");
 			String progrmEnddeString = progrmEnddeElements.first().text();
-			Date progrmEndde = dateFormat.parse(progrmEnddeString);
+			progrmEnddeString = progrmEnddeString.substring(0, 4) + "-" + progrmEnddeString.substring(4, 6) + "-" + progrmEnddeString.substring(6);
+			Date progrmEndde = Date.valueOf(progrmEnddeString);
 			serviceInfoDTO.setProgrmEndde(progrmEndde);
 
 			// actBeginTm
@@ -230,14 +215,17 @@ public class XMLParser {
 // noticeBgnde
 			Elements noticeBgndeElements = doc.getElementsByTag("noticeBgnde");
 			String noticeBgndeString = noticeBgndeElements.first().text();
-			Date noticeBgnde = dateFormat.parse(noticeBgndeString);
+			String noticeBgndeFormatted = noticeBgndeString.substring(0, 4) + "-" + noticeBgndeString.substring(4, 6) + "-" + noticeBgndeString.substring(6);
+			Date noticeBgnde = Date.valueOf(noticeBgndeFormatted);
 			serviceInfoDTO.setNoticeBgnde(noticeBgnde);
 
 // noticeEndde
 			Elements noticeEnddeElements = doc.getElementsByTag("noticeEndde");
 			String noticeEnddeString = noticeEnddeElements.first().text();
-			Date noticeEndde = dateFormat.parse(noticeEnddeString);
+			String noticeEnddeFormatted = noticeEnddeString.substring(0, 4) + "-" + noticeEnddeString.substring(4, 6) + "-" + noticeEnddeString.substring(6);
+			Date noticeEndde = Date.valueOf(noticeEnddeFormatted);
 			serviceInfoDTO.setNoticeEndde(noticeEndde);
+
 
 // rcritNmpr
 			Elements rcritNmprElements = doc.getElementsByTag("rcritNmpr");

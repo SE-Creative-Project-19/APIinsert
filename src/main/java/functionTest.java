@@ -8,10 +8,9 @@ import view.ServiceInfoView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Main {
+public class functionTest {
     public static void main(String[] args) {
         LocalTime today = LocalTime.parse("09"+":00");
         System.out.println(today);
@@ -26,6 +25,8 @@ public class Main {
             ServiceInfoView view = new ServiceInfoView(service);
             System.out.println(" 안녕");
             view.displayAllServiceInfo();
+            //페이지 처리를 테스트
+            view.displayServiceInfo();
 
             sqlSession.close();
         } catch (IOException e) {

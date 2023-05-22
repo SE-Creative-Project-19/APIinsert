@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.io.*;
 import java.security.Timestamp;
 import java.time.LocalTime;
-import java.util.Date;
+import java.sql.Date;
 import java.time.LocalDate;
 @Getter
 @Setter
@@ -20,7 +20,6 @@ public class ServiceInfoDTO {
     private String srvcCSCode; //봉사 상세 분야
     private boolean adultPosblAt; //성인가능여부
     private boolean yngbgsPosblAt; //청소년가능여부
-    private boolean grpPosblAt; //단체가능여부
     private String mnnstNm; //모집기관(주관기관명)
 
     private String nanmmbyNm; //등록기관(나눔주체명)
@@ -55,7 +54,6 @@ public class ServiceInfoDTO {
         this.srvcCSCode = srvcCSCode;
         this.adultPosblAt = adultPosblAt;
         this.yngbgsPosblAt = yngbgsPosblAt;
-        this.grpPosblAt = grpPosblAt;
         this.mnnstNm = mnnstNm;
         this.nanmmbyNm = nanmmbyNm;
         this.actPlace = actPlace;
@@ -81,7 +79,6 @@ public class ServiceInfoDTO {
         this.srvcCLCode = null;
         this.adultPosblAt = false;
         this.yngbgsPosblAt = false;
-        this.grpPosblAt = false;
         this.mnnstNm = null;
         this.nanmmbyNm = null;
         this.actPlace = null;

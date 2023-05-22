@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="persistence.dto.VolunteerDTO">
+
+    <resultMap id="volunteerResultMap" type="VolunteerDTO">
+        <id property="volunteerPK" column="volunteerPK" />
+        <result property="processingResult" column="processingResult" />
+        <result property="serviceInfoPK" column="serviceInfoPK" />
+        <result property="userPK" column="userPK" />
+    </resultMap>
+
+
+    <!-- 추가적인 쿼리들... -->
+
+</mapper>

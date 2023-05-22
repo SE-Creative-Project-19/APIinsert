@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="persistence.dto.UserDTO">
+
+    <resultMap id="userResultMap" type="UserDTO">
+        <id property="userPK" column="userPK" />
+        <result property="ID" column="ID" />
+        <result property="PW" column="PW" />
+        <result property="phoneNumber" column="phoneNumber" />
+        <result property="address" column="address" />
+        <result property="mannerTemperature" column="mannerTemperature" />
+        <result property="type" column="type" />
+        <result property="name" column="name" />
+        <result property="serviceInfoPK" column="serviceInfoPK" />
+    </resultMap>
+
+    <!-- 추가적인 쿼리들... -->
+
+</mapper>
