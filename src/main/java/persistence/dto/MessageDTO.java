@@ -1,5 +1,6 @@
 package persistence.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MessageDTO {
+public class MessageDTO implements Serializable {
     private int messagePK; //PK
     private String messageContent; //대화 내용
     private Date time; //작성 시간

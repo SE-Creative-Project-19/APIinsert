@@ -19,7 +19,7 @@ USE `mydb` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`serviceinfo` (
   `ServiceInfoPK` INT NOT NULL,
-  `actWkdy` VARCHAR(45) NOT NULL,
+  `actWkdy` VARCHAR(45) NULL DEFAULT NULL,
   `appTotal` INT NOT NULL,
   `srvcCLCode` VARCHAR(45) NOT NULL,
   `srvcCSCode` VARCHAR(45) NOT NULL,

@@ -1,6 +1,7 @@
 package persistence.dto;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class MessageHeaderDTO {
+public class MessageHeaderDTO implements Serializable {
     private int messageHeaderPK; //메세지헤더PK
     private String sender; //송신자 이름
     private String receiver; //수신자 이름

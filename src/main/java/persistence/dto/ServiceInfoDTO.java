@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class ServiceInfoDTO {
+public class ServiceInfoDTO implements Serializable{
     private int serviceInfoPK; //프로그램등록번호
     private String actWkdy; //활동요일
     private int appTotal; //신청인원수
