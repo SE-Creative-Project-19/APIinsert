@@ -7,16 +7,14 @@ import java.net.UnknownHostException;
 public class ClientMain {
     public static void main(String args[]) {
         Socket cliSocket = null;
-        String host = "192.168.213.170";
+        String host = "127.0.0.1";
 
         try {
-            cliSocket = new Socket(host, 7777);
-            ObjectOutputStream socketOOS = new ObjectOutputStream(cliSocket.getOutputStream());
-            ObjectInputStream socketOIS = new ObjectInputStream(cliSocket.getInputStream());
+            cliSocket = new Socket(host, 5555);
+            UserEventController userEventController = new UserEventController(cliSocket);
 
-            UserEventController userEventController = new UserEventController(socketOOS, socketOIS);
+            userEventController.inquiryServiceList();
 
-            userEventController.signUp();
 
         }
         catch (UnknownHostException e) {

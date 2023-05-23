@@ -31,7 +31,7 @@ public class ServiceInfoView {
         System.out.println("끝");
     }
     //메인 봉사화면에서 나오는 정보를 출력합니다.
-    public void printMainServiceInfo(List<ServiceInfoDTO> list){
+    public static void printMainServiceInfo(List<ServiceInfoDTO> list){
         for (ServiceInfoDTO serviceInfo : list) {
             System.out.printf("모집 중 (%s,%s) \n", serviceInfo.getSrvcCLCode(),serviceInfo.getSrvcCSCode());
             System.out.println(serviceInfo.getProgrmSj());

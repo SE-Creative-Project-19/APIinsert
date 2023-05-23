@@ -11,6 +11,7 @@ public class ProtocolCode {
     //TYPE FIND_MY_INFO
     public final static byte FIND_ID = 1;
     public final static byte FIND_PW = 2;
+    public final static byte UPDATE_PW = 3;
 
     //TYPE MYPAGE
     public final static byte SHOW_MY_INFO = 1;
@@ -23,7 +24,7 @@ public class ProtocolCode {
     public final static byte MY_PARTICIPATE_IN_LIST = 3;
 
     //TYPE INQUIRY, MANAGER
-    public final static byte PARTICIPATE_IN_SERVICE_LIST = 1;
+    public final static byte PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST = 1;
     public final static byte MY_ORGANIZATION_ACTIVITY_LIST = 2;
 
     //TYPE ACCEPTANCE, MANAGER

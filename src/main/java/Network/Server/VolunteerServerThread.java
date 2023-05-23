@@ -6,10 +6,7 @@ public class VolunteerServerThread extends Thread{
     private VolunteerServer server = null;
     private Socket socket = null;
     private int portNum = 0;
-    private DataInputStream dis = null;
-    private DataOutputStream dos = null;
     private ObjectInputStream ois = null;
-
     private ObjectOutputStream oos = null;
 
     public VolunteerServerThread(VolunteerServer server, Socket socket) {
@@ -39,19 +36,19 @@ public class VolunteerServerThread extends Thread{
     }
 
     public void open() throws IOException {
-        dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-        dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+        oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
     }
 
     public void close() throws IOException {
         if(socket != null) {
             socket.close();
         }
-        if(dis != null) {
-            dis.close();
+        if(ois != null) {
+            ois.close();
         }
-        if(dos != null){
-            dos.close();
+        if(oos != null){
+            oos.close();
         }
         this.stop();
     }
