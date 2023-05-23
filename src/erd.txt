@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`serviceinfo` (
   `appTotal` INT NOT NULL,
   `srvcCLCode` VARCHAR(45) NOT NULL,
   `srvcCSCode` VARCHAR(45) NOT NULL,
-  `adultPosblAt` TINYINT NOT NULL,
-  `yngbgsPosblAt` TINYINT NOT NULL,
   `mnnstNm` VARCHAR(45) NOT NULL,
   `nanmmbyNm` VARCHAR(45) NOT NULL,
   `actPlace` VARCHAR(100) NOT NULL,

@@ -113,16 +113,6 @@ public class XMLParser {
 			String srvcCSCode = parts[1];
 			serviceInfoDTO.setSrvcCSCode(srvcCSCode); //상세 분류
 
-			// adultPosblAt
-			Elements adultPosblAtElements = doc.getElementsByTag("adultPosblAt");
-			boolean adultPosblAt = Boolean.parseBoolean(adultPosblAtElements.first().text());
-			serviceInfoDTO.setAdultPosblAt(adultPosblAt);
-
-			// yngbgsPosblAt
-			Elements yngbgsPosblAtElements = doc.getElementsByTag("yngbgsPosblAt");
-			boolean yngbgsPosblAt = Boolean.parseBoolean(yngbgsPosblAtElements.first().text());
-			serviceInfoDTO.setYngbgsPosblAt(yngbgsPosblAt);
-
 			// mnnstNm
 			Elements mnnstNmElements = doc.getElementsByTag("mnnstNm");
 			String mnnstNm = mnnstNmElements.first().text();

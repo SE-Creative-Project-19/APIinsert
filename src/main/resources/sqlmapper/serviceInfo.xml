@@ -9,8 +9,6 @@
         <result property="appTotal" column="appTotal"/>
         <result property="srvcCLCode" column="srvcCLCode"/>
         <result property="srvcCSCode" column="srvcCSCode"/>
-        <result property="adultPosblAt" column="adultPosblAt"/>
-        <result property="yngbgsPosblAt" column="yngbgsPosblAt"/>
         <result property="mnnstNm" column="mnnstNm"/>
         <result property="nanmmbyNm" column="nanmmbyNm"/>
         <result property="actPlace" column="actPlace"/>
@@ -56,14 +54,14 @@
     <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
         INSERT INTO serviceInfo (
             serviceInfoPK, actWkdy, appTotal, srvcCLCode, srvcCSCode,
-            adultPosblAt, yngbgsPosblAt, mnnstNm, nanmmbyNm, actPlace,
+            mnnstNm, nanmmbyNm, actPlace,
             nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj,
             progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm,
             noticeBgnde, noticeEndde, rcritNmpr, sidoCd
         )
         VALUES (
                    #{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode}, #{srvcCSCode},
-                   #{adultPosblAt}, #{yngbgsPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace},
+                    #{mnnstNm}, #{nanmmbyNm}, #{actPlace},
                    #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj},
                    #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm},
                    #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd}
@@ -72,8 +70,6 @@
                                  actWkdy = VALUES(actWkdy),
                                  srvcCLCode = VALUES(srvcCLCode),
                                  srvcCSCode = VALUES(srvcCSCode),
-                                 adultPosblAt = VALUES(adultPosblAt),
-                                 yngbgsPosblAt = VALUES(yngbgsPosblAt),
                                  mnnstNm = VALUES(mnnstNm),
                                  nanmmbyNm = VALUES(nanmmbyNm),
                                  actPlace = VALUES(actPlace),

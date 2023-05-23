@@ -18,8 +18,6 @@ public class ServiceInfoDTO implements Serializable{
     private int appTotal; //신청인원수
     private String srvcCLCode; //봉사분야
     private String srvcCSCode; //봉사 상세 분야
-    private boolean adultPosblAt; //성인가능여부
-    private boolean yngbgsPosblAt; //청소년가능여부
     private String mnnstNm; //모집기관(주관기관명)
 
     private String nanmmbyNm; //등록기관(나눔주체명)
@@ -42,8 +40,7 @@ public class ServiceInfoDTO implements Serializable{
     private int rcritNmpr; //모집인원
     private String sidoCd; //시도코드
 
-    public ServiceInfoDTO(int serviceInfoPK, String actWkdy, int appTotal, String srvcCLCode,String srvcCSCode, boolean adultPosblAt,
-                          boolean yngbgsPosblAt, boolean grpPosblAt, String mnnstNm, String nanmmbyNm, String actPlace,
+    public ServiceInfoDTO(int serviceInfoPK, String actWkdy, int appTotal, String srvcCLCode,String srvcCSCode, String mnnstNm, String nanmmbyNm, String actPlace,
                           String nanmmbyNmAdmn, String telno, String postAdres, String email, String progrmCn, String progrmSj,
                           int progrmSttusSe, Date progrmBgnde, Date progrmEndde, LocalTime actBeginTm, LocalTime actEndTm,
                           Date noticeBgnde, Date noticeEndde, int rcritNmpr, String sidoCd) {
@@ -52,8 +49,6 @@ public class ServiceInfoDTO implements Serializable{
         this.appTotal = appTotal;
         this.srvcCLCode = srvcCLCode;
         this.srvcCSCode = srvcCSCode;
-        this.adultPosblAt = adultPosblAt;
-        this.yngbgsPosblAt = yngbgsPosblAt;
         this.mnnstNm = mnnstNm;
         this.nanmmbyNm = nanmmbyNm;
         this.actPlace = actPlace;
@@ -77,8 +72,6 @@ public class ServiceInfoDTO implements Serializable{
         this.actWkdy = null;
         this.appTotal = 0;
         this.srvcCLCode = null;
-        this.adultPosblAt = false;
-        this.yngbgsPosblAt = false;
         this.mnnstNm = null;
         this.nanmmbyNm = null;
         this.actPlace = null;
