@@ -10,11 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalTime;
+import java.util.Scanner;
 
 public class functionTest {
     public static void main(String[] args) {
-        LocalTime today = LocalTime.parse("09"+":00");
-        System.out.println(today);
+        Scanner sc = new Scanner(System.in);
+        ServiceInfoDTO serviceInfoDTO = null;
         try {
             String resource = "config/config.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
@@ -27,13 +28,14 @@ public class functionTest {
 
             //view.displayAllServiceInfo();
             //페이지 처리를 테스트
-           // view.displayServiceInfo();
-            ServiceInfoDTO serviceInfoDTO = new ServiceInfoDTO();
-
+            System.out.println("필터링을 하지 않았을 때를 기준으로 출력합니다.");
+            view.displayServiceInfo(serviceInfoDTO);
+            System.out.println("필터링 했을 때 출력합니다.");
+            serviceInfoDTO = new ServiceInfoDTO();
             serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-07-30"));
-            System.out.println(serviceInfoDTO.toString());
+            view.displayServiceInfo(serviceInfoDTO);
 
-            view.serviceInfoByFilter(serviceInfoDTO);
+
             sqlSession.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -34,8 +34,8 @@ public class ServiceInfoView {
         population.put("제주특별자치도", 6500000);
         this.service = service;
     }
-    public void serviceInfoByFilter(ServiceInfoDTO serviceInfoDTO){
-        List<ServiceInfoDTO> serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO);
+    public void serviceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo){
+        List<ServiceInfoDTO> serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO, pageNo);
         for (ServiceInfoDTO serviceInfo : serviceInfoList) {
             System.out.println(serviceInfo.toString()); // Assumes the ServiceInfoDTO class has overridden the toString() method
         }
@@ -44,20 +44,21 @@ public class ServiceInfoView {
     public void displayServiceInfo(ServiceInfoDTO serviceInfoDTO) {
         Scanner scanner = new Scanner(System.in);
         List<ServiceInfoDTO> serviceInfoList = null;
-        System.out.print("페이지 번호를 입력하세요: ");
-        int pageNo = scanner.nextInt();
 
-        if (serviceInfoDTO == null){
-            serviceInfoList = service.getServiceInfoList(pageNo);
-        }
-        else{
-            serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO,pageNo);
-        }
 
-        System.out.println("실행");
-        // 데이터를 출력하는 로직을 구현
-        printMainServiceInfo(serviceInfoList);
-        System.out.println("끝");
+        while(true){
+            System.out.print("페이지 번호를 입력하세요: (0: 종료)");
+            int pageNo = scanner.nextInt();
+            if(pageNo == 0) break;
+            if (serviceInfoDTO == null){  //DTO에 아무것도 없다는건 필터를 적용할게 없으므로 페이지 수에 맞게 출력한다.
+                serviceInfoList = service.getServiceInfoList(pageNo);
+                printMainServiceInfo(serviceInfoList);
+            }
+            else{ // 해당 dto에 있는 정보를 바탕으로 필터링하여 list를 만들고 페이지에 맞게 가져온다.
+                serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO,pageNo);
+                printMainServiceInfo(serviceInfoList);
+            }
+        }
     }
     //메인 봉사화면에서 나오는 정보를 출력합니다.
     public void printMainServiceInfo(List<ServiceInfoDTO> list){
@@ -66,6 +67,7 @@ public class ServiceInfoView {
             System.out.println(serviceInfo.getProgrmSj());
             System.out.printf("[모집기관] %s [모집기간] %s ~ %s [봉사기간] %s ~ %s \n", serviceInfo.getMnnstNm(),serviceInfo.getNoticeBgnde(),serviceInfo.getNoticeEndde(),serviceInfo.getProgrmBgnde(), serviceInfo.getProgrmEndde());
             System.out.println(serviceInfo.getProgrmCn());
+            System.out.println();
         }
     }
     public void displayAllServiceInfo() {
