@@ -8,4 +8,6 @@ public class UserService{
 
     public UserService(UserDAO dao) {this.dao = dao;}
 
+    public void insertUserInfo(UserDTO userDTO) {dao.insertUserInfo(userDTO);}
+
 }

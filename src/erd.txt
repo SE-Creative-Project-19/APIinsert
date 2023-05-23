@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `MannerTemperature` INT NOT NULL,
   `Type` INT NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
+  `Facility` VARCHAR(100) NULL DEFAULT NULL,
   `ServiceInfo_ServiceInfoPK` INT NULL DEFAULT NULL,
   PRIMARY KEY (`UserPK`),
   INDEX `fk_User_ServiceInfo_idx` (`ServiceInfo_ServiceInfoPK` ASC) VISIBLE,
