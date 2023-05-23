@@ -11,7 +11,13 @@ public class ServiceInfoView {
     public ServiceInfoView(ServiceInfoService service) {
         this.service = service;
     }
-
+    public void serviceInfoByFilter(ServiceInfoDTO serviceInfoDTO){
+        List<ServiceInfoDTO> serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO);
+        for (ServiceInfoDTO serviceInfo : serviceInfoList) {
+            System.out.println(serviceInfo.toString()); // Assumes the ServiceInfoDTO class has overridden the toString() method
+        }
+        System.out.println("실행 종료");
+    }
     public void displayServiceInfo() {
         Scanner scanner = new Scanner(System.in);
 
@@ -36,7 +42,7 @@ public class ServiceInfoView {
     public void displayAllServiceInfo() {
         List<ServiceInfoDTO> serviceInfoList = service.getAllServiceInfo();
         for (ServiceInfoDTO serviceInfo : serviceInfoList) {
-            System.out.println(serviceInfo); // Assumes the ServiceInfoDTO class has overridden the toString() method
+            System.out.println(serviceInfo.toString()); // Assumes the ServiceInfoDTO class has overridden the toString() method
         }
     }
 }

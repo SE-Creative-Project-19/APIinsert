@@ -34,6 +34,15 @@ public class ServiceInfoDAO {
             return null;
         }
     }
+    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO){
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoByFilter", serviceInfoDTO);
+            return serviceInfoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO){
         SqlSession session = sqlSessionFactory.openSession();

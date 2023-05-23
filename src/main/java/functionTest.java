@@ -5,9 +5,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import persistence.dao.ServiceInfoDAO;
 import service.ServiceInfoService;
 import view.ServiceInfoView;
-
+import persistence.dto.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.time.LocalTime;
 
 public class functionTest {
@@ -23,11 +24,16 @@ public class functionTest {
             ServiceInfoDAO dao = new ServiceInfoDAO(sqlSession, sqlSessionFactory);
             ServiceInfoService service = new ServiceInfoService(dao);
             ServiceInfoView view = new ServiceInfoView(service);
-            System.out.println(" 안녕");
-            view.displayAllServiceInfo();
-            //페이지 처리를 테스트
-            view.displayServiceInfo();
 
+            //view.displayAllServiceInfo();
+            //페이지 처리를 테스트
+           // view.displayServiceInfo();
+            ServiceInfoDTO serviceInfoDTO = new ServiceInfoDTO();
+
+            serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-07-30"));
+            System.out.println(serviceInfoDTO.toString());
+
+            view.serviceInfoByFilter(serviceInfoDTO);
             sqlSession.close();
         } catch (IOException e) {
             e.printStackTrace();

@@ -18,6 +18,9 @@ public class ServiceInfoService {
     public List<ServiceInfoDTO> getAllServiceInfo() {
         return dao.getAllServiceInfo();
     }
+
+    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO){return dao.getServiceInfoByFilter(serviceInfoDTO);}
+
     public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO) {
         dao.insertServiceInfo(serviceInfoDTO);
     }

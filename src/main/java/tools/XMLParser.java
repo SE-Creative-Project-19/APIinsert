@@ -106,7 +106,7 @@ public class XMLParser {
 
 			// srvcCLCode
 			Elements srvcCLCodeElements = doc.getElementsByTag("srvcCLCode");
-			String[] parts = srvcCLCodeElements.first().text().split(">");
+			String[] parts = srvcCLCodeElements.first().text().split("> ");
 			String srvcCLCode = parts[0];
 			serviceInfoDTO.setSrvcCLCode(srvcCLCode); //분류
 
