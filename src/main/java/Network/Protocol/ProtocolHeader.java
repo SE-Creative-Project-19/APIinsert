@@ -12,9 +12,9 @@ public class ProtocolHeader {
     byte code;
     byte kind;
 
-    public ProtocolHeader() {
-        type = 0;
-        code = 0;
-        kind = 0;
+    public ProtocolHeader(byte type, byte code, byte kind) {
+        this.type = type;
+        this.code = code;
+        this.kind = kind;
     }
 }

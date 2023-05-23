@@ -16,7 +16,7 @@ public class ClientMain {
 
             UserEventController userEventController = new UserEventController(socketOOS, socketOIS);
 
-            userEventController.run();
+            userEventController.signUp();
 
         }
         catch (UnknownHostException e) {
