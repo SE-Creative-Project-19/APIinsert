@@ -50,15 +50,15 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `mydb`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`user` (
-  `UserPK` INT NOT NULL,
-  `ID` VARCHAR(45) NULL DEFAULT NULL,
-  `PW` VARCHAR(45) NULL DEFAULT NULL,
-  `PhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
-  `Address` VARCHAR(45) NULL DEFAULT NULL,
-  `MannerTemperature` INT NULL DEFAULT NULL,
-  `Type` INT NULL DEFAULT NULL,
-  `Name` VARCHAR(45) NULL DEFAULT NULL,
-  `ServiceInfo_ServiceInfoPK` INT NOT NULL,
+  `UserPK` INT(255) NOT NULL AUTO_INCREMENT,
+  `ID` VARCHAR(45) NOT NULL,
+  `PW` VARCHAR(45) NOT NULL,
+  `PhoneNumber` VARCHAR(45) NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `MannerTemperature` INT NOT NULL,
+  `Type` INT NOT NULL,
+  `Name` VARCHAR(45) NOT NULL,
+  `ServiceInfo_ServiceInfoPK` INT NULL DEFAULT NULL,
   PRIMARY KEY (`UserPK`),
   INDEX `fk_User_ServiceInfo_idx` (`ServiceInfo_ServiceInfoPK` ASC) VISIBLE,
   CONSTRAINT `fk_User_ServiceInfo`

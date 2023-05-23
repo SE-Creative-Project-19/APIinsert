@@ -3,6 +3,7 @@ package persistence.dao;
 import org.apache.ibatis.session.SqlSession;
 import persistence.dto.ServiceInfoDTO;
 import org.apache.ibatis.session.SqlSessionFactory;
+import persistence.dto.UserDTO;
 
 import java.util.ArrayList;
 import java.util.HashMap;

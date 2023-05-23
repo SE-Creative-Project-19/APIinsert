@@ -17,4 +17,18 @@ public class UserDAO {
         this.sqlSession = sqlSession;
         this.sqlSessionFactory = sqlSessionFactory;
     }
+
+    public List<UserDTO> getUser(String userId){
+
+    }
+
+    public void insertUserInfo(UserDTO userDTO){
+        SqlSession session = sqlSessionFactory.openSession();
+        try{
+            session.insert("mapper.UserMapper.UserMapper", userDTO);
+            session.commit();
+        } finally {
+            session.close();
+        }
+    }
 }
