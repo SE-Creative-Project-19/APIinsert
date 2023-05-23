@@ -34,7 +34,9 @@ public class ServiceInfoDAO {
             return null;
         }
     }
-    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO){
+    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo){
+        int pageSize = 10;
+        int offset = (pageNo - 1) * pageSize;
         try (SqlSession session = sqlSessionFactory.openSession()) {
             List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoByFilter", serviceInfoDTO);
             return serviceInfoList;
