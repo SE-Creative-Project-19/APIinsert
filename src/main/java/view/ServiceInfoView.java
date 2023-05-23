@@ -1,5 +1,6 @@
 package view;
 
+import org.apache.ibatis.javassist.compiler.Parser;
 import persistence.dto.ServiceInfoDTO;
 import service.ServiceInfoService;
 
@@ -10,28 +11,28 @@ import java.util.Scanner;
 
 public class ServiceInfoView {
     private ServiceInfoService service;
-    private Map<String, Integer> population = new HashMap<>();
+    private Map<Integer,String> population = new HashMap<>();
 
 
 
     public ServiceInfoView(ServiceInfoService service) {
-        population.put("서울특별시", 6110000);
-        population.put("부산광역시", 6260000);
-        population.put("대구광역시", 6270000);
-        population.put("인천광역시", 6280000);
-        population.put("광주광역시", 6290000);
-        population.put("대전광역시", 6300000);
-        population.put("울산광역시", 6310000);
-        population.put("세종특별자치시", 5690000);
-        population.put("경기도", 6410000);
-        population.put("강원도", 6420000);
-        population.put("충청북도", 6430000);
-        population.put("충청남도", 6440000);
-        population.put("전라북도", 6450000);
-        population.put("전라남도", 6460000);
-        population.put("경상북도", 6470000);
-        population.put("경상남도", 6480000);
-        population.put("제주특별자치도", 6500000);
+        population.put(6110000, "서울특별시");
+        population.put(6260000, "부산광역시");
+        population.put(6270000, "대구광역시");
+        population.put(6280000, "인천광역시");
+        population.put(6290000, "광주광역시");
+        population.put(6300000, "대전광역시");
+        population.put(6310000, "울산광역시");
+        population.put(5690000, "세종특별자치시");
+        population.put(6410000, "경기도");
+        population.put(6420000, "강원도");
+        population.put(6430000, "충청북도");
+        population.put(6440000, "충청남도");
+        population.put(6450000, "전라북도");
+        population.put(6460000, "전라남도");
+        population.put(6470000, "경상북도");
+        population.put(6480000, "경상남도");
+        population.put(6500000, "제주특별자치도");
         this.service = service;
     }
     public void serviceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo){
@@ -63,6 +64,10 @@ public class ServiceInfoView {
     //메인 봉사화면에서 나오는 정보를 출력합니다.
     public void printMainServiceInfo(List<ServiceInfoDTO> list){
         for (ServiceInfoDTO serviceInfo : list) {
+            Integer sidoCd = serviceInfo.getSidoCd();
+            String sidoName = population.get(sidoCd);
+            System.out.println(sidoName);
+
             System.out.printf("모집 중 (%s,%s) \n", serviceInfo.getSrvcCLCode(),serviceInfo.getSrvcCSCode());
             System.out.println(serviceInfo.getProgrmSj());
             System.out.printf("[모집기관] %s [모집기간] %s ~ %s [봉사기간] %s ~ %s \n", serviceInfo.getMnnstNm(),serviceInfo.getNoticeBgnde(),serviceInfo.getNoticeEndde(),serviceInfo.getProgrmBgnde(), serviceInfo.getProgrmEndde());
