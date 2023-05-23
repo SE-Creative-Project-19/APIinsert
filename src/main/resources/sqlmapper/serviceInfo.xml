@@ -54,7 +54,43 @@
         ORDER BY noticeEndde
     </select>
     <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
-        INSERT INTO serviceInfo (serviceInfoPK, actWkdy, appTotal, srvcCLCode,srvcCSCode, adultPosblAt, yngbgsPosblAt, mnnstNm, nanmmbyNm, actPlace, nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj, progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm, noticeBgnde, noticeEndde, rcritNmpr, sidoCd)
-        VALUES (#{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode},#{srvcCSCode}, #{adultPosblAt}, #{yngbgsPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace}, #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj}, #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm}, #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd})
+        INSERT INTO serviceInfo (
+            serviceInfoPK, actWkdy, appTotal, srvcCLCode, srvcCSCode,
+            adultPosblAt, yngbgsPosblAt, mnnstNm, nanmmbyNm, actPlace,
+            nanmmbyNmAdmn, telno, postAdres, email, progrmCn, progrmSj,
+            progrmSttusSe, progrmBgnde, progrmEndde, actBeginTm, actEndTm,
+            noticeBgnde, noticeEndde, rcritNmpr, sidoCd
+        )
+        VALUES (
+                   #{serviceInfoPK}, #{actWkdy}, #{appTotal}, #{srvcCLCode}, #{srvcCSCode},
+                   #{adultPosblAt}, #{yngbgsPosblAt}, #{mnnstNm}, #{nanmmbyNm}, #{actPlace},
+                   #{nanmmbyNmAdmn}, #{telno}, #{postAdres}, #{email}, #{progrmCn}, #{progrmSj},
+                   #{progrmSttusSe}, #{progrmBgnde}, #{progrmEndde}, #{actBeginTm}, #{actEndTm},
+                   #{noticeBgnde}, #{noticeEndde}, #{rcritNmpr}, #{sidoCd}
+               )
+            ON DUPLICATE KEY UPDATE
+                                 actWkdy = VALUES(actWkdy),
+                                 srvcCLCode = VALUES(srvcCLCode),
+                                 srvcCSCode = VALUES(srvcCSCode),
+                                 adultPosblAt = VALUES(adultPosblAt),
+                                 yngbgsPosblAt = VALUES(yngbgsPosblAt),
+                                 mnnstNm = VALUES(mnnstNm),
+                                 nanmmbyNm = VALUES(nanmmbyNm),
+                                 actPlace = VALUES(actPlace),
+                                 nanmmbyNmAdmn = VALUES(nanmmbyNmAdmn),
+                                 telno = VALUES(telno),
+                                 postAdres = VALUES(postAdres),
+                                 email = VALUES(email),
+                                 progrmCn = VALUES(progrmCn),
+                                 progrmSj = VALUES(progrmSj),
+                                 progrmSttusSe = VALUES(progrmSttusSe),
+                                 progrmBgnde = VALUES(progrmBgnde),
+                                 progrmEndde = VALUES(progrmEndde),
+                                 actBeginTm = VALUES(actBeginTm),
+                                 actEndTm = VALUES(actEndTm),
+                                 noticeBgnde = VALUES(noticeBgnde),
+                                 noticeEndde = VALUES(noticeEndde),
+                                 rcritNmpr = VALUES(rcritNmpr),
+                                 sidoCd = VALUES(sidoCd)
     </insert>
 </mapper>
