@@ -64,7 +64,7 @@ public class ServiceInfoView {
     //메인 봉사화면에서 나오는 정보를 출력합니다.
     public void printMainServiceInfo(List<ServiceInfoDTO> list){
         for (ServiceInfoDTO serviceInfo : list) {
-            Integer sidoCd = serviceInfo.getSidoCd();
+            String sidoCd = serviceInfo.getSidoCd();
             String sidoName = population.get(sidoCd);
             System.out.println(sidoName);
 
