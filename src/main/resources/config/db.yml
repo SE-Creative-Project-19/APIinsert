@@ -1,5 +1,5 @@
 DRIVER_CLASS=com.mysql.cj.jdbc.Driver
 DB_USER=root
 DB_CONNECTION_URL=jdbc:mysql://localhost/DBSample?characterEncoding=utf8&serverTimezone=UTC&useSSL=true
-DB_PWD=102302!
+DB_PWD=102302
 jdbc:mysql://localhost:3306/db_name?allowPublicKeyRetrieval=true&useSSL=false
