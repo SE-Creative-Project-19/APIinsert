@@ -13,10 +13,26 @@ public class ServiceInfoView {
     private ServiceInfoService service;
     private Map<Integer,String> population = new HashMap<>();
 
-
     public ServiceInfoView() {
-
+        population.put(6110000, "서울특별시");
+        population.put(6260000, "부산광역시");
+        population.put(6270000, "대구광역시");
+        population.put(6280000, "인천광역시");
+        population.put(6290000, "광주광역시");
+        population.put(6300000, "대전광역시");
+        population.put(6310000, "울산광역시");
+        population.put(5690000, "세종특별자치시");
+        population.put(6410000, "경기도");
+        population.put(6420000, "강원도");
+        population.put(6430000, "충청북도");
+        population.put(6440000, "충청남도");
+        population.put(6450000, "전라북도");
+        population.put(6460000, "전라남도");
+        population.put(6470000, "경상북도");
+        population.put(6480000, "경상남도");
+        population.put(6500000, "제주특별자치도");
     }
+  
     public ServiceInfoView(ServiceInfoService service) {
         population.put(6110000, "서울특별시");
         population.put(6260000, "부산광역시");
@@ -37,6 +53,7 @@ public class ServiceInfoView {
         population.put(6500000, "제주특별자치도");
         this.service = service;
     }
+
     public void serviceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo){
         List<ServiceInfoDTO> serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO, pageNo);
         for (ServiceInfoDTO serviceInfo : serviceInfoList) {
@@ -65,6 +82,7 @@ public class ServiceInfoView {
     }
     //메인 봉사화면에서 나오는 정보를 출력합니다.
     public void printMainServiceInfo(List<ServiceInfoDTO> list){
+
         for (ServiceInfoDTO serviceInfo : list) {
             Integer sidoCd = serviceInfo.getSidoCd();
             String sidoName = population.get(sidoCd);
