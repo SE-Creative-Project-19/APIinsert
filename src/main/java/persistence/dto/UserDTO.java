@@ -18,6 +18,7 @@ public class UserDTO implements Serializable {
     private int type; //사용자 유형
     private String name;
     private int serviceInfoPK;
+    //+기관 추가 시 DAO에서 if문을 통해 기관이 존재하면, 존재하지 않으면 으로 쿼리문 각 나눌 수 있도록
 
     public UserDTO() {
     }

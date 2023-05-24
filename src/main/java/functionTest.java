@@ -22,7 +22,7 @@ public class functionTest {
             SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
             SqlSession sqlSession = sqlSessionFactory.openSession();
 
-            ServiceInfoDAO dao = new ServiceInfoDAO(sqlSession, sqlSessionFactory);
+            ServiceInfoDAO dao = new ServiceInfoDAO(sqlSessionFactory);
             ServiceInfoService service = new ServiceInfoService(dao);
             ServiceInfoView view = new ServiceInfoView(service);
 
