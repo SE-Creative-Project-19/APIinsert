@@ -15,4 +15,16 @@
 
     <!-- 추가적인 쿼리들... -->
 
+    <select id="getServiceHistory" resultMap="serviceHistoryResultMap">
+        select u.Name as 신청자명, s.progrmSj as 봉사제목, s.mnnstNm as 기관명, s.nanmmbyNm as 주소, s.nanmmbyNmAdmn as 담당자명, s.actPlace as 봉사장소
+        from mydb.serviceinfo as s, mydb.volunteer as v, mydb.user as u
+        where s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK and u.UserPK = v.VolunteerPK and ProcessingResult = '봉사 완료';
+    </select>
+
+    <select id="getVolunteer" resultMap="volunteerResultMap">
+        select u.Name as 신청자명, s.progrmSj as 봉사제목, s.mnnstNm as 기관명, s.nanmmbyNm as 주소, s.nanmmbyNmAdmn as 담당자명, s.actPlace as 봉사장소
+        from mydb.serviceinfo as s, mydb.volunteer as v, mydb.user as u
+        where s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK and u.UserPK = v.VolunteerPK and ProcessingResult != '봉사 완료';
+    </select>
+
 </mapper>
