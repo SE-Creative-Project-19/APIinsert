@@ -31,11 +31,11 @@ public class UserDAO {
         return userDTO;
     }
 
-    public List<UserDTO> getUser() {
+    public List<UserDTO> getUser(String id) {
         List<UserDTO> list = null;
         SqlSession session = sqlSessionFactory.openSession();
-        try{
-            list = session.selectList("mapper.UserMapper.getUser");
+        try {
+            list = session.selectList("mapper.UserMapper.getUser", id);
         } finally {
             session.close();
         }
