@@ -59,12 +59,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `Type` INT NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
   `Facility` VARCHAR(100) NULL DEFAULT NULL,
-  `ServiceInfo_ServiceInfoPK` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`UserPK`),
-  INDEX `fk_User_ServiceInfo_idx` (`ServiceInfo_ServiceInfoPK` ASC) VISIBLE,
-  CONSTRAINT `fk_User_ServiceInfo`
-    FOREIGN KEY (`ServiceInfo_ServiceInfoPK`)
-    REFERENCES `mydb`.`serviceinfo` (`ServiceInfoPK`))
+  PRIMARY KEY (`UserPK`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 

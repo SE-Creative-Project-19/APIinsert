@@ -12,6 +12,7 @@ public class UserService{
     public void updateUser(UserDTO userDTO) {dao.updateUser(userDTO);}
     public List<UserDTO> getUser() {return dao.getUser();}
     public String findUserId(String phoneNumber) {return dao.findUserId(phoneNumber);}
+    public String findUserPassword(String id, String phoneNumber) {return dao.findUserPassword(id, phoneNumber);}
     public UserDTO loginUser(String id, String pw) {return dao.loginUser(id, pw);}
 
 }

@@ -17,4 +17,30 @@ public class VolunteerDAO {
         this.sqlSession = sqlSession;
         this.sqlSessionFactory = sqlSessionFactory;
     }
+
+    public List<VolunteerDTO> getVolunteer() {
+        List<VolunteerDTO> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try{
+            list = session.selectList("mapper.VolunteerMapper.getVolunteer");
+        } finally {
+            session.close();
+        }
+        return list;
+    }
+
+    public List<VolunteerDTO> getVolunteerFilter(VolunteerDTO volunteerDTO, String processingResult) {
+    try(SqlSession session = sqlSessionFactory.openSession()) {
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("processingResult", processingResult);
+        parameterMap.put("VolunteerDTO", volunteerDTO);
+
+        List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteer", parameterMap);
+        return volunteerDTOList;
+    } catch (Exception e){
+        e.printStackTrace();
+        return null;
+    }
+    }
 }
+

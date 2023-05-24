@@ -39,6 +39,10 @@
         AND phoneNumber = #{phoneNumber}
     </update> <!-- 비밀번호 재설정 -->
 
+    <insert id="insertUser" parameterType="UserDTO">
+        INSERT INTO user (ID, PW, PhoneNumber, Address, MannerTemperature, Type, Name)
+        VALUES (#{ID}, #{PW}, #{PhoneNumber}, #{Address}, #{MannerTemperature}, #{Type}, #{Name})
+    </insert> <!-- 회원가입 -->
 
 
 </mapper>
