@@ -6,6 +6,7 @@ import Network.Protocol.ProtocolKind;
 import Network.Protocol.ProtocolType;
 import persistence.dto.ServiceInfoDTO;
 import persistence.dto.UserDTO;
+import service.ServiceInfoService;
 import view.ServiceInfoView;
 
 import java.io.*;
@@ -167,6 +168,7 @@ public class UserEventController {
     }
     public void inquiryServiceList() {
         int page = 3;
+        ServiceInfoView serviceInfoView = new ServiceInfoView();
         protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.SERVICE_LIST_INQUIRY, ProtocolKind.VOLUNTEER);
         try {
             oos.writeObject(protocolHeader);
@@ -180,7 +182,7 @@ public class UserEventController {
 
         try {
             list = (List<ServiceInfoDTO>) ois.readObject();
-            ServiceInfoView.printMainServiceInfo(list);
+            serviceInfoView.printMainServiceInfo(list);
         }catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: receive Service list");
             e.printStackTrace();

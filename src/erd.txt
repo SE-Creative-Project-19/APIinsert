@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`serviceinfo` (
   `noticeBgnde` DATE NOT NULL,
   `noticeEndde` DATE NOT NULL,
   `rcritNmpr` INT NOT NULL,
-  `sidoCd` MEDIUMTEXT NOT NULL,
+  `sidoCd` INT NOT NULL,
   PRIMARY KEY (`ServiceInfoPK`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;

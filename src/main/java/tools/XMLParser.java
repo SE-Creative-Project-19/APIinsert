@@ -224,7 +224,7 @@ public class XMLParser {
 
 // sidoCd
 			Elements sidoCdElements = doc.getElementsByTag("sidoCd");
-			String sidoCd = sidoCdElements.first().text();
+			int sidoCd = Integer.parseInt(sidoCdElements.first().text());
 			serviceInfoDTO.setSidoCd(sidoCd);
 			System.out.println("실행결과");
 			System.out.println(serviceInfoDTO.toString());

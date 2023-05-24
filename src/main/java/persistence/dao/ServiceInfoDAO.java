@@ -32,9 +32,16 @@ public class ServiceInfoDAO {
             return null;
         }
     }
-    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO){
+    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo) {
+        int pageSize = 10;
+        int offset = (pageNo - 1) * pageSize;
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoByFilter", serviceInfoDTO);
+            Map<String, Object> parameterMap = new HashMap<>();
+            parameterMap.put("pageSize", pageSize);
+            parameterMap.put("offset", offset);
+            parameterMap.put("serviceInfoDTO", serviceInfoDTO);
+
+            List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoByFilter", parameterMap);
             return serviceInfoList;
         } catch (Exception e) {
             e.printStackTrace();

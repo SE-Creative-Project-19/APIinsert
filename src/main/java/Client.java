@@ -10,12 +10,15 @@ public class Client {
 
             // 객체를 수신하기 위한 스트림 생성
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
             // 객체 역직렬화 및 출력
            ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) inputStream.readObject();
             System.out.println("서버에서 받은 객체 정보:");
             System.out.println("이름: " + serviceInfoDTO.toString());
+
+            outputStream.writeObject(serviceInfoDTO);
             // 연결 종료
+
             inputStream.close();
             socket.close();
         } catch (IOException e) {
