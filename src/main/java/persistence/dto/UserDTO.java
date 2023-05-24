@@ -3,7 +3,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
+import java.io.*;
 
 @Getter
 @Setter
@@ -17,13 +17,12 @@ public class UserDTO implements Serializable {
     private int mannerTemperature; //매너온도
     private int type; //사용자 유형
     private String name;
-    private int serviceInfoPK;
-    //+기관 추가 시 DAO에서 if문을 통해 기관이 존재하면, 존재하지 않으면 으로 쿼리문 각 나눌 수 있도록
+    private String facility;
 
     public UserDTO() {
     }
 
-    public UserDTO(int userPK, String ID, String PW, String phoneNumber, String address, int mannerTemperature, int type, String name, int serviceInfoPK) {
+    public UserDTO(int userPK, String ID, String PW, String phoneNumber, String address, int mannerTemperature, int type, String name, String facility) {
         this.userPK = userPK;
         this.ID = ID;
         this.PW = PW;
@@ -32,6 +31,6 @@ public class UserDTO implements Serializable {
         this.mannerTemperature = mannerTemperature;
         this.type = type;
         this.name = name;
-        this.serviceInfoPK = serviceInfoPK;
+        this.facility = facility;
     }
 }

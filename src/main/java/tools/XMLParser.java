@@ -34,7 +34,7 @@ public class XMLParser {
 
 	public XMLParser() {
 	}
-	
+
 	public void setCode(String code) {
 		this.code = code;
 	}
@@ -43,8 +43,8 @@ public class XMLParser {
 
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://openapi.1365.go.kr/openapi/service/rest/VolunteerPartcptnService/getVltrPartcptnItem"); /*
-																												 * URL
-																												 */
+		 * URL
+		 */
 		urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + SERVICE_KEY); /* Service Key */
 		urlBuilder.append("&" + URLEncoder.encode("progrmRegistNo", "UTF-8") + "="
 				+ URLEncoder.encode(code, "UTF-8")); /* 프로그램등록번호 */
@@ -233,5 +233,5 @@ public class XMLParser {
 		}
 
 	}
-	
+
 }

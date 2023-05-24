@@ -17,4 +17,90 @@ public class UserDAO {
         this.sqlSession = sqlSession;
         this.sqlSessionFactory = sqlSessionFactory;
     }
+    public UserDTO loginUser(String id, String pw) {
+        SqlSession session = sqlSessionFactory.openSession();
+        UserDTO userDTO = null;
+        try {
+            Map<String, String> loginInfo = new HashMap<>();
+            loginInfo.put("id", id);
+            loginInfo.put("pw", pw);
+            userDTO = session.selectOne("mapper.UserMapper.loginUser", loginInfo);
+        } finally {
+            session.close();
+        }
+        return userDTO;
+    }
+
+    public List<UserDTO> getUser(String id) {
+        List<UserDTO> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            list = session.selectList("mapper.UserMapper.getUser", id);
+        } finally {
+            session.close();
+        }
+        return list;
+    }
+
+    public void insertUser(UserDTO userDTO) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            // id 중복 검사
+            String existingId = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
+            if (existingId != null) {
+                throw new IllegalArgumentException("중복된 아이디입니다.");
+            }
+
+            // 전화번호 중복 검사
+            String existingPhoneNumber = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
+            if (existingPhoneNumber != null) {
+                throw new IllegalArgumentException("중복된 전화번호입니다.");
+            }
+
+            // 회원 정보 삽입
+            session.insert("mapper.UserMapper.insertUser", userDTO);
+            session.commit();
+        } finally {
+            session.close();
+        }
+    }
+
+
+    public void updateUser(UserDTO userDTO) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.update("mapper.UserMapper.updateUser", userDTO);
+            session.commit();
+        } finally {
+            session.close();
+        }
+    }
+
+    public String findUserId(String phoneNumber) {
+        SqlSession session = sqlSessionFactory.openSession();
+        String userId = null;
+        try {
+            userId = session.selectOne("mapper.UserMapper.findUserId", phoneNumber);
+        } finally {
+            session.close();
+        }
+        return userId;
+    }
+
+    public String findUserPassword(String id, String phoneNumber) {
+        SqlSession session = sqlSessionFactory.openSession();
+        String password = null;
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("id", id);
+            params.put("phoneNumber", phoneNumber);
+            password = session.selectOne("mapper.UserMapper.findUserPassword", params);
+        } finally {
+            session.close();
+        }
+        return password;
+    }
+
+
+
 }

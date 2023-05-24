@@ -22,7 +22,7 @@
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost/mydb?characterEncoding=utf8&amp;serverTimezone=UTC&amp;useSSL=false"/>
                 <property name="username" value="root"/>
-                <property name="password" value="102302"/>
+                <property name="password" value="1234"/>
             </dataSource>
 
         </environment>

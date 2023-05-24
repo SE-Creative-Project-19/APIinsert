@@ -14,9 +14,34 @@
         <result property="mannerTemperature" column="mannerTemperature" />
         <result property="type" column="type" />
         <result property="name" column="name" />
-        <result property="serviceInfoPK" column="serviceInfoPK" />
+        <result property="facility" column="facility" />
     </resultMap>
 
     <!-- 추가적인 쿼리들... -->
+
+    <select id="getUser" resultMap="userResultMap">
+        select ID, PhoneNumber, Address, MannerTemperature, Name
+        from mydb.user as u
+        where ID = #{ID};
+    </select> <!--유저 정보 조회 -->
+
+    <select id="getId" resultType="String">
+        select ID
+        from mydb.user as u
+        where phoneNumber = #{phoneNumber};
+    </select> <!-- ID찾기 -->
+
+    <update id="updateUserPassword">
+        UPDATE mydb.user
+        SET pw = #{pw}
+        WHERE ID = #{id}
+        AND phoneNumber = #{phoneNumber}
+    </update> <!-- 비밀번호 재설정 -->
+
+    <insert id="insertUser" parameterType="UserDTO">
+        INSERT INTO user (ID, PW, PhoneNumber, Address, MannerTemperature, Type, Name)
+        VALUES (#{ID}, #{PW}, #{PhoneNumber}, #{Address}, #{MannerTemperature}, #{Type}, #{Name})
+    </insert> <!-- 회원가입 -->
+
 
 </mapper>

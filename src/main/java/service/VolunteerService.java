@@ -8,4 +8,10 @@ public class VolunteerService{
 
     public VolunteerService(VolunteerDAO dao) {this.dao = dao;}
 
+    public List<VolunteerDTO> getVolunteer() {return dao.getVolunteer();}
+
+    public List<VolunteerDTO> getVolunteerFilter(VolunteerDTO volunteerDTO, String processingResult)
+    {return dao.getVolunteerFilter(volunteerDTO, processingResult);}
+
+
 }

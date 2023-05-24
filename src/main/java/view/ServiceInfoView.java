@@ -32,6 +32,7 @@ public class ServiceInfoView {
         population.put(6480000, "경상남도");
         population.put(6500000, "제주특별자치도");
     }
+  
     public ServiceInfoView(ServiceInfoService service) {
         population.put(6110000, "서울특별시");
         population.put(6260000, "부산광역시");
@@ -83,7 +84,6 @@ public class ServiceInfoView {
     public void printMainServiceInfo(List<ServiceInfoDTO> list){
 
         for (ServiceInfoDTO serviceInfo : list) {
-
             Integer sidoCd = serviceInfo.getSidoCd();
             String sidoName = population.get(sidoCd);
             System.out.println(sidoName);
@@ -92,8 +92,6 @@ public class ServiceInfoView {
             System.out.println(serviceInfo.getProgrmSj());
             System.out.printf("[모집기관] %s [모집기간] %s ~ %s [봉사기간] %s ~ %s \n", serviceInfo.getMnnstNm(),serviceInfo.getNoticeBgnde(),serviceInfo.getNoticeEndde(),serviceInfo.getProgrmBgnde(), serviceInfo.getProgrmEndde());
             System.out.println(serviceInfo.getProgrmCn());
-
-
             System.out.println();
         }
     }
