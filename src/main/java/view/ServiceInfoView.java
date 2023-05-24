@@ -14,7 +14,9 @@ public class ServiceInfoView {
     private Map<Integer,String> population = new HashMap<>();
 
 
+    public ServiceInfoView() {
 
+    }
     public ServiceInfoView(ServiceInfoService service) {
         population.put(6110000, "서울특별시");
         population.put(6260000, "부산광역시");
@@ -64,7 +66,7 @@ public class ServiceInfoView {
     //메인 봉사화면에서 나오는 정보를 출력합니다.
     public void printMainServiceInfo(List<ServiceInfoDTO> list){
         for (ServiceInfoDTO serviceInfo : list) {
-            String sidoCd = serviceInfo.getSidoCd();
+            Integer sidoCd = serviceInfo.getSidoCd();
             String sidoName = population.get(sidoCd);
             System.out.println(sidoName);
 

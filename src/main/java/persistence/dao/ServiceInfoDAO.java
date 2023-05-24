@@ -10,10 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ServiceInfoDAO {
-    private SqlSession sqlSession;
     private final SqlSessionFactory sqlSessionFactory;
-    public ServiceInfoDAO(SqlSession sqlSession, SqlSessionFactory sqlSessionFactory) {
-        this.sqlSession = sqlSession;
+    public ServiceInfoDAO(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 

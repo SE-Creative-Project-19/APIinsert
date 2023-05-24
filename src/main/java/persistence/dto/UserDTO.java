@@ -17,13 +17,12 @@ public class UserDTO implements Serializable {
     private int mannerTemperature; //매너온도
     private int type; //사용자 유형
     private String name;
-    private int serviceInfoPK;
     private String facility;
 
     public UserDTO() {
     }
 
-    public UserDTO(int userPK, String ID, String PW, String phoneNumber, String address, int mannerTemperature, int type, String name, String facility, int serviceInfoPK) {
+    public UserDTO(int userPK, String ID, String PW, String phoneNumber, String address, int mannerTemperature, int type, String name, String facility) {
         this.userPK = userPK;
         this.ID = ID;
         this.PW = PW;
@@ -33,6 +32,5 @@ public class UserDTO implements Serializable {
         this.type = type;
         this.name = name;
         this.facility = facility;
-        this.serviceInfoPK = serviceInfoPK;
     }
 }

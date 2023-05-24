@@ -38,12 +38,12 @@ public class ServiceInfoDTO implements Serializable{
     private Date noticeBgnde; //모집시작일
     private Date noticeEndde; //모집종료일
     private int rcritNmpr; //모집인원
-    private String sidoCd; //시도코드
+    private int sidoCd; //시도코드
 
     public ServiceInfoDTO(int serviceInfoPK, String actWkdy, int appTotal, String srvcCLCode,String srvcCSCode, String mnnstNm, String nanmmbyNm, String actPlace,
                           String nanmmbyNmAdmn, String telno, String postAdres, String email, String progrmCn, String progrmSj,
                           int progrmSttusSe, Date progrmBgnde, Date progrmEndde, LocalTime actBeginTm, LocalTime actEndTm,
-                          Date noticeBgnde, Date noticeEndde, int rcritNmpr, String sidoCd) {
+                          Date noticeBgnde, Date noticeEndde, int rcritNmpr, int sidoCd) {
         this.serviceInfoPK = serviceInfoPK;
         this.actWkdy = actWkdy;
         this.appTotal = appTotal;
@@ -89,7 +89,7 @@ public class ServiceInfoDTO implements Serializable{
         this.noticeBgnde = null;
         this.noticeEndde = null;
         this.rcritNmpr = 0;
-        this.sidoCd = null;
+        this.sidoCd = 0;
     }
     // Getter 및 Setter 메서드 생략
 
@@ -128,7 +128,6 @@ public class ServiceInfoDTO implements Serializable{
         }
     }
  */
-
 
 
 
