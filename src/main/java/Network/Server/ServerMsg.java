@@ -94,11 +94,18 @@ public class ServerMsg { //client to server
             if(code == ProtocolCode.SERVICE_LIST_INQUIRY) {// 봉사활동 목록 조회
 
                 if(kind == ProtocolKind.VOLUNTEER) {// 신청할 수 있는 봉사활동 리스트 출력
-                    ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                    List<ServiceInfoDTO> list = new ArrayList<>();
-                    list = serviceInfoDAO.getServiceInfoList(1);
-                    oos.writeObject(list);
-                    oos.flush();
+                    try {
+                        int page = (int)objectInput.readObject();
+                        ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        List<ServiceInfoDTO> list = new ArrayList<>();
+                        list = serviceInfoDAO.getAllServiceInfo();
+                        oos.writeObject(list);
+                        oos.flush();
+
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
 
                 }else if (kind == ProtocolKind.MANAGER) { //자신이 속한 기관의 봉사 활동  리스트 출력
 

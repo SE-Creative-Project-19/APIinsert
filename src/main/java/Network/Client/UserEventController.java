@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class UserEventController {
-    Socket cliSocket = null;
     ObjectInputStream ois;
     ObjectOutputStream oos;
     ProtocolHeader protocolHeader = null;
@@ -23,8 +22,9 @@ public class UserEventController {
     int userType = 0;
     Scanner sc = new Scanner(System.in);
 
-    public UserEventController(Socket cliSocket) {
-        this.cliSocket = cliSocket;
+    public UserEventController(ObjectOutputStream oos, ObjectInputStream ois) {
+        this.oos = oos;
+        this.ois = ois;
     }
     public void signUp(){
         UserDTO userDTO = new UserDTO();//TODO 회원가입 정보 set 해줘야함.
@@ -42,6 +42,7 @@ public class UserEventController {
             }
         }else if(userType == 2) { // Manager
             protocolHeader = new ProtocolHeader(ProtocolType.LOGIN, ProtocolCode.REGISTER_INFO, ProtocolKind.MANAGER);
+            //userDTO.set(기관)
             try {
                 oos.writeObject(protocolHeader);
                 oos.writeObject(userDTO);
@@ -165,10 +166,11 @@ public class UserEventController {
 
     }
     public void inquiryServiceList() {
+        int page = 3;
         protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.SERVICE_LIST_INQUIRY, ProtocolKind.VOLUNTEER);
         try {
-            oos = new ObjectOutputStream(cliSocket.getOutputStream());
             oos.writeObject(protocolHeader);
+            oos.writeObject(page);
             oos.flush();
         } catch (IOException e) {
             System.out.println("Error: inquiry Service list");

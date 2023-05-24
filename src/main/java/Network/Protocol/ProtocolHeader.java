@@ -4,9 +4,11 @@ package Network.Protocol;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class ProtocolHeader {
+public class ProtocolHeader implements Serializable {
 
     byte type;
     byte code;

@@ -36,8 +36,8 @@ public class VolunteerServerThread extends Thread{
     }
 
     public void open() throws IOException {
-        ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-        oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        oos = new ObjectOutputStream((socket.getOutputStream()));
+        ois = new ObjectInputStream((socket.getInputStream()));
     }
 
     public void close() throws IOException {

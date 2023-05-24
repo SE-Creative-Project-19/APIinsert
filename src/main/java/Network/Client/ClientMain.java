@@ -10,11 +10,14 @@ public class ClientMain {
         String host = "127.0.0.1";
 
         try {
-            cliSocket = new Socket(host, 5555);
-            UserEventController userEventController = new UserEventController(cliSocket);
+
+            cliSocket = new Socket(host, 3333);
+            ObjectOutputStream oos = new ObjectOutputStream((cliSocket.getOutputStream()));
+            ObjectInputStream ois = new ObjectInputStream((cliSocket.getInputStream()));
+
+            UserEventController userEventController = new UserEventController(oos, ois);
 
             userEventController.inquiryServiceList();
-
 
         }
         catch (UnknownHostException e) {
