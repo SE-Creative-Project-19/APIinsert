@@ -25,6 +25,12 @@
         where ID = #{ID};
     </select> <!--유저 정보 조회 -->
 
+    <select id="getUsersByPk" resultMap="userResultMap">
+        select ID, name, PhoneNumber, Address, MannerTemperature,
+        from mydb.user as u
+        where userPK = #{userPK};
+    </select> <!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.-->
+
     <select id="getId" resultType="String">
         select ID
         from mydb.user as u
@@ -36,6 +42,12 @@
         SET pw = #{pw}
         WHERE ID = #{id}
         AND phoneNumber = #{phoneNumber}
+    </update> <!-- 비밀번호 재설정 -->
+    <update id="updateUser">
+        UPDATE mydb.user
+        SET mannerTemperature = #{mannerTemperature}
+        WHERE ID = #{id}
+          AND phoneNumber = #{phoneNumber}
     </update> <!-- 비밀번호 재설정 -->
 
     <insert id="insertUser" parameterType="UserDTO">

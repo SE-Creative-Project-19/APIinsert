@@ -68,4 +68,15 @@ public class ServiceInfoDAO {
         }
         return list;
     }
+
+    public void updateServiceInfoByTime() {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.update("mapper.ServiceInfoMapper.updateServiceInfoByTime");
+            session.commit();
+        } finally {
+            session.close();
+        }
+
+    }
 }

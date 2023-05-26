@@ -28,13 +28,27 @@
     </select> <!-- 신청한 봉사활동 조회 -->
     <select id="getVolunteerApplicant" resultMap="volunteerResultMap">
         <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* -->
+        SELECT *
+        FROM service_info si
+        JOIN volunteer v ON si.serviceInfoPK = v.serviceInfoPK
+        WHERE v.processingResult = '승인 전'
     </select>
     <select id="getVolunteerDone" resultMap="volunteerResultMap">
         <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* 단 처리상태가 별점 미등록인  것들만-->
+        SELECT *
+        FROM service_info si
+        JOIN volunteer v ON si.serviceInfoPK = v.serviceInfoPK
+        WHERE v.processingResult = '별점 미등록'
     </select>
     <update id="updateVolunteer">
         UPDATE mydb.volunteer
         SET processingResult = #{processingResult}
         WHERE volunteerPK = #{volunteerPK}
+    </update>
+    <update id="updateVolunteerByTime">
+        UPDATE volunteer
+        SET processingResult = '별점 미등록'
+        WHERE serviceInfoPK = #{serviceInfoPK} AND
+        EXISTS (SELECT * FROM service_info WHERE service_info.serviceInfoPK = volunteer.serviceInfoPK AND progrmEndde &lt; CURDATE())
     </update>
 </mapper>

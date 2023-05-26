@@ -39,6 +39,7 @@
         SELECT *
         FROM serviceInfo
     </select>
+
     <select id="getServiceInfoByFilter" resultMap="serviceInfoResultMap">
         SELECT *
         FROM serviceInfo
@@ -88,4 +89,10 @@
         rcritNmpr = VALUES(rcritNmpr),
         sidoCd = VALUES(sidoCd)
     </insert>
+    <update id="updateServiceInfoByTime">
+        UPDATE service_info
+        SET progrmSttusSe = 1
+        WHERE noticeEndde &lt; #{currentDate}
+    </update>
+
 </mapper>

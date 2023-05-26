@@ -23,6 +23,7 @@ import java.sql.Date;
 
 
 import persistence.dao.ServiceInfoDAO;
+import persistence.dao.VolunteerDAO;
 import persistence.dto.ServiceInfoDTO;
 import service.ServiceInfoService;
 import view.ServiceInfoView;
@@ -81,7 +82,8 @@ public class XMLParser {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 
 		ServiceInfoDAO dao = new ServiceInfoDAO(sqlSessionFactory);
-		ServiceInfoService service = new ServiceInfoService(dao);
+		VolunteerDAO volunteerDAO = new VolunteerDAO(sqlSession,sqlSessionFactory);
+		ServiceInfoService service = new ServiceInfoService(dao,volunteerDAO);
 
 
 		if (name.text().equals("")) {

@@ -3,7 +3,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import persistence.dao.ServiceInfoDAO;
+import persistence.dao.UserDAO;
+import persistence.dao.VolunteerDAO;
 import service.ServiceInfoService;
+import service.UserService;
 import view.ServiceInfoView;
 import persistence.dto.*;
 import java.io.IOException;
@@ -23,7 +26,9 @@ public class functionTest {
             SqlSession sqlSession = sqlSessionFactory.openSession();
 
             ServiceInfoDAO dao = new ServiceInfoDAO(sqlSessionFactory);
-            ServiceInfoService service = new ServiceInfoService(dao);
+            VolunteerDAO volunteerDAO = new VolunteerDAO(sqlSession,sqlSessionFactory);
+            ServiceInfoService service = new ServiceInfoService(dao,volunteerDAO);
+
             ServiceInfoView view = new ServiceInfoView(service);
 
             //view.displayAllServiceInfo();
@@ -35,6 +40,7 @@ public class functionTest {
             serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-07-30"));
             view.displayServiceInfo(serviceInfoDTO);
 
+            service.updateServiceInfoByTime();
 
             sqlSession.close();
         } catch (IOException e) {

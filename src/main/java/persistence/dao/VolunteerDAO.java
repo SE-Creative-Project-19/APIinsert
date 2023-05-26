@@ -30,20 +30,21 @@ public class VolunteerDAO {
     }   // 신청 내역 조회
 
     public List<VolunteerDTO> getVolunteerFilter(VolunteerDTO volunteerDTO, String processingResult) {
-    try(SqlSession session = sqlSessionFactory.openSession()) {
-        Map<String, Object> parameterMap = new HashMap<>();
-        parameterMap.put("processingResult", processingResult);
-        parameterMap.put("VolunteerDTO", volunteerDTO);
+        try(SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> parameterMap = new HashMap<>();
+            parameterMap.put("processingResult", processingResult);
+            parameterMap.put("VolunteerDTO", volunteerDTO);
 
-        List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteer", parameterMap);
-        return volunteerDTOList;
-    } catch (Exception e){
-        e.printStackTrace();
-        return null;
+            List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteer", parameterMap);
+            return volunteerDTOList;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
     }
-      
 
-    public List<VolunteerDTO> getVolunteerApplicant(String facility) { //TODO 기관이름으 바탕으로 해당하는 servieInfoPk를 조인한 후 volunteer와 비교해서 가져옵니다.
+    public List<VolunteerDTO> getVolunteerApplicant(String facility) {//TODO 기관이름으 바탕으로 해당하는 servieInfoPk를 조인한 후 volunteer와 비교해서 가져옵니다.
         try(SqlSession session = sqlSessionFactory.openSession()) {
 
             List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerApplicant", facility);
@@ -54,7 +55,7 @@ public class VolunteerDAO {
         }
     }
 
-    public void updateVolunteer(VolunteerDTO volunteerDTO) {
+    public void updateVolunteer(VolunteerDTO volunteerDTO) {//TODO 봉사 처리 결과를 수정합니다.
         SqlSession session = sqlSessionFactory.openSession();
         try {
             session.update("mapper.VolunteerMapper.updateVolunteer", volunteerDTO);
@@ -64,7 +65,7 @@ public class VolunteerDAO {
         }
     }
 
-    public List<VolunteerDTO> getVolunteerDone(String facility) {
+    public List<VolunteerDTO> getVolunteerDone(String facility) { //TODO 봉사 완료 후 별점을 등록하지 못한 봉사 신청 리스트를 return
         try(SqlSession session = sqlSessionFactory.openSession()) {
 
             List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerDone", facility);
@@ -75,5 +76,14 @@ public class VolunteerDAO {
         }
     }
 
+    public void updateVolunteerByTime() {//TODO 12시 업데이트 했을 때 시간이 지나면서 봉사 활동 기간이 끝난 활동에 대해서 별점 미등록 상태로 수정합니다.
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.update("mapper.VolunteerMapper.updateVolunteerByTime");
+            session.commit();
+        } finally {
+            session.close();
+        }
+    }
 }
 
