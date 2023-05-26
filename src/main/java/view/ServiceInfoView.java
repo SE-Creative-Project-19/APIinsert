@@ -66,7 +66,7 @@ public class ServiceInfoView {
         List<ServiceInfoDTO> serviceInfoList = null;
 
 
-        while(true){
+        while(true){//haha
             System.out.print("페이지 번호를 입력하세요: (0: 종료)");
             int pageNo = scanner.nextInt();
             if(pageNo == 0) break;
