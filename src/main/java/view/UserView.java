@@ -69,4 +69,11 @@ public class UserView {
             System.out.println("로그인 실패");
         }
     }
+
+    public void showInfoUser(UserDTO userDTO) {
+        System.out.printf("이름 : %s \n", userDTO.getName() );
+        System.out.printf("주소 : %s \n", userDTO.getAddress() );
+        System.out.printf("전화번호 : %s \n", userDTO.getPhoneNumber() );
+        System.out.printf("매너 온도 : %d \n\n",userDTO.getMannerTemperature());
+    }
 }

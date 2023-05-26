@@ -17,7 +17,7 @@ public class UserDTO implements Serializable {
     private int mannerTemperature; //매너온도
     private int type; //사용자 유형
     private String name;
-    private String facility;
+    private String facility; //TODO serviceInfo 테이블의 mnnstNm를가짐
 
     public UserDTO() {
     }

@@ -42,5 +42,37 @@ public class VolunteerDAO {
         return null;
     }
     }
+
+    public List<VolunteerDTO> getVolunteerApplicant(String facility) { //TODO 기관이름으 바탕으로 해당하는 servieInfoPk를 조인한 후 volunteer와 비교해서 가져옵니다.
+        try(SqlSession session = sqlSessionFactory.openSession()) {
+
+            List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerApplicant", facility);
+            return volunteerDTOList;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void updateVolunteer(VolunteerDTO volunteerDTO) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.update("mapper.VolunteerMapper.updateVolunteer", volunteerDTO);
+            session.commit();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<VolunteerDTO> getVolunteerDone(String facility) {
+        try(SqlSession session = sqlSessionFactory.openSession()) {
+
+            List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerDone", facility);
+            return volunteerDTOList;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 

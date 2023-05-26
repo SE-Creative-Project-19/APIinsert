@@ -26,5 +26,15 @@
         from mydb.serviceinfo as s, mydb.volunteer as v, mydb.user as u
         where s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK and u.UserPK = v.VolunteerPK and ProcessingResult != '봉사 완료';
     </select> <!-- 신청한 봉사활동 조회 -->
-
+    <select id="getVolunteerApplicant" resultMap="volunteerResultMap">
+        <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* -->
+    </select>
+    <select id="getVolunteerDone" resultMap="volunteerResultMap">
+        <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* 단 처리상태가 별점 미등록인  것들만-->
+    </select>
+    <update id="updateVolunteer">
+        UPDATE mydb.volunteer
+        SET processingResult = #{processingResult}
+        WHERE volunteerPK = #{volunteerPK}
+    </update>
 </mapper>
