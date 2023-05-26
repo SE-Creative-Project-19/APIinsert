@@ -4,11 +4,6 @@ import Network.Protocol.ProtocolCode;
 import Network.Protocol.ProtocolHeader;
 import Network.Protocol.ProtocolKind;
 import Network.Protocol.ProtocolType;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import persistence.dao.ServiceInfoDAO;
 import persistence.dto.ServiceInfoDTO;
 import persistence.dto.UserDTO;
 import service.ServiceInfoService;
@@ -173,13 +168,7 @@ public class UserEventController {
     }
     public void inquiryServiceList() throws IOException {
         int page = 3;
-        String resource = "config/config.xml";
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        ServiceInfoDAO dao = new ServiceInfoDAO(sqlSessionFactory);
-        ServiceInfoService service = new ServiceInfoService(dao);
-        ServiceInfoView serviceInfoView = new ServiceInfoView(service);
+        ServiceInfoView serviceInfoView = new ServiceInfoView();
         protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.SERVICE_LIST_INQUIRY, ProtocolKind.VOLUNTEER);
         try {
             oos.writeObject(protocolHeader);
