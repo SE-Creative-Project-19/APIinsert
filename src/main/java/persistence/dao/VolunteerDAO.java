@@ -27,7 +27,7 @@ public class VolunteerDAO {
             session.close();
         }
         return list;
-    }
+    }   // 신청 내역 조회
 
     public List<VolunteerDTO> getVolunteerFilter(VolunteerDTO volunteerDTO, String processingResult) {
     try(SqlSession session = sqlSessionFactory.openSession()) {
@@ -41,6 +41,6 @@ public class VolunteerDAO {
         e.printStackTrace();
         return null;
     }
-    }
+    }   // 이전 봉사내역 조회
 }
 
