@@ -29,7 +29,7 @@ public class UserDAO {
             session.close();
         }
         return userDTO;
-    }
+    }   // 로그인
 
     public List<UserDTO> getUser(String id) {
         List<UserDTO> list = null;
@@ -40,7 +40,7 @@ public class UserDAO {
             session.close();
         }
         return list;
-    }
+    }   // 회원정보조회
 
     public void insertUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
@@ -63,7 +63,7 @@ public class UserDAO {
         } finally {
             session.close();
         }
-    }
+    }   // 회원가입
 
 
     public void updateUser(UserDTO userDTO) {
@@ -74,7 +74,7 @@ public class UserDAO {
         } finally {
             session.close();
         }
-    }
+    }   // 개인정보수정
 
     public String findUserId(String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
@@ -85,7 +85,7 @@ public class UserDAO {
             session.close();
         }
         return userId;
-    }
+    }   // ID 찾기
 
     public String findUserPassword(String id, String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
@@ -99,7 +99,7 @@ public class UserDAO {
             session.close();
         }
         return password;
-    }
+    }   // 비밀번호 재설정
 
 
     public UserDTO getUserByPK(int userPK) {//todo UserPK를 가지고 해당하는 user를 return
