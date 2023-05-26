@@ -10,11 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 public class MessageHeaderDAO{
-    private SqlSession sqlSession;
     private final SqlSessionFactory sqlSessionFactory;
 
-    public MessageHeaderDAO(SqlSession sqlSession, SqlSessionFactory sqlSessionFactory) {
-        this.sqlSession = sqlSession;
+    public MessageHeaderDAO(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 }
