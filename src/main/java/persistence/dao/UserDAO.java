@@ -102,5 +102,14 @@ public class UserDAO {
     }   // 비밀번호 재설정
 
 
-
+    public UserDTO getUserByPK(int userPK) {//todo UserPK를 가지고 해당하는 user를 return
+        SqlSession session = sqlSessionFactory.openSession();
+        UserDTO userDTO = null;
+        try {
+            userDTO = session.selectOne("mapper.UserMapper.getUserByPK", userPK);
+        } finally {
+            session.close();
+        }
+        return userDTO;
+    }
 }

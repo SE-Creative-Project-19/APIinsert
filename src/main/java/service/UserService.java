@@ -15,4 +15,7 @@ public class UserService{
     public String findUserPassword(String id, String phoneNumber) {return dao.findUserPassword(id, phoneNumber);}
     public UserDTO loginUser(String id, String pw) {return dao.loginUser(id, pw);}
 
+    public UserDTO getUserByPK(int userPK) { //TODO userPK를 통해서 userDTO를 return 합니다
+        return dao.getUserByPK(userPK);
+    }
 }

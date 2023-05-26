@@ -44,4 +44,9 @@
     </insert> <!-- 회원가입 -->
 
 
+    <select id="getUserByPK" resultType="String">
+        select *
+        from mydb.user
+        where userPK = #{userPK};
+    </select>
 </mapper>

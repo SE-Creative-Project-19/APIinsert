@@ -61,12 +61,12 @@ public class ServiceInfoView {
         }
         System.out.println("실행 종료");
     }
-    public void displayServiceInfo(ServiceInfoDTO serviceInfoDTO) { //TODO 필터링을 적용한 봉사활동 정보를 출력합니다. 만약 dto가 null일경우 처음 전체 리스트를 출력합니다.
+    public void displayServiceInfo(ServiceInfoDTO serviceInfoDTO) { //TODO 필터링을 적용한 봉사활동 정보를 출력합니   0+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++다. 만약 dto가 null일경우 처음 전체 리스트를 출력합니다.555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
         Scanner scanner = new Scanner(System.in);
         List<ServiceInfoDTO> serviceInfoList = null;
 
 
-        while(true){
+        while(true){//haha
             System.out.print("페이지 번호를 입력하세요: (0: 종료)");
             int pageNo = scanner.nextInt();
             if(pageNo == 0) break;
