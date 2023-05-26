@@ -126,7 +126,7 @@ public class ServerMsg { //client to server
             if (code == ProtocolCode.SHOW_MY_INFO) {// 회원 정보 보여주기
 
                 if (kind == ProtocolKind.COMMON) {
-
+                    //DAO 수정 필요한듯
                 }
 
             } else if (code == ProtocolCode.UPDATE_MY_INFO) {// 회원 정보 수정
@@ -205,7 +205,9 @@ public class ServerMsg { //client to server
                 }
 
             } else if (code == ProtocolCode.MY_ORGANIZATION_ACTIVITY_LIST) {// 본인 소속 기관의 봉사활동 리스트
+                if (kind == ProtocolKind.MANAGER) {
 
+                }
             }
         } else if (type == ProtocolType.ACCEPTANCE) {// TODO 승인 여부
             if (code == ProtocolCode.ACCEPT) { // 봉사활동 참여에 승인

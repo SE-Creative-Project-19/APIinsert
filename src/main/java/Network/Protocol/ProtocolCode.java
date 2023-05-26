@@ -33,7 +33,7 @@ public class ProtocolCode {
     //TYPE REGISTER, VOLUNTEER
     public final static byte REGISTER_SERVICE_ACTIVITY = 1;
     //TYPE REGISTER, MANAGER
-    public final static byte MANNER_TEMPERATURE = 1;
+    public final static byte MANNER_TEMPERATURE = 2;
 
     //TYPE FILTERING
     public final static byte FIELD_SERVICE_SELECT = 1;

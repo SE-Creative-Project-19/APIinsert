@@ -4,16 +4,17 @@ import Network.Protocol.ProtocolCode;
 import Network.Protocol.ProtocolHeader;
 import Network.Protocol.ProtocolKind;
 import Network.Protocol.ProtocolType;
+import persistence.MyBatisConnectionFactory;
 import persistence.dao.UserDAO;
 import persistence.dto.ServiceInfoDTO;
 import persistence.dto.UserDTO;
-import service.ServiceInfoService;
+import persistence.dto.VolunteerDTO;
+import service.UserService;
 import view.ServiceInfoView;
 import view.UserView;
+import view.VolunteerView;
 
 import java.io.*;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,6 +29,7 @@ public class UserEventController {
     public UserEventController(ObjectOutputStream oos, ObjectInputStream ois) {
         this.oos = oos;
         this.ois = ois;
+        userDTO = new UserDTO();
     }
 
     public void signUp() {
@@ -194,7 +196,6 @@ public class UserEventController {
     }
 
     public void updateMyInfo() {
-        //수정 정보 입력 But 여기서 Password는 바꾸면 안되는디? userDTO 하나로 사용하는 것이 맞을까?
         userDTO.setID("updateTest");
         userDTO.setName("PCJ");
         userDTO.setAddress("경상북도 구미시 옥계북로 33 105동 1402호");
@@ -222,8 +223,9 @@ public class UserEventController {
         }
     }
 
-    public void inquiryServiceList() throws IOException {
-        int page = 3;
+    public void inquiryServiceList() {
+        System.out.print("페이지 번호를 입력해주세요: ");
+        int page = sc.nextInt();
         ServiceInfoView serviceInfoView = new ServiceInfoView();
         protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.SERVICE_LIST_INQUIRY, ProtocolKind.VOLUNTEER);
         try {
@@ -244,19 +246,46 @@ public class UserEventController {
         }
     }
 
-    public void inquiryServiceContent() {
+    public void inquiryServiceContent() { //TODO 범석이 하면 함
 
     }
 
-    public void myParticipateInList() {
+    public void myParticipateInList() { //내가 참여한 봉사활동 리스트
+        //TODO 상철이 getVolunteer부분 파라미터 수정 및 내용 수정 바람.
 
     }
 
-    public void participateInServiceList() {
+    public void participateInServiceList() { // 봉사활동에 참여한 봉사자 리스트
 
     }
 
-    public void myOrganizationActivityList() {
+    public void myOrganizationActivityList() { // 본인 소속 기관의 봉사활동 리스트
+        if(userDTO.getType() == 3) { //담당자 일 때만 가능
+            userDTO.setFacility("기관"); //테스트 용
+
+            try {
+                protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.MY_ORGANIZATION_ACTIVITY_LIST, ProtocolKind.MANAGER);
+                oos.writeObject(protocolHeader);
+                oos.writeObject(userDTO);
+                oos.flush();
+            } catch (IOException e) {
+                System.out.println("Error: send UpdateMyInfo");
+                e.printStackTrace();
+            }
+            UserView view = new UserView();
+            UserService userService = new UserService(new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory())); //클라이언트에서 DB 접근? 수정 필요
+            try {
+                List<VolunteerDTO> list = (List<VolunteerDTO>) ois.readObject();
+                for(VolunteerDTO volunteerDTO: list) {
+                }
+            } catch (IOException |ClassNotFoundException e) {
+                System.out.println("Error: receive VolunteerDTO List");
+                e.printStackTrace();
+            }
+            //매너 온도를 입력한다면. 아래 작업 만들기.
+        }else {
+            System.out.println("권한이 없습니다.");
+        }
 
     }
 

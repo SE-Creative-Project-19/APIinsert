@@ -15,6 +15,9 @@ public class VolunteerView {
     private UserView userView;
     Scanner sc = new Scanner(System.in);
 
+    public VolunteerView () {
+
+    }
     public VolunteerView(VolunteerService service, UserView userView, UserService userService) {
         this.service = service;
         this.userView = userView;
@@ -41,14 +44,15 @@ public class VolunteerView {
         List<VolunteerDTO> volunteerDTOS = service.getVolunteerDone(facility); //TODO 해당 기관에서 봉사 처리 상태가 봉사 완료인 volunteer를 select함.
         for(VolunteerDTO volunteerDTO: volunteerDTOS){
             userView.showInfoUser(userService.getUserByPK(volunteerDTO.getUserPK())); //TODO 담당자는 신청자의 이름, 전화번호, 매너온도 등을 봅니다.
-            System.out.println("1~5점을 입력해주세요");
-            int res = sc.nextInt();
-            UserDTO userDTO = userService.getUserByPK(volunteerDTO.getUserPK());//TODO 봉사 테이블의 userPK를 통해 user 테이블에 접근
-            userDTO.setMannerTemperature(userDTO.getMannerTemperature()+res);
-            userService.updateUser(userDTO);  //TODO 담당자는 해당 봉사 신청자의 매너 온도를 수정합니다.
-
-            volunteerDTO.setProcessingResult("봉사 완료");
-            service.updateVolunteer(volunteerDTO); //TODO  변경된 ProcessingResult를 업데이트 합니다.
+            //매너온도 입력은 이렇게 할꺼다
+//            System.out.println("1~5점을 입력해주세요");
+//            int res = sc.nextInt();
+//            UserDTO userDTO = userService.getUserByPK(volunteerDTO.getUserPK());//TODO 봉사 테이블의 userPK를 통해 user 테이블에 접근
+//            userDTO.setMannerTemperature(userDTO.getMannerTemperature()+res);
+//            userService.updateUser(userDTO);  //TODO 담당자는 해당 봉사 신청자의 매너 온도를 수정합니다.
+//
+//            volunteerDTO.setProcessingResult("봉사 완료");
+//            service.updateVolunteer(volunteerDTO); //TODO  변경된 ProcessingResult를 업데이트 합니다.
         }
     }
 
