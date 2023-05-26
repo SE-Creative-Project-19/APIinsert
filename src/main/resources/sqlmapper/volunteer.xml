@@ -41,8 +41,18 @@
         WHERE v.processingResult = '별점 미등록'
     </select>
     <update id="updateVolunteer">
-        UPDATE mydb.volunteer
-        SET processingResult = #{processingResult}
+        UPDATE volunteer
+        <set>
+            <if test="processingResult != null">
+                processingResult = #{processingResult},
+            </if>
+            <if test="serviceInfoPK != 0">
+                serviceInfoPK = #{serviceInfoPK},
+            </if>
+            <if test="userPK != 0">
+                userPK = #{userPK},
+            </if>
+        </set>
         WHERE volunteerPK = #{volunteerPK}
     </update>
     <update id="updateVolunteerByTime">
