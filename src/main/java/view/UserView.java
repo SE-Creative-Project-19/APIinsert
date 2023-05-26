@@ -10,6 +10,9 @@ import java.util.Scanner;
 public class UserView {
     private UserService userService;
 
+    public UserView() {
+        userService = null;
+    }
     public UserView(UserService userService) {
         this.userService = userService;
     }

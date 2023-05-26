@@ -15,6 +15,9 @@ public class VolunteerView {
     private UserView userView;
     Scanner sc = new Scanner(System.in);
 
+    public VolunteerView () {
+
+    }
     public VolunteerView(VolunteerService service, UserView userView, UserService userService) {
         this.service = service;
         this.userView = userView;
@@ -47,6 +50,7 @@ public class VolunteerView {
     }
     public void showVolunteerDone(String facility){//TODO 담당자는 활동이 완료되어 매너온도를 등록할 봉사자들을 출력합니다.
         List<VolunteerDTO> volunteerDTOS = service.getVolunteerDone(facility); //TODO 해당 기관에서 봉사 처리 상태가 봉사 완료인 volunteer를 select함.
+
         List<UserDTO> userDTOS = userService.getUsersByPK(volunteerDTOS, 1);
         for(int i = 0; i < volunteerDTOS.size(); i++){
             VolunteerDTO volunteerDTO = volunteerDTOS.get(i);
@@ -63,6 +67,8 @@ public class VolunteerView {
 
             volunteerDTO.setProcessingResult("봉사 완료");
             service.updateVolunteer(volunteerDTO); //TODO  변경된 ProcessingResult를 업데이트 합니다.
+
+      
         }
     }
 

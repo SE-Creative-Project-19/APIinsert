@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 public class UserDAO {
-    private SqlSession sqlSession;
+
     private final SqlSessionFactory sqlSessionFactory;
 
-    public UserDAO(SqlSession sqlSession, SqlSessionFactory sqlSessionFactory) {
-        this.sqlSession = sqlSession;
+    public UserDAO(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
     public UserDTO loginUser(String id, String pw) {
@@ -32,7 +31,7 @@ public class UserDAO {
         return userDTO;
     }   // 로그인
 
-    public List<UserDTO> getUser(String id) {
+    public List<UserDTO> getUser(String id) { //TODO id를 입력했느데 왜 DTO 리스트..? DTO 여야 하는 거 아님?
         List<UserDTO> list = null;
         SqlSession session = sqlSessionFactory.openSession();
         try {
