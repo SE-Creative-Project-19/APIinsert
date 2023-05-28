@@ -36,7 +36,7 @@ public class ServiceInfoDAO {
             Map<String, Object> parameterMap = new HashMap<>();
             parameterMap.put("pageSize", pageSize);
             parameterMap.put("offset", offset);
-            parameterMap.put("serviceInfoDTO", serviceInfoDTO);;
+            parameterMap.put("serviceInfoDTO", serviceInfoDTO);
             List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoByFilter", parameterMap);
             return serviceInfoList;
         } catch (Exception e) {

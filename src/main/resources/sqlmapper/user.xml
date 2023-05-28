@@ -33,7 +33,7 @@
             #{volunteerDTO.userPK}
         </foreach>
         LIMIT #{pageSize} OFFSET #{offset}
-    </select> <!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.-->
+    </select> <!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.--><!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.-->
 
     <select id="getId" resultType="String">
         select ID

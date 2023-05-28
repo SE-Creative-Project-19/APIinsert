@@ -46,41 +46,43 @@ public class functionTest {
             serviceInfoDTO = new ServiceInfoDTO();
             serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-07-30"));
 
-
-  //         List<VolunteerDTO> list = volunteerDAO.getVolunteerDone("홍성군자원봉사센터");
-//            for(VolunteerDTO volunteerDTO : list){
-//                System.out.println(volunteerDTO.toString());
-//            }
-//
-//            System.out.println("다음단계");
- //           List<UserDTO> userDTOS = userDao.getUsersByPk(list,1);
-//            for(UserDTO userDTO : userDTOS){
-//                userView.showInfoUser(userDTO);
-//                //System.out.println(userDTO.toString());
-//                userDTO.setMannerTemperature(userDTO.getMannerTemperature()+4);
-//                userDao.updateUser(userDTO);
-//            }
-  //          list.get(0).setProcessingResult("봉사 완료");
-  //          volunteerDAO.updateVolunteer(list.get(0));
-            Map<String, Integer> newPopulation = new HashMap<>();
-            for (Map.Entry<Integer, String> entry :view.getPopulation().entrySet()) {
-                newPopulation.put(entry.getValue(), entry.getKey());
+            service.updateServiceInfoByTime();
+           List<VolunteerDTO> list = volunteerDAO.getVolunteerApplicant("홍성군자원봉사센터");
+            System.out.println(list.size()==0);
+            for(VolunteerDTO volunteerDTO : list){
+                System.out.println(volunteerDTO.toString());
             }
-            String sidoName = "서울특별시";
-            int sidoCd = newPopulation.get(sidoName);
-            System.out.println("sidocd입니다");
-            System.out.println(sidoCd);
-            if(sidoCd > 1 ) System.out.println("이건 숫자가 맞다");
-            System.out.println(sidoCd);
 
-            serviceInfoDTO.setSidoCd(sidoCd);
-
-            System.out.println(serviceInfoDTO);
-
-            view.displayServiceInfo(serviceInfoDTO);
-            service.updateServiceInfoByTime();
-
-            service.updateServiceInfoByTime();
+            System.out.println("다음단계");
+            List<UserDTO> userDTOS = userDao.getUsersByPk(list,1);
+            for(UserDTO userDTO : userDTOS){
+                userView.showInfoUser(userDTO);
+                System.out.println(userDTO.toString());
+                userDTO.setMannerTemperature(userDTO.getMannerTemperature()+4);
+                userDao.updateUser(userDTO);
+            }
+            list.get(0).setProcessingResult("봉사 완료");
+            System.out.println(list.get(0).toString());
+            volunteerDAO.updateVolunteer(list.get(0));
+//            Map<String, Integer> newPopulation = new HashMap<>();
+//            for (Map.Entry<Integer, String> entry :view.getPopulation().entrySet()) {
+//                newPopulation.put(entry.getValue(), entry.getKey());
+//            }
+//            String sidoName = "서울특별시";
+//            int sidoCd = newPopulation.get(sidoName);
+//            System.out.println("sidocd입니다");
+//            System.out.println(sidoCd);
+//            if(sidoCd > 1 ) System.out.println("이건 숫자가 맞다");
+//            System.out.println(sidoCd);
+//
+//            serviceInfoDTO.setSidoCd(sidoCd);
+//            serviceInfoDTO.setProgrmBgnde(Date.valueOf("2023-05-21"));
+//            System.out.println(serviceInfoDTO);
+//
+//            view.displayServiceInfo(serviceInfoDTO);
+ //            service.updateServiceInfoByTime();
+//
+//
             sqlSession.close();
         } catch (IOException e) {
             e.printStackTrace();
