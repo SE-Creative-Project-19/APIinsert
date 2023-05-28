@@ -73,7 +73,7 @@ public class UserView {
         }
     }
 
-    public void showInfoUser(UserDTO userDTO) {
+    public void showInfoUser(UserDTO userDTO) { //TODO  봉사 담당자 기준 봉사 신청자의 개인정보를 열람합니다. 아이디, 비번 제외
         System.out.printf("이름 : %s \n", userDTO.getName() );
         System.out.printf("주소 : %s \n", userDTO.getAddress() );
         System.out.printf("전화번호 : %s \n", userDTO.getPhoneNumber() );

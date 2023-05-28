@@ -2,39 +2,69 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="persistence.dto.VolunteerDTO">
-
-    <resultMap id="volunteerResultMap" type="VolunteerDTO">
-        <id property="volunteerPK" column="volunteerPK" />
-        <result property="processingResult" column="processingResult" />
-        <result property="serviceInfoPK" column="serviceInfoPK" />
-        <result property="userPK" column="userPK" />
+<mapper namespace="mapper.VolunteerMapper">
+    <resultMap id="volunteerResultMap" type="persistence.dto.VolunteerDTO">
+        <id property="volunteerPK" column="VolunteerPK" />
+        <result property="processingResult" column="ProcessingResult" />
+        <result property="serviceInfoPK" column="ServiceInfo_ServiceInfoPK" />
+        <result property="userPK" column="User_UserPK" />
     </resultMap>
 
 
     <!-- 추가적인 쿼리들... -->
-    <select id="getServiceHistory" resultMap="serviceHistoryResultMap">
+
+    <!-- 이전 봉사활동 내역 조회   <select id="getServiceHistory" resultMap="serviceHistoryResultMap">
         select u.Name as 신청자명, s.progrmSj as 봉사제목, s.mnnstNm as 기관명, s.nanmmbyNm as 주소, s.nanmmbyNmAdmn as 담당자명, s.actPlace as 봉사장소
         from mydb.serviceinfo as s, mydb.volunteer as v, mydb.user as u
         where s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK and u.UserPK = v.VolunteerPK and ProcessingResult = '봉사 완료';
-    </select>
-    <!-- 이전 봉사활동 내역 조회 -->
+    </select>-->
 
     <select id="getVolunteer" resultMap="volunteerResultMap">
         select u.Name as 신청자명, s.progrmSj as 봉사제목, s.mnnstNm as 기관명, s.nanmmbyNm as 주소, s.nanmmbyNmAdmn as 담당자명, s.actPlace as 봉사장소
         from mydb.serviceinfo as s, mydb.volunteer as v, mydb.user as u
         where s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK and u.UserPK = v.VolunteerPK and ProcessingResult != '봉사 완료';
     </select> <!-- 신청한 봉사활동 조회 -->
+
     <select id="getVolunteerApplicant" resultMap="volunteerResultMap">
-        <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* -->
+        <!-- 기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer 테이블과 비교하여 같은 infoPk를 가진 row를 select* -->
+        SELECT *
+        FROM serviceinfo si
+        JOIN volunteer v ON si.serviceInfoPK = v.ServiceInfo_ServiceInfoPK
+        WHERE v.processingResult = '신청'
+        AND si.mnnstNm = #{facility}
     </select>
+
     <select id="getVolunteerDone" resultMap="volunteerResultMap">
         <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* 단 처리상태가 별점 미등록인  것들만-->
+        SELECT *
+        FROM serviceinfo si
+        JOIN volunteer v ON si.serviceInfoPK = v.ServiceInfo_ServiceInfoPK
+        WHERE v.processingResult = '별점 미등록'
+        AND si.mnnstNm = #{facility}
     </select>
     <update id="updateVolunteer">
-        UPDATE mydb.volunteer
-        SET processingResult = #{processingResult}
-        WHERE volunteerPK = #{volunteerPK}
+        UPDATE volunteer
+        <set>
+            <if test="volunteerDTO.processingResult != null">
+                processingResult = #{volunteerDTO.processingResult},
+            </if>
+            <if test="volunteerDTO.serviceInfoPK != 0">
+                ServiceInfo_ServiceInfoPK = #{volunteerDTO.serviceInfoPK},
+            </if>
+            <if test="volunteerDTO.userPK != 0">
+                User_UserPK = #{volunteerDTO.userPK},
+            </if>
+        </set>
+        WHERE volunteerPK = #{volunteerDTO.volunteerPK}
+    </update>
+    <update id="updateVolunteerByTime">
+        UPDATE volunteer
+        SET processingResult = '별점 미등록'
+        WHERE EXISTS (
+                      SELECT *
+                      FROM serviceinfo
+                      WHERE serviceinfo.serviceInfoPK = volunteer.ServiceInfo_ServiceInfoPK
+                        AND serviceinfo.progrmEndde &lt; #{currentDate}
+                  )
     </update>
 </mapper>

@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="persistence.dto.UserDTO">
+<mapper namespace="mapper.UserMapper">
 
-    <resultMap id="userResultMap" type="UserDTO">
+    <resultMap id="userResultMap" type="persistence.dto.UserDTO">
         <id property="userPK" column="userPK" />
         <result property="ID" column="ID" />
         <result property="PW" column="PW" />
@@ -25,6 +25,16 @@
         where ID = #{ID};
     </select> <!--유저 정보 조회 -->
 
+    <select id="getUsersByPk" resultMap="userResultMap">
+        SELECT ID, name, PhoneNumber, Address, MannerTemperature
+        FROM user
+        WHERE UserPk IN
+        <foreach collection="volunteerDTOS" item="volunteerDTO" separator="," open="(" close=")">
+            #{volunteerDTO.userPK}
+        </foreach>
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select> <!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.--><!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.-->
+
     <select id="getId" resultType="String">
         select ID
         from mydb.user as u
@@ -37,7 +47,19 @@
         WHERE ID = #{id}
         AND phoneNumber = #{phoneNumber}
     </update> <!-- 비밀번호 재설정 -->
-
+    <update id="updateUser" parameterType="persistence.dto.UserDTO">
+        UPDATE user
+        <set>
+            <if test="mannerTemperature != 0">mannerTemperature = #{mannerTemperature},</if>
+            <if test="ID != null">ID = #{ID},</if>
+            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
+            <if test="address != null">address = #{address}, </if>
+            <if test="type != 0">type = #{type}, </if>
+            <if test="name != null">name = #{name},</if>
+            <if test="facility != null">facility = #{facility}</if>
+        </set>
+        WHERE ID = #{ID} AND phoneNumber = #{phoneNumber}
+    </update>
     <insert id="insertUser" parameterType="UserDTO">
         INSERT INTO user (ID, PW, PhoneNumber, Address, MannerTemperature, Type, Name)
         VALUES (#{ID}, #{PW}, #{PhoneNumber}, #{Address}, #{MannerTemperature}, #{Type}, #{Name})

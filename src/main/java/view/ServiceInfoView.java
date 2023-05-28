@@ -1,5 +1,6 @@
 package view;
 
+import lombok.Getter;
 import org.apache.ibatis.javassist.compiler.Parser;
 import persistence.dto.ServiceInfoDTO;
 import service.ServiceInfoService;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
+@Getter
 public class ServiceInfoView {
     private ServiceInfoService service;
     private Map<Integer,String> population = new HashMap<>();
@@ -61,6 +62,7 @@ public class ServiceInfoView {
         }
         System.out.println("실행 종료");
     }
+
     public void displayServiceInfo(ServiceInfoDTO serviceInfoDTO) { //TODO 필터링을 적용한 봉사활동 정보를 출력합니   0+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++다. 만약 dto가 null일경우 처음 전체 리스트를 출력합니다.555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
         Scanner scanner = new Scanner(System.in);
         List<ServiceInfoDTO> serviceInfoList = null;
@@ -71,10 +73,12 @@ public class ServiceInfoView {
             int pageNo = scanner.nextInt();
             if(pageNo == 0) break;
             if (serviceInfoDTO == null){  //TODO DTO에 아무것도 없다는건 필터를 적용할게 없으므로 페이지 수에 맞게 출력한다.
+                System.out.println("필터링이 된것이 없습니다");
                 serviceInfoList = service.getServiceInfoList(pageNo);
                 printMainServiceInfo(serviceInfoList);
             }
             else{ //TODO  해당 dto에 있는 정보를 바탕으로 필터링하여 list를 만들고 페이지에 맞게 가져온다.
+                System.out.println("필터링이 되었습니다");
                 serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO,pageNo);
                 printMainServiceInfo(serviceInfoList);
             }

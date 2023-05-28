@@ -39,17 +39,21 @@
         SELECT *
         FROM serviceInfo
     </select>
-    <select id="getServiceInfoByFilter" resultMap="serviceInfoResultMap">
+    <select id="getServiceInfoByFilter" resultMap="serviceInfoResultMap" >
         SELECT *
         FROM serviceInfo
-        <if test="srvcCLCode != null">AND srvcCLCode = #{srvcCLCode}</if>
-        <if test="srvcCSCode != null">AND srvcCSCode = #{srvcCSCode}</if>
-        <if test="progrmSj != null">AND progrmSj = #{progrmSj}</if>
-        <if test="mnnstNm != null">AND mnnstNm = #{mnnstNm}</if>
-        <if test="progrmBgnde != null">AND progrmBgnde &gt;= #{progrmBgnde}</if>
-        <if test="progrmEndde != null">AND progrmEndde &lt;= #{progrmEndde}</if>
-        ORDER BY noticeEndde LIMIT #{pageSize} OFFSET #{offset}
+        WHERE 1=1
+        <if test="serviceInfoDTO.srvcCLCode != null">AND srvcCLCode = #{serviceInfoDTO.srvcCLCode}</if>
+        <if test="serviceInfoDTO.srvcCSCode != null">AND srvcCSCode = #{serviceInfoDTO.srvcCSCode}</if>
+        <if test="serviceInfoDTO.progrmSj != null">AND progrmSj = #{serviceInfoDTO.progrmSj}</if>
+        <if test="serviceInfoDTO.mnnstNm != null">AND mnnstNm = #{serviceInfoDTO.mnnstNm}</if>
+        <if test="serviceInfoDTO.sidoCd != 0">AND sidoCd = #{serviceInfoDTO.sidoCd}</if>
+        <if test="serviceInfoDTO.progrmBgnde != null">AND progrmBgnde &gt;= #{serviceInfoDTO.progrmBgnde}</if>
+        <if test="serviceInfoDTO.progrmEndde != null">AND progrmEndde &lt;= #{serviceInfoDTO.progrmEndde}</if>
+        ORDER BY noticeEndde,progrmBgnde LIMIT #{pageSize} OFFSET #{offset}
     </select>
+
+
     <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
         INSERT INTO serviceInfo (
         serviceInfoPK, actWkdy, appTotal, srvcCLCode, srvcCSCode,
@@ -88,4 +92,10 @@
         rcritNmpr = VALUES(rcritNmpr),
         sidoCd = VALUES(sidoCd)
     </insert>
+    <update id="updateServiceInfoByTime">
+        UPDATE serviceinfo
+        SET progrmSttusSe = 1
+        WHERE noticeEndde &lt; #{currentDate}
+    </update>
+
 </mapper>

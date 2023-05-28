@@ -4,10 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import persistence.dto.ServiceInfoDTO;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ServiceInfoDAO {
     private final SqlSessionFactory sqlSessionFactory;
@@ -40,7 +37,6 @@ public class ServiceInfoDAO {
             parameterMap.put("pageSize", pageSize);
             parameterMap.put("offset", offset);
             parameterMap.put("serviceInfoDTO", serviceInfoDTO);
-
             List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoByFilter", parameterMap);
             return serviceInfoList;
         } catch (Exception e) {
@@ -67,5 +63,19 @@ public class ServiceInfoDAO {
             session.close();
         }
         return list;
+    }
+
+    public void updateServiceInfoByTime() {
+        SqlSession session = sqlSessionFactory.openSession();
+        Date currentDate = new Date();
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("currentDate", currentDate);
+        try {
+            session.update("mapper.ServiceInfoMapper.updateServiceInfoByTime",parameterMap);
+            session.commit();
+        } finally {
+            session.close();
+        }
+
     }
 }
