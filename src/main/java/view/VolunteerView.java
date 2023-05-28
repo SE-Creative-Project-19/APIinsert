@@ -43,9 +43,7 @@ public class VolunteerView {
 
             if(res == 1)volunteerDTO.setProcessingResult("승인");
             else  volunteerDTO.setProcessingResult("거절");
-            service.updateVolunteer(volunteerDTO);
-
-           service.updateVolunteer(volunteerDTO); //TODO  변경된 ProcessingResult를 업데이트 합니다.
+            service.updateVolunteer(volunteerDTO); //TODO  변경된 ProcessingResult를 업데이트 합니다.
         }
     }
     public void showVolunteerDone(String facility){//TODO 담당자는 활동이 완료되어 매너온도를 등록할 봉사자들을 출력합니다.
@@ -59,8 +57,6 @@ public class VolunteerView {
             userView.showInfoUser(userDTO); //TODO 담당자는 신청자의 이름, 전화번호, 매너온도 등을 봅니다.
             System.out.println("1~5점을 입력해주세요");
             int res = sc.nextInt();
-
-            //UserDTO userDTO = userService.getUserByPK(volunteerDTO.getUserPK());//TODO 봉사 테이블의 userPK를 통해 user 테이블에 접근
 
             userDTO.setMannerTemperature(userDTO.getMannerTemperature()+res);
             userService.updateUser(userDTO);  //TODO 담당자는 해당 봉사 신청자의 매너 온도를 수정합니다.

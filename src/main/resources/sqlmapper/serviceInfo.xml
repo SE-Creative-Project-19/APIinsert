@@ -39,18 +39,21 @@
         SELECT *
         FROM serviceInfo
     </select>
-
     <select id="getServiceInfoByFilter" resultMap="serviceInfoResultMap">
         SELECT *
         FROM serviceInfo
+        WHERE 1=1
         <if test="srvcCLCode != null">AND srvcCLCode = #{srvcCLCode}</if>
         <if test="srvcCSCode != null">AND srvcCSCode = #{srvcCSCode}</if>
         <if test="progrmSj != null">AND progrmSj = #{progrmSj}</if>
         <if test="mnnstNm != null">AND mnnstNm = #{mnnstNm}</if>
+        <if test="sidoCd != 0">AND sidoCd = #{sidoCd}</if>
         <if test="progrmBgnde != null">AND progrmBgnde &gt;= #{progrmBgnde}</if>
         <if test="progrmEndde != null">AND progrmEndde &lt;= #{progrmEndde}</if>
         ORDER BY noticeEndde LIMIT #{pageSize} OFFSET #{offset}
     </select>
+
+
     <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
         INSERT INTO serviceInfo (
         serviceInfoPK, actWkdy, appTotal, srvcCLCode, srvcCSCode,
@@ -90,7 +93,7 @@
         sidoCd = VALUES(sidoCd)
     </insert>
     <update id="updateServiceInfoByTime">
-        UPDATE service_info
+        UPDATE serviceinfo
         SET progrmSttusSe = 1
         WHERE noticeEndde &lt; #{currentDate}
     </update>

@@ -122,6 +122,7 @@ public class UserDAO {
             Map<String, Object> parameterMap = new HashMap<>();
             parameterMap.put("pageSize", pageSize);
             parameterMap.put("offset", offset);
+            parameterMap.put("volunteerDTOS", volunteerDTOS);
             list = session.selectList("mapper.UserMapper.getUsersByPk", parameterMap);
         } finally {
             session.close();

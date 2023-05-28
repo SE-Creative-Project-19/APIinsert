@@ -82,7 +82,7 @@ public class XMLParser {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 
 		ServiceInfoDAO dao = new ServiceInfoDAO(sqlSessionFactory);
-		VolunteerDAO volunteerDAO = new VolunteerDAO(sqlSession,sqlSessionFactory);
+		VolunteerDAO volunteerDAO = new VolunteerDAO(sqlSessionFactory);
 		ServiceInfoService service = new ServiceInfoService(dao,volunteerDAO);
 
 

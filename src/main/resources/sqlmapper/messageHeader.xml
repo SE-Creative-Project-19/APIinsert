@@ -3,9 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="persistence.dto.MessageHeaderDTO">
+<mapper namespace="mapper.MessageHeaderMapperO">
 
-    <resultMap id="messageHeaderResultMap" type="MessageHeaderDTO">
+    <resultMap id="messageHeaderResultMap" type="persistence.dto.MessageHeaderDTO">
         <id property="messageHeaderPK" column="messageHeaderPK" />
         <result property="sender" column="sender" />
         <result property="receiver" column="receiver" />
