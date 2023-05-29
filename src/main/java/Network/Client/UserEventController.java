@@ -188,7 +188,7 @@ public class UserEventController {
         }
     }
 
-    public void showMyInfo() {
+    public void showMyInfo() {//정상 작동
         userDTO.setID("test");
         try {
             protocolHeader = new ProtocolHeader(ProtocolType.MYPAGE, ProtocolCode.SHOW_MY_INFO, ProtocolKind.COMMON);
