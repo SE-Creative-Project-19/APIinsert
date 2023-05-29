@@ -67,4 +67,22 @@
                         AND serviceinfo.progrmEndde &lt; #{currentDate}
                   )
     </update>
+
+    <select id="countVolunteerByUserPKAndServiceInfoPK" parameterType="persistence.dto.VolunteerDTO" resultType="int">
+        SELECT COUNT(*) FROM volunteer
+        WHERE User_UserPK = #{User_UserPK} AND ServiceInfo_ServiceInfoPK = #{ServiceInfo_ServiceInfoPK}
+    </select>
+
+    <insert id="insertVolunteer" parameterType="persistence.dto.VolunteerDTO">
+        <selectKey keyProperty="volunteerPK" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO volunteer (volunteerPK, processingResult, ServiceInfo_ServiceInfoPK, User_UserPK)
+        VALUES (#{volunteerPK}, '신청', #{ServiceInfo_ServiceInfoPK}, #{User_UserPK})
+    </insert>
+
+
+
+
+
 </mapper>

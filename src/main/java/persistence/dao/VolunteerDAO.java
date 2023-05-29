@@ -85,5 +85,23 @@ public class VolunteerDAO {
             session.close();
         }
     }
+    public void insertVolunteer(VolunteerDTO volunteerDTO) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            int count = session.selectOne("mapper.VolunteerMapper.countVolunteerByUserPKAndServiceInfoPK", volunteerDTO);
+            if (count > 0) {
+                // 중복 처리 로직
+                return;
+            }
+
+            session.insert("mapper.VolunteerMapper.insertVolunteer", volunteerDTO);
+            session.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
 }
 
