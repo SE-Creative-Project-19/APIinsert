@@ -54,7 +54,7 @@ public class UserDAO {
             e.printStackTrace();
         }
         return false;
-    }
+    } // ID 중복 검사
     public boolean isPhoneNumberDuplicate(String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
         try  {
@@ -64,7 +64,7 @@ public class UserDAO {
             e.printStackTrace();
         }
         return false;
-    }
+    } // 전화번호 중복 검사
     public int insertUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
@@ -83,8 +83,8 @@ public class UserDAO {
             e.printStackTrace();
         }
         return 0;
-    }
-    public int insertManager(UserDTO userDTO) {
+    } // 사용자 회원가입
+    public int insertManager(UserDTO userDTO, String selectedOrganization) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
@@ -96,17 +96,17 @@ public class UserDAO {
             if (duplicatePhoneNumberCount > 0) {
                 return 2;
             }
+
+            userDTO.setFacility(selectedOrganization); // 선택한 기관 값을 UserDTO에 설정
+
             session.insert("mapper.UserMapper.insertManager", userDTO);
             session.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
-    }
-
-    public void updateUser(UserDTO userDTO) { 
-        //TODO 상철 대상의 정보를 수정해야하는데 대상 지정이 안됨
-        // 그래서 오류 없이는 되는데 실제 DB에서 정보가 안바뀜 -> ID는 키로 두기 때문에 바꾸지 않도록
+    } // 관리자 회원가입
+    public void updateUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             session.update("mapper.UserMapper.updateUser", userDTO);
@@ -134,21 +134,26 @@ public class UserDAO {
         return userId;
     }   // ID 찾기 테스트 해봐야함
 
-    public boolean findUserPassword(String name, String id, String phoneNumber) {
+    public boolean updatePassword(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
-        String password = null;
+        boolean isSuccess = false;
         try {
-            Map<String, String> params = new HashMap<>();
-            params.put("id", name);
-            params.put("id", id);
-            params.put("phoneNumber", phoneNumber);
-            password = session.selectOne("mapper.UserMapper.findUserPassword", params);
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", userDTO.getID());
+            params.put("name", userDTO.getName());
+            params.put("phoneNumber", userDTO.getPhoneNumber());
+            params.put("newPassword", userDTO.getPW());
+
+            int rowsAffected = session.update("mapper.UserMapper.updateUserPassword", params);
+            session.commit();
+            isSuccess = rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             session.close();
         }
-        return true; //TODO 정상철 수정해라~
-    }   // 비밀번호 재설정
-
+        return isSuccess;
+    } // 비밀번호 재설정
 
     public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) {
         List<UserDTO> list = null;
@@ -168,4 +173,14 @@ public class UserDAO {
         }
         return list;
     }
+
+    public List<String> searchOrganizations(String keyword) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            return session.selectList("mapper.UserMapper.searchOrganizations", keyword);
+        } finally {
+            session.close();
+        }
+    } // 기관 검색
+
 }
