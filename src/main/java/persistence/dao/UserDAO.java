@@ -132,7 +132,7 @@ public class UserDAO {
             session.close();
         }
         return userId;
-    }   // ID 찾기
+    }   // ID 찾기 테스트 해봐야함
 
     public boolean findUserPassword(String name, String id, String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
@@ -149,7 +149,8 @@ public class UserDAO {
         return true; //TODO 정상철 수정해라~
     }   // 비밀번호 재설정
 
-    public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) { //TODO 봉사자 리스트를 바탕으로 해당 유저DTO 리스트를  return
+
+    public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) {
         List<UserDTO> list = null;
         if(volunteerDTOS.size() == 0) return null;
         int pageSize = 10;
