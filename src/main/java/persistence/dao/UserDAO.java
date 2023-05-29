@@ -66,18 +66,25 @@ public class UserDAO {
         }
         return false;
     } // 전화번호 중복 검사
+  
+    public int insertUser(UserDTO userDTO) {
 
-    public void insertUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
             if (duplicateIdCount > 0) {
                 return;
+
+                return 1;
             }
 
             int duplicatePhoneNumberCount = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
             if (duplicatePhoneNumberCount > 0) {
+
                 return;
+
+                return 2;
+
             }
             session.insert("mapper.UserMapper.insertUser", userDTO);
             session.commit();
@@ -85,19 +92,18 @@ public class UserDAO {
             e.printStackTrace();
         }
     } // 사용자 회원가입
-    public void insertManager(UserDTO userDTO, String selectedOrganization) {
+
+    public int insertManager(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
             if (duplicateIdCount > 0) {
-                // 아이디 중복 처리
-                return;
+                return 1;
             }
 
             int duplicatePhoneNumberCount = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
             if (duplicatePhoneNumberCount > 0) {
-                // 전화번호 중복 처리
-                return;
+                return 2;
             }
 
             userDTO.setFacility(selectedOrganization); // 선택한 기관 값을 UserDTO에 설정
@@ -109,8 +115,7 @@ public class UserDAO {
         }
     } // 관리자 회원가입
 
-
-    public void updateUser(UserDTO userDTO) {
+    public void updateUser(UserDTO userDTO) { 
         SqlSession session = sqlSessionFactory.openSession();
         try {
             session.update("mapper.UserMapper.updateUser", userDTO);
@@ -137,7 +142,8 @@ public class UserDAO {
         }
         return userId;
     }   // ID 찾기 테스트 해봐야함
-    public boolean updatePassword(UserDTO userDTO) {
+
+    public boolean findUserPassword(String name, String id, String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
         boolean isSuccess = false;
         try {

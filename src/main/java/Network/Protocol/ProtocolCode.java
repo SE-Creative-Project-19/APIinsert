@@ -4,6 +4,7 @@ public class ProtocolCode {
 
     //TYPE SIGNUP
     public final static byte REGISTER_INFO = 1;
+    public final static byte CHECKID = 2;
 
     //TYPE LOGIN
     public final static byte LOGIN_INFO = 1;
