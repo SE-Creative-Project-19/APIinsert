@@ -35,20 +35,67 @@ public class ServerMsg { //client to server
 
                 if (kind == ProtocolKind.VOLUNTEER) {// 봉사자
                     try {
-                        UserDTO userDTO = (UserDTO) objectInput.readObject(); //정보 잘감.
-                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory()); //TODO 중복 검사에서 터짐
-                        userDAO.insertUser(userDTO);
-                        String result = "회원가입";
-                        oos.writeObject(result);
+                        UserDTO userDTO = (UserDTO) objectInput.readObject();
+                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+
+                        int result = userDAO.insertUser(userDTO);
+                        String resultStr = "";
+                        if(result == 1) {
+                            resultStr = "중복된 아이디 입니다.";
+                        }else if(result == 2) {
+                            resultStr = "중복된 전화번호 입니다.";
+                        }else {
+                            resultStr = "회원가입 완료";
+                        }
+                        oos.writeObject(resultStr);
                         oos.flush();
                     } catch (ClassNotFoundException e) {
                         System.out.println("Error");
                         e.printStackTrace();
                     }
                 } else if (kind == ProtocolKind.MANAGER) {// 담당자
+                    try {
+                        UserDTO userDTO = (UserDTO) objectInput.readObject();
+                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
+                        int result = userDAO.insertManager(userDTO);
+                        String resultStr = "";
+                        if(result == 1) {
+                            resultStr = "중복된 아이디 입니다.";
+                        }else if(result == 2) {
+                            resultStr = "중복된 전화번호 입니다.";
+                        }else {
+                            resultStr = "회원가입 완료";
+                        }
+                        oos.writeObject(resultStr);
+                        oos.flush();
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
                 }
 
+            }else if (code == ProtocolCode.CHECKID) {
+                if(kind == ProtocolKind.COMMON) {
+                    try {
+                        UserDTO userDTO = (UserDTO) objectInput.readObject();
+                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        boolean result = userDAO.isIdDuplicate(userDTO.getID());
+                        String resultStr = "";
+                        if(result) {
+                            resultStr = "중복된 아이디가 있습니다.";
+                            oos.writeObject(resultStr);
+                            oos.flush();
+                        }else {
+                            resultStr = "사용 가능한 아이디 입니다.";
+                            oos.writeObject(resultStr);
+                            oos.flush();
+                        }
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
             }
 
         } else if (type == ProtocolType.LOGIN) {// TODO 로그인
@@ -58,10 +105,9 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        userDAO.loginUser(userDTO.getID(), userDTO.getPW());
+                        userDTO = userDAO.loginUser(userDTO.getID(), userDTO.getPW());
 
-                        String result = "봉사자 로그인";
-                        oos.writeObject(result);
+                        oos.writeObject(userDTO);
                         oos.flush();
 
                     } catch (ClassNotFoundException e) {
@@ -72,10 +118,9 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        userDAO.loginUser(userDTO.getID(), userDTO.getPW());
+                        userDTO = userDAO.loginUser(userDTO.getID(), userDTO.getPW());
 
-                        String result = "담당자 로그인";
-                        oos.writeObject(result);
+                        oos.writeObject(userDTO);
                         oos.flush();
 
                     } catch (ClassNotFoundException e) {
@@ -91,9 +136,8 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        userDAO.findUserId(userDTO.getPhoneNumber());
+                        String result = userDAO.findUserId(userDTO.getName(),userDTO.getPhoneNumber());
 
-                        String result = "ID찾기";
                         oos.writeObject(result);
                         oos.flush();
 
@@ -109,9 +153,8 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        userDAO.findUserPassword(userDTO.getID(), userDTO.getPhoneNumber()); //TODO 이름도 추가해야함.
+                        boolean result = userDAO.findUserPassword(userDTO.getName(),userDTO.getID(), userDTO.getPhoneNumber());
 
-                        String result = "PW찾기";
                         oos.writeObject(result);
                         oos.flush();
 
