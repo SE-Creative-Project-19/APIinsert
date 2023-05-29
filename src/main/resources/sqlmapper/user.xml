@@ -38,7 +38,7 @@
     <select id="getId" resultType="String">
         select ID
         from mydb.user as u
-        where phoneNumber = #{phoneNumber};
+        where name = #{name} And phoneNumber = #{phoneNumber};
     </select> <!-- ID찾기 -->
 
     <update id="updateUserPassword">
@@ -47,6 +47,7 @@
         WHERE ID = #{id}
         AND phoneNumber = #{phoneNumber}
     </update> <!-- 비밀번호 재설정 -->
+
     <update id="updateUser" parameterType="persistence.dto.UserDTO">
         UPDATE user
         <set>
@@ -54,21 +55,34 @@
             <if test="ID != null">ID = #{ID},</if>
             <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
             <if test="address != null">address = #{address}, </if>
-            <if test="type != 0">type = #{type}, </if>
             <if test="name != null">name = #{name},</if>
             <if test="facility != null">facility = #{facility}</if>
         </set>
         WHERE ID = #{ID} AND phoneNumber = #{phoneNumber}
     </update>
+
+    <select id="checkDuplicateId" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE id = #{id}
+    </select> <!-- 아이디 중복 검사 -->
+
+    <select id="checkDuplicatePhoneNumber" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE phoneNumber = #{phoneNumber}
+    </select> <!-- 전화번호 중복 검사 -->
+
     <insert id="insertUser" parameterType="UserDTO">
         INSERT INTO user (ID, PW, PhoneNumber, Address, MannerTemperature, Type, Name)
         VALUES (#{ID}, #{PW}, #{PhoneNumber}, #{Address}, #{MannerTemperature}, #{Type}, #{Name})
-    </insert> <!-- 회원가입 -->
+    </insert> <!-- 사용자 회원가입 -->
 
+    <insert id="insertManager" parameterType="UserDTO">
+        INSERT INTO user (ID, PW, PhoneNumber, Address, Type, Name, Facility)
+        VALUES (#{ID}, #{PW}, #{PhoneNumber}, #{Address}, #{Type}, #{Name}, #{Facility})
+    </insert> <!-- 담당자 회원가입 -->
 
-    <select id="getUserByPK" resultType="String">
-        select *
-        from mydb.user
-        where userPK = #{userPK};
+    <select id="loginUser" parameterType="Map" resultType="UserDTO">
+        SELECT * FROM user
+        WHERE id = #{id} AND pw = #{pw}
     </select>
+
+
 </mapper>

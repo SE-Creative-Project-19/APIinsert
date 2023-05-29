@@ -12,8 +12,7 @@ public class ServiceInfoDAO {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    //TODO 수정 필요
-    public List<ServiceInfoDTO> getServiceInfoList(int pageNo) { //TODO 전체 리스트 중에서 원하는 페이지의 리스트를 10개씩 출력
+    public List<ServiceInfoDTO> getServiceInfoList(int pageNo) { // 전체 리스트 중에서 원하는 페이지의 리스트를 10개씩 출력
         int pageSize = 10;
         int offset = (pageNo - 1) * pageSize;
 
@@ -29,7 +28,7 @@ public class ServiceInfoDAO {
             return null;
         }
     }
-    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo) { //TODO dto를 기준으로 필터링
+    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo) { // dto를 기준으로 필터링
         int pageSize = 10;
         int offset = (pageNo - 1) * pageSize;
         try (SqlSession session = sqlSessionFactory.openSession()) {
@@ -45,7 +44,7 @@ public class ServiceInfoDAO {
         }
     }
 
-    public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO){//TODO  api에서 받아온 활동 정보를 insert할 때 사용합니다
+    public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO){//  api에서 받아온 활동 정보를 insert할 때 사용합니다
         SqlSession session = sqlSessionFactory.openSession();
         try{
             session.insert("mapper.ServiceInfoMapper.insertServiceInfo",serviceInfoDTO);
@@ -54,7 +53,7 @@ public class ServiceInfoDAO {
             session.close();
         }
     }
-    public List<ServiceInfoDTO> getAllServiceInfo() {//TODO select *
+    public List<ServiceInfoDTO> getAllServiceInfo() {
         List<ServiceInfoDTO> list = null;
         SqlSession session = sqlSessionFactory.openSession();
         try{
