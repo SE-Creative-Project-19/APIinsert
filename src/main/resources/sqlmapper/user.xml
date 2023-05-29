@@ -38,15 +38,15 @@
     <select id="getId" resultType="String">
         select ID
         from mydb.user as u
-        where name = #{name} And phoneNumber = #{phoneNumber};
+        where Name = #{Name} And PhoneNumber = #{PhoneNumber};
     </select> <!-- ID찾기 -->
 
-    <update id="updateUserPassword">
-        UPDATE mydb.user
-        SET pw = #{pw}
-        WHERE ID = #{id}
-        AND phoneNumber = #{phoneNumber}
+    <update id="updateUserPassword" parameterType="java.util.Map">
+        UPDATE user
+        SET PW = #{newPassword}
+        WHERE ID = #{id} AND Name = #{name} AND PhoneNumber = #{phoneNumber}
     </update> <!-- 비밀번호 재설정 -->
+
 
     <update id="updateUser" parameterType="persistence.dto.UserDTO">
         UPDATE user
@@ -82,5 +82,10 @@
         WHERE id = #{id} AND pw = #{pw}
     </select> <!-- 로그인 -->
 
+    <select id="searchOrganizations" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT DISTINCT si.mnnstNm
+        FROM serviceInfo si
+        WHERE si.mnnstNm LIKE CONCAT('%', #{keyword}, '%')
+    </select> <!-- 기관 조회 -->
 
 </mapper>

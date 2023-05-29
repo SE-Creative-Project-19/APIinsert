@@ -54,7 +54,8 @@ public class UserDAO {
             e.printStackTrace();
         }
         return false;
-    }
+    } // ID 중복 검사
+
     public boolean isPhoneNumberDuplicate(String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
         try  {
@@ -64,19 +65,18 @@ public class UserDAO {
             e.printStackTrace();
         }
         return false;
-    }
+    } // 전화번호 중복 검사
+
     public void insertUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
             if (duplicateIdCount > 0) {
-                System.out.println("중복된 아이디 입니다.");
                 return;
             }
 
             int duplicatePhoneNumberCount = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
             if (duplicatePhoneNumberCount > 0) {
-                System.out.println("중복된 전화번호 입니다.");
                 return;
             }
             session.insert("mapper.UserMapper.insertUser", userDTO);
@@ -84,8 +84,8 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void insertManager(UserDTO userDTO) {
+    } // 사용자 회원가입
+    public void insertManager(UserDTO userDTO, String selectedOrganization) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
@@ -99,12 +99,16 @@ public class UserDAO {
                 // 전화번호 중복 처리
                 return;
             }
+
+            userDTO.setFacility(selectedOrganization); // 선택한 기관 값을 UserDTO에 설정
+
             session.insert("mapper.UserMapper.insertManager", userDTO);
             session.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    } // 관리자 회원가입
+
 
     public void updateUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
@@ -133,21 +137,26 @@ public class UserDAO {
         }
         return userId;
     }   // ID 찾기 테스트 해봐야함
-
-    public String findUserPassword(String name, String id, String phoneNumber) {
+    public boolean updatePassword(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
-        String password = null;
+        boolean isSuccess = false;
         try {
-            Map<String, String> params = new HashMap<>();
-            params.put("id", name);
-            params.put("id", id);
-            params.put("phoneNumber", phoneNumber);
-            password = session.selectOne("mapper.UserMapper.findUserPassword", params);
+            Map<String, Object> params = new HashMap<>();
+            params.put("id", userDTO.getID());
+            params.put("name", userDTO.getName());
+            params.put("phoneNumber", userDTO.getPhoneNumber());
+            params.put("newPassword", userDTO.getPW());
+
+            int rowsAffected = session.update("mapper.UserMapper.updateUserPassword", params);
+            session.commit();
+            isSuccess = rowsAffected > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             session.close();
         }
-        return password;
-    }   // 비밀번호 재설정 테스트 해봐야함
+        return isSuccess;
+    } // 비밀번호 재설정
 
     public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) {
         List<UserDTO> list = null;
@@ -167,4 +176,14 @@ public class UserDAO {
         }
         return list;
     }
+
+    public List<String> searchOrganizations(String keyword) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            return session.selectList("mapper.UserMapper.searchOrganizations", keyword);
+        } finally {
+            session.close();
+        }
+    } // 기관 검색
+
 }
