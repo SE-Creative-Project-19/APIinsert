@@ -15,6 +15,7 @@ import view.UserView;
 import view.VolunteerView;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -73,6 +74,7 @@ public class UserEventController {
         }
 
     }
+
     public void checkID() {
         userDTO.setID("test");
 
@@ -87,9 +89,9 @@ public class UserEventController {
         }
         String result = "";
         try {
-            result = (String)ois.readObject();
+            result = (String) ois.readObject();
             System.out.println(result);
-        }catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
 
         }
     }
@@ -97,33 +99,20 @@ public class UserEventController {
     public void login() {
         userDTO.setID("test");
         userDTO.setPW("1234");
-
-        if (userDTO.getType() == 2) { // Volunteer
-            protocolHeader = new ProtocolHeader(ProtocolType.LOGIN, ProtocolCode.LOGIN_INFO, ProtocolKind.VOLUNTEER);
-            try {
-                oos.writeObject(protocolHeader);
-                oos.writeObject(userDTO);
-                oos.flush();
-            } catch (IOException e) {
-                System.out.println("Error: Send Login Info");
-                e.printStackTrace();
-            }
-        } else if (userDTO.getType() == 3) { // Manager
-            protocolHeader = new ProtocolHeader(ProtocolType.LOGIN, ProtocolCode.LOGIN_INFO, ProtocolKind.MANAGER);
-            try {
-                oos.writeObject(protocolHeader);
-                oos.writeObject(userDTO);
-                oos.flush();
-            } catch (IOException e) {
-                System.out.println("Error: Send Login Info");
-                e.printStackTrace();
-            }
+        protocolHeader = new ProtocolHeader(ProtocolType.LOGIN, ProtocolCode.LOGIN_INFO, ProtocolKind.COMMON);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(userDTO);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error: Send Login Info");
+            e.printStackTrace();
         }
         try {
             userDTO = (UserDTO) ois.readObject();
-            if(userDTO != null) {
+            if (userDTO != null) {
                 System.out.printf("로그인 성공");
-            }else {
+            } else {
                 System.out.println("로그인 실패");
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -147,9 +136,9 @@ public class UserEventController {
         String result = "";
         try {
             result = (String) ois.readObject();
-            if(result != null) {
+            if (result != null) {
                 System.out.println(result);
-            }else {
+            } else {
                 System.out.println("아이디를 찾지 못했습니다.");
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -210,18 +199,20 @@ public class UserEventController {
             System.out.println("Error: send showMyInfo");
             e.printStackTrace();
         }
-
+        List<UserDTO> list;
         UserView userView = new UserView();
         try {
-            userDTO = (UserDTO) ois.readObject();
-            userView.showInfoUser(userDTO);
+            list = (List<UserDTO>) ois.readObject();
+            for(int i=0; i<list.size(); i++) {
+                userView.showInfoUser(list.get(i));
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: receive MyInfo");
             e.printStackTrace();
         }
     }
 
-    public void updateMyInfo() {
+    public void updateMyInfo() { //TODO 상철: 값이 안 바뀜
         userDTO.setID("updateTest");
         userDTO.setName("PCJ");
         userDTO.setAddress("경상북도 구미시 옥계북로 33 105동 1402호");
@@ -272,22 +263,22 @@ public class UserEventController {
         }
     }
 
-    public void inquiryServiceContent() { //TODO 범석이 하면 함
-
+    public void inquiryServiceContent() {
+        //TODO 범석이 세부 정보 봉사 활동 조회하는 부분 없는 거 같음..
     }
 
     public void myParticipateInList() { //내가 참여한 봉사활동 리스트
         //TODO 상철이 getVolunteer부분 파라미터 수정 및 내용 수정 바람.
-
+        //TODO id가 파라미터로 받아야 내 아이디에 맞는 것들만 나오는 게 아닌가?
     }
 
     public void participateInServiceList() { // 봉사활동에 참여한 봉사자 리스트
-
+        //TODO 이거는 해당 되는 부분이 어디 있는 지 모르겠음 있으면 주석 지우고 있는 부분 작성 좀
     }
 
     public void myOrganizationActivityList() { // 본인 소속 기관의 봉사활동 리스트
-        if(userDTO.getType() == 3) { //담당자 일 때만 가능
-            userDTO.setFacility("기관"); //테스트 용
+        if (userDTO.getType() == 3) { //담당자 일 때만 가능
+            userDTO.setFacility("어린이집"); //테스트 용
 
             try {
                 protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.MY_ORGANIZATION_ACTIVITY_LIST, ProtocolKind.MANAGER);
@@ -298,53 +289,51 @@ public class UserEventController {
                 System.out.println("Error: send UpdateMyInfo");
                 e.printStackTrace();
             }
-            UserView view = new UserView();
-            UserService userService = new UserService(new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory())); //클라이언트에서 DB 접근? 수정 필요
+
             try {
-                List<VolunteerDTO> list = (List<VolunteerDTO>) ois.readObject();
-                for(VolunteerDTO volunteerDTO: list) {
-                }
-            } catch (IOException |ClassNotFoundException e) {
+                //TODO 범석: UserDTO로 입력받은 기관으로 API에 접근하여 입력받은 기관에 속한 봉사활동들을 뽑은 리스트 출력에 관해서 어떻게 하는 지 모르겠음.
+                ois.readObject();
+            } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Error: receive VolunteerDTO List");
                 e.printStackTrace();
             }
             //매너 온도를 입력한다면. 아래 작업 만들기.
-        }else {
+        } else {
             System.out.println("권한이 없습니다.");
         }
 
     }
 
-    public void activityAccept() {
+    public void activityAccept() { //봉사 승인
 
     }
 
-    public void activityReject() {
+    public void activityReject() { // 봉사 거절
 
     }
 
-    public void registerServiceActivity() {
+    public void registerServiceActivity() { //봉사 활동 등록 [봉사 승인 이후]
 
     }
 
-    public void mannerTemperature() {
+    public void mannerTemperature() {// 매너온도 입력
 
     }
 
-    public void fieldServiceSelect() {
+    public void fieldServiceSelect() {//필터링
 
     }
 
-    public void periodServiceSelect() {
+    public void periodServiceSelect() {//필터링
 
     }
 
-    public void serviceAreaSelect() {
+    public void serviceAreaSelect() {// 필터링
 
     }
 
-    public void serviceNameSelect() {
+    public void serviceNameSelect() { //필터링
 
     }
-    //채팅
+
 }

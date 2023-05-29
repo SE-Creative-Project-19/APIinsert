@@ -17,7 +17,8 @@ public class ClientMain {
 
             UserEventController userEventController = new UserEventController(oos, ois);
 
-            userEventController.findMyPW();
+            userEventController.showMyInfo();
+
 
         }
         catch (UnknownHostException e) {
