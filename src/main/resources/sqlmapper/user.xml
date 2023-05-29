@@ -52,14 +52,12 @@
         UPDATE user
         <set>
             <if test="mannerTemperature != 0">mannerTemperature = #{mannerTemperature},</if>
-            <if test="ID != null">ID = #{ID},</if>
-            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
             <if test="address != null">address = #{address}, </if>
             <if test="name != null">name = #{name},</if>
             <if test="facility != null">facility = #{facility}</if>
         </set>
         WHERE ID = #{ID} AND phoneNumber = #{phoneNumber}
-    </update>
+    </update> <!-- 개인정보수정 -->
 
     <select id="checkDuplicateId" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM user WHERE id = #{id}
@@ -82,7 +80,7 @@
     <select id="loginUser" parameterType="Map" resultType="UserDTO">
         SELECT * FROM user
         WHERE id = #{id} AND pw = #{pw}
-    </select>
+    </select> <!-- 로그인 -->
 
 
 </mapper>

@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`user` (
   `PW` VARCHAR(45) NOT NULL,
   `PhoneNumber` VARCHAR(45) NOT NULL,
   `Address` VARCHAR(45) NOT NULL,
-  `MannerTemperature` INT NOT NULL,
+  `MannerTemperature` INT NULL DEFAULT NULL,
   `Type` INT NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
   `Facility` VARCHAR(100) NULL DEFAULT NULL,
@@ -105,7 +105,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `mydb`.`volunteer`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`volunteer` (
-  `VolunteerPK` INT NOT NULL,
+  `VolunteerPK` INT(255) NOT NULL AUTO_INCREMENT,
   `ProcessingResult` VARCHAR(45) NULL DEFAULT NULL,
   `ServiceInfo_ServiceInfoPK` INT NOT NULL,
   `User_UserPK` INT NOT NULL,
