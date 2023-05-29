@@ -34,7 +34,7 @@ public class UserDAO {
         return userDTO;
     }   // 로그인
 
-    public List<UserDTO> getUser(String id) { //TODO id를 입력했느데 왜 DTO 리스트..? DTO 여야 하는 거 아님?
+    public List<UserDTO> getUser(String id) {
         List<UserDTO> list = null;
         SqlSession session = sqlSessionFactory.openSession();
         try {
@@ -149,7 +149,7 @@ public class UserDAO {
         return password;
     }   // 비밀번호 재설정 테스트 해봐야함
 
-    public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) { //TODO 봉사자 리스트를 바탕으로 해당 유저DTO 리스트를  return
+    public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) {
         List<UserDTO> list = null;
         if(volunteerDTOS.size() == 0) return null;
         int pageSize = 10;
