@@ -52,8 +52,8 @@ public class UserEventController {
                 e.printStackTrace();
             }
         } else if (userDTO.getType() == 3) { // Manager
-            protocolHeader = new ProtocolHeader(ProtocolType.LOGIN, ProtocolCode.REGISTER_INFO, ProtocolKind.MANAGER);
-            //userDTO.set(기관)
+            userDTO.setFacility("어린이집");
+            protocolHeader = new ProtocolHeader(ProtocolType.SIGNUP, ProtocolCode.REGISTER_INFO, ProtocolKind.MANAGER);
             try {
                 oos.writeObject(protocolHeader);
                 oos.writeObject(userDTO);
@@ -73,11 +73,30 @@ public class UserEventController {
         }
 
     }
+    public void checkID() {
+        userDTO.setID("test");
+
+        protocolHeader = new ProtocolHeader(ProtocolType.SIGNUP, ProtocolCode.CHECKID, ProtocolKind.COMMON);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(userDTO);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error: send Check ID");
+            e.printStackTrace();
+        }
+        String result = "";
+        try {
+            result = (String)ois.readObject();
+            System.out.println(result);
+        }catch (IOException | ClassNotFoundException e){
+
+        }
+    }
 
     public void login() {
         userDTO.setID("test");
         userDTO.setPW("1234");
-        userDTO.setType(2); // TODO 로그인 시 봉사자이면 2, 담당자이면 3
 
         if (userDTO.getType() == 2) { // Volunteer
             protocolHeader = new ProtocolHeader(ProtocolType.LOGIN, ProtocolCode.LOGIN_INFO, ProtocolKind.VOLUNTEER);
@@ -100,12 +119,13 @@ public class UserEventController {
                 e.printStackTrace();
             }
         }
-        //TODO 로그인 완료 시 해당 DTO를 서버에서 받아온 정보로 가득 채우는 거는 어떤가?
-        // 서버에서 return DTO로 된 후 받아온 다음 userDTO = 받아온 DTO => 이러면 회원인 상태에서의 유저의 모든 정보 받아올 수 있음.
-        String result = "";
         try {
-            result = (String) ois.readObject();
-            System.out.println(result);
+            userDTO = (UserDTO) ois.readObject();
+            if(userDTO != null) {
+                System.out.printf("로그인 성공");
+            }else {
+                System.out.println("로그인 실패");
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: Receive Login Info");
             e.printStackTrace();
@@ -114,7 +134,8 @@ public class UserEventController {
     }
 
     public void findMyID() {
-        userDTO.setPhoneNumber("010-1111-2222");//setPhone
+        userDTO.setName("admin");
+        userDTO.setPhoneNumber("010-3333-4444");
         protocolHeader = new ProtocolHeader(ProtocolType.FIND_MY_INFO, ProtocolCode.FIND_ID, ProtocolKind.COMMON);
         try {
             oos.writeObject(protocolHeader);
@@ -123,9 +144,14 @@ public class UserEventController {
         } catch (IOException e) {
             System.out.println("Error: send findMyID");
         }
+        String result = "";
         try {
-            userDTO = (UserDTO) ois.readObject();
-            System.out.println(userDTO.getID());
+            result = (String) ois.readObject();
+            if(result != null) {
+                System.out.println(result);
+            }else {
+                System.out.println("아이디를 찾지 못했습니다.");
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: Receive findMyID");
             e.printStackTrace();
@@ -133,9 +159,9 @@ public class UserEventController {
     }
 
     public void findMyPW() {
-        userDTO.setID("ID");//setID
-        userDTO.setPhoneNumber("010");//setPhone
-        userDTO.setName("PCJ");//setName
+        userDTO.setID("test");//setID
+        userDTO.setPhoneNumber("010-1111-2222");//setPhone
+        userDTO.setName("chanjin");//setName
         protocolHeader = new ProtocolHeader(ProtocolType.FIND_MY_INFO, ProtocolCode.FIND_PW, ProtocolKind.COMMON);
         try {
             oos.writeObject(protocolHeader);
@@ -144,9 +170,9 @@ public class UserEventController {
         } catch (IOException e) {
             System.out.println("Error: send findMyPW");
         }
-        String result = "";
+        boolean result = true;
         try {
-            result = (String) ois.readObject(); //비밀번호 재설정 해주세요.
+            result = (boolean) ois.readObject(); //비밀번호 재설정 해주세요. true 이면
             System.out.println(result);
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: receive findMyPW");

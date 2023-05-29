@@ -65,45 +65,43 @@ public class UserDAO {
         }
         return false;
     }
-    public void insertUser(UserDTO userDTO) {
+    public int insertUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
             if (duplicateIdCount > 0) {
-                System.out.println("중복된 아이디 입니다.");
-                return;
+                return 1;
             }
 
             int duplicatePhoneNumberCount = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
             if (duplicatePhoneNumberCount > 0) {
-                System.out.println("중복된 전화번호 입니다.");
-                return;
+                return 2;
             }
             session.insert("mapper.UserMapper.insertUser", userDTO);
             session.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
-    public void insertManager(UserDTO userDTO) {
+    public int insertManager(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
             if (duplicateIdCount > 0) {
-                // 아이디 중복 처리
-                return;
+                return 1;
             }
 
             int duplicatePhoneNumberCount = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
             if (duplicatePhoneNumberCount > 0) {
-                // 전화번호 중복 처리
-                return;
+                return 2;
             }
             session.insert("mapper.UserMapper.insertManager", userDTO);
             session.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     public void updateUser(UserDTO userDTO) {
@@ -134,7 +132,7 @@ public class UserDAO {
         return userId;
     }   // ID 찾기
 
-    public String findUserPassword(String name, String id, String phoneNumber) {
+    public boolean findUserPassword(String name, String id, String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
         String password = null;
         try {
@@ -146,7 +144,7 @@ public class UserDAO {
         } finally {
             session.close();
         }
-        return password;
+        return true; //TODO 정상철 수정해라~
     }   // 비밀번호 재설정
 
     public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) { //TODO 봉사자 리스트를 바탕으로 해당 유저DTO 리스트를  return
