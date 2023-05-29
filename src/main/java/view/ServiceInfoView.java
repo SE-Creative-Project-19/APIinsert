@@ -91,8 +91,13 @@ public class ServiceInfoView {
             Integer sidoCd = serviceInfo.getSidoCd();
             String sidoName = population.get(sidoCd);
             System.out.println(sidoName);
+            if(serviceInfo.getProgrmSttusSe()==1){
+                System.out.printf("모집 중 (%s,%s) \n", serviceInfo.getSrvcCLCode(),serviceInfo.getSrvcCSCode());
+            }
+            if(serviceInfo.getProgrmSttusSe()==3){
+                System.out.printf("모집 마감 (%s,%s) \n", serviceInfo.getSrvcCLCode(),serviceInfo.getSrvcCSCode());
+            }
 
-            System.out.printf("모집 중 (%s,%s) \n", serviceInfo.getSrvcCLCode(),serviceInfo.getSrvcCSCode());
             System.out.println(serviceInfo.getProgrmSj());
             System.out.printf("[모집기관] %s [모집기간] %s ~ %s [봉사기간] %s ~ %s \n", serviceInfo.getMnnstNm(),serviceInfo.getNoticeBgnde(),serviceInfo.getNoticeEndde(),serviceInfo.getProgrmBgnde(), serviceInfo.getProgrmEndde());
             System.out.println(serviceInfo.getProgrmCn());
