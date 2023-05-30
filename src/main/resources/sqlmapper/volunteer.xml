@@ -13,16 +13,36 @@
 
     <!-- 추가적인 쿼리들... -->
 
-    <!-- 이전 봉사활동 내역 조회   <select id="getServiceHistory" resultMap="serviceHistoryResultMap">
-        select u.Name as 신청자명, s.progrmSj as 봉사제목, s.mnnstNm as 기관명, s.nanmmbyNm as 주소, s.nanmmbyNmAdmn as 담당자명, s.actPlace as 봉사장소
-        from mydb.serviceinfo as s, mydb.volunteer as v, mydb.user as u
-        where s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK and u.UserPK = v.VolunteerPK and ProcessingResult = '봉사 완료';
-    </select>-->
+    <select id="getServiceHistory" resultMap="volunteerResultMap">
+        SELECT
+            u.Name AS 신청자명,
+            s.progrmSj AS 봉사제목,
+            s.mnnstNm AS 기관명,
+            s.nanmmbyNm AS 주소,
+            s.nanmmbyNmAdmn AS 담당자명,
+            s.actPlace AS 봉사장소
+        FROM
+            serviceinfo AS s
+                INNER JOIN volunteer AS v ON s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK
+                INNER JOIN user AS u ON u.UserPK = v.User_UserPK
+        WHERE
+            s.ProcessingResult in ('별점 미등록', '봉사 완료')
+    </select> <!-- 봉사 이력 조회 -->
 
     <select id="getVolunteer" resultMap="volunteerResultMap">
-        select u.Name as 신청자명, s.progrmSj as 봉사제목, s.mnnstNm as 기관명, s.nanmmbyNm as 주소, s.nanmmbyNmAdmn as 담당자명, s.actPlace as 봉사장소
-        from mydb.serviceinfo as s, mydb.volunteer as v, mydb.user as u
-        where s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK and u.UserPK = v.User_UserPK and ProcessingResult != '봉사 완료';
+        SELECT
+            u.Name AS 신청자명,
+            s.progrmSj AS 봉사제목,
+            s.mnnstNm AS 기관명,
+            s.nanmmbyNm AS 주소,
+            s.nanmmbyNmAdmn AS 담당자명,
+            s.actPlace AS 봉사장소
+        FROM
+            serviceinfo AS s
+                INNER JOIN volunteer AS v ON s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK
+                INNER JOIN user AS u ON u.UserPK = v.User_UserPK
+        WHERE
+            s.ProcessingResult in ('신청', '취소', '승인', '거절')
     </select> <!-- 신청한 봉사활동 조회 -->
 
     <select id="getVolunteerApplicant" resultMap="volunteerResultMap">
@@ -71,7 +91,7 @@
     <select id="countVolunteerByUserPKAndServiceInfoPK" parameterType="persistence.dto.VolunteerDTO" resultType="int">
         SELECT COUNT(*) FROM volunteer
         WHERE User_UserPK = #{User_UserPK} AND ServiceInfo_ServiceInfoPK = #{ServiceInfo_ServiceInfoPK}
-    </select>
+    </select> <!-- 봉사 중복 신청 확인 -->
 
     <insert id="insertVolunteer" parameterType="persistence.dto.VolunteerDTO">
         <selectKey keyProperty="volunteerPK" resultType="int" order="AFTER">
@@ -79,7 +99,7 @@
         </selectKey>
         INSERT INTO volunteer (volunteerPK, processingResult, ServiceInfo_ServiceInfoPK, User_UserPK)
         VALUES (#{volunteerPK}, '신청', #{ServiceInfo_ServiceInfoPK}, #{User_UserPK})
-    </insert>
+    </insert> <!-- 봉사 신청 -->
 
 
 

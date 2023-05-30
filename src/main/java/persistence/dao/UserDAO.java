@@ -67,22 +67,16 @@ public class UserDAO {
         return false;
     } // 전화번호 중복 검사
   
-    public int insertUser(UserDTO userDTO) {
-
+    public int insertUser(UserDTO userDTO) { // 사용자 회원가입
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
             if (duplicateIdCount > 0) {
-                return;
-
                 return 1;
             }
 
             int duplicatePhoneNumberCount = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
             if (duplicatePhoneNumberCount > 0) {
-
-                return;
-
                 return 2;
 
             }
@@ -91,9 +85,10 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } // 사용자 회원가입
+        return 0;
+    }
 
-    public int insertManager(UserDTO userDTO) {
+    public int insertManager(UserDTO userDTO, String selectedOrganization) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
@@ -113,6 +108,7 @@ public class UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     } // 관리자 회원가입
 
     public void updateUser(UserDTO userDTO) { 
@@ -143,7 +139,7 @@ public class UserDAO {
         return userId;
     }   // ID 찾기 테스트 해봐야함
 
-    public boolean findUserPassword(String name, String id, String phoneNumber) {
+    public boolean updatePassword(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         boolean isSuccess = false;
         try {

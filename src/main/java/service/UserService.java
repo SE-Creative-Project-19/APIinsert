@@ -15,7 +15,6 @@ public class UserService{
     public List<UserDTO> getUser(String id) {return dao.getUser(id);}
     public List<UserDTO> getUsersByPK(List<VolunteerDTO> volunteerDTOS, int pageNo){return dao.getUsersByPk(volunteerDTOS,pageNo);};
     public String findUserId(String name, String phoneNumber) {return dao.findUserId(name, phoneNumber);}
-    public boolean findUserPassword(String name, String id, String phoneNumber) {return dao.findUserPassword(name, id, phoneNumber);}
     public UserDTO loginUser(String id, String pw) {return dao.loginUser(id, pw);}
 
 }
