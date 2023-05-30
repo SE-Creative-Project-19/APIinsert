@@ -45,7 +45,7 @@
         WHERE 1=1
         <if test="serviceInfoDTO.srvcCLCode != null">AND srvcCLCode = #{serviceInfoDTO.srvcCLCode}</if>
         <if test="serviceInfoDTO.srvcCSCode != null">AND srvcCSCode = #{serviceInfoDTO.srvcCSCode}</if>
-        <if test="serviceInfoDTO.progrmSj != null">AND progrmSj = #{serviceInfoDTO.progrmSj}</if>
+        <if test="serviceInfoDTO.progrmSj != null">AND progrmSj LIKE CONCAT('%', #{serviceInfoDTO.progrmSj}, '%')</if>
         <if test="serviceInfoDTO.mnnstNm != null">AND mnnstNm = #{serviceInfoDTO.mnnstNm}</if>
         <if test="serviceInfoDTO.sidoCd != 0">AND sidoCd = #{serviceInfoDTO.sidoCd}</if>
         <if test="serviceInfoDTO.progrmBgnde != null">AND progrmBgnde &gt;= #{serviceInfoDTO.progrmBgnde}</if>
@@ -94,7 +94,7 @@
     </insert>
     <update id="updateServiceInfoByTime">
         UPDATE serviceinfo
-        SET progrmSttusSe = 1
+        SET progrmSttusSe = 3
         WHERE noticeEndde &lt; #{currentDate}
     </update>
 
