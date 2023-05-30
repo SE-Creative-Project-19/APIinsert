@@ -66,8 +66,8 @@ public class UserDAO {
         }
         return false;
     } // 전화번호 중복 검사
-  
-    public int insertUser(UserDTO userDTO) { // 사용자 회원가입
+
+    public int insertUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int duplicateIdCount = session.selectOne("mapper.UserMapper.checkDuplicateId", userDTO.getID());
@@ -86,7 +86,7 @@ public class UserDAO {
             e.printStackTrace();
         }
         return 0;
-    }
+    } // 사용자 회원가입
 
     public int insertManager(UserDTO userDTO, String selectedOrganization) {
         SqlSession session = sqlSessionFactory.openSession();
@@ -111,7 +111,7 @@ public class UserDAO {
         return 0;
     } // 관리자 회원가입
 
-    public void updateUser(UserDTO userDTO) { 
+    public void updateUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
             session.update("mapper.UserMapper.updateUser", userDTO);
