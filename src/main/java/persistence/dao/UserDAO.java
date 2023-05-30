@@ -55,6 +55,7 @@ public class UserDAO {
         }
         return false;
     } // ID 중복 검사
+
     public boolean isPhoneNumberDuplicate(String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
         try  {
@@ -65,6 +66,7 @@ public class UserDAO {
         }
         return false;
     } // 전화번호 중복 검사
+
     public int insertUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
@@ -76,6 +78,7 @@ public class UserDAO {
             int duplicatePhoneNumberCount = session.selectOne("mapper.UserMapper.checkDuplicatePhoneNumber", userDTO.getPhoneNumber());
             if (duplicatePhoneNumberCount > 0) {
                 return 2;
+
             }
             session.insert("mapper.UserMapper.insertUser", userDTO);
             session.commit();
@@ -84,6 +87,7 @@ public class UserDAO {
         }
         return 0;
     } // 사용자 회원가입
+
     public int insertManager(UserDTO userDTO, String selectedOrganization) {
         SqlSession session = sqlSessionFactory.openSession();
         try {
@@ -106,6 +110,7 @@ public class UserDAO {
         }
         return 0;
     } // 관리자 회원가입
+
     public void updateUser(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         try {

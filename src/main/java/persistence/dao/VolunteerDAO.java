@@ -101,7 +101,7 @@ public class VolunteerDAO {
         } finally {
             session.close();
         }
-    }
+    } // 봉사 신청
 
 }
 
