@@ -40,35 +40,35 @@ public class functionTest {
             //view.displayAllServiceInfo();
             //페이지 처리를 테스트
 
-            System.out.println("필터링을 하지 않았을 때를 기준으로 출력합니다.");
-           view.displayServiceInfo(serviceInfoDTO);
+           // System.out.println("필터링을 하지 않았을 때를 기준으로 출력합니다.");
+           //view.displayServiceInfo(serviceInfoDTO);
             System.out.println("필터링 했을 때 출력합니다.");
-            serviceInfoDTO = new ServiceInfoDTO();
-            serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-07-30"));
-
+             serviceInfoDTO = new ServiceInfoDTO();
+//            serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-07-30"));
+//
             service.updateServiceInfoByTime();
-           List<VolunteerDTO> list = volunteerDAO.getVolunteerApplicant("홍성군자원봉사센터");
-            System.out.println(list.size()==0);
-            for(VolunteerDTO volunteerDTO : list){
-                System.out.println(volunteerDTO.toString());
+//           List<VolunteerDTO> list = volunteerDAO.getVolunteerApplicant("홍성군자원봉사센터");
+////            System.out.println(list.size()==0);
+////            for(VolunteerDTO volunteerDTO : list){
+////                System.out.println(volunteerDTO.toString());
+////            }
+////
+////            System.out.println("다음단계");
+////            List<UserDTO> userDTOS = userDao.getUsersByPk(list,1);
+////            for(UserDTO userDTO : userDTOS){
+////                userView.showInfoUser(userDTO);
+////                System.out.println(userDTO.toString());
+////                userDTO.setMannerTemperature(userDTO.getMannerTemperature()+4);
+////                userDao.updateUser(userDTO);
+////            }
+////            list.get(0).setProcessingResult("봉사 완료");
+////            System.out.println(list.get(0).toString());
+////            volunteerDAO.updateVolunteer(list.get(0));
+            Map<String, Integer> newPopulation = new HashMap<>();
+            for (Map.Entry<Integer, String> entry :view.getPopulation().entrySet()) {
+                newPopulation.put(entry.getValue(), entry.getKey());
             }
-
-            System.out.println("다음단계");
-            List<UserDTO> userDTOS = userDao.getUsersByPk(list,1);
-            for(UserDTO userDTO : userDTOS){
-                userView.showInfoUser(userDTO);
-                System.out.println(userDTO.toString());
-                userDTO.setMannerTemperature(userDTO.getMannerTemperature()+4);
-                userDao.updateUser(userDTO);
-            }
-            list.get(0).setProcessingResult("봉사 완료");
-            System.out.println(list.get(0).toString());
-            volunteerDAO.updateVolunteer(list.get(0));
-//            Map<String, Integer> newPopulation = new HashMap<>();
-//            for (Map.Entry<Integer, String> entry :view.getPopulation().entrySet()) {
-//                newPopulation.put(entry.getValue(), entry.getKey());
-//            }
-//            String sidoName = "서울특별시";
+//           String sidoName = "서울특별시";
 //            int sidoCd = newPopulation.get(sidoName);
 //            System.out.println("sidocd입니다");
 //            System.out.println(sidoCd);
@@ -77,9 +77,9 @@ public class functionTest {
 //
 //            serviceInfoDTO.setSidoCd(sidoCd);
 //            serviceInfoDTO.setProgrmBgnde(Date.valueOf("2023-05-21"));
-//            System.out.println(serviceInfoDTO);
+            System.out.println(serviceInfoDTO.toString());
 //
-//            view.displayServiceInfo(serviceInfoDTO);
+            view.displayServiceInfo(serviceInfoDTO);
  //            service.updateServiceInfoByTime();
 //
 //
