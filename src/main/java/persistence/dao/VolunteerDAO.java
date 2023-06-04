@@ -12,16 +12,27 @@ public class VolunteerDAO {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public List<VolunteerDTO> getVolunteer() {
-        List<VolunteerDTO> list = null;
+    public List<Map<String, Object>> getVolunteerService(String id) {
+        List<Map<String, Object>> list = null;
         SqlSession session = sqlSessionFactory.openSession();
         try {
-            list = session.selectList("mapper.VolunteerMapper.getVolunteer");
+            list = session.selectList("mapper.VolunteerMapper.getVolunteerService", id);
         } finally {
             session.close();
         }
         return list;
-    }   // 신청 내역 조회
+    } // 봉사 신청 내역 조회
+
+    public List<Map<String, Object>> getVolunteerServiceHistory(String id) {
+        List<Map<String, Object>> list = null;
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            list = session.selectList("mapper.VolunteerMapper.getVolunteerServiceHistory", id);
+        } finally {
+            session.close();
+        }
+        return list;
+    } // 봉사 활동 내역 조회
 
     public List<VolunteerDTO> getVolunteerFilter(VolunteerDTO volunteerDTO, String processingResult) {
         try(SqlSession session = sqlSessionFactory.openSession()) {
