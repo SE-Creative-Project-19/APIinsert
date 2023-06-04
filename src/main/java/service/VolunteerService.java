@@ -12,7 +12,7 @@ public class VolunteerService{
         this.userService = userService;
     }
 
-    public List<VolunteerDTO> getVolunteer() {return dao.getVolunteer();}
+//    public List<VolunteerDTO> getVolunteer() {return dao.getVolunteer();}
 
     public List<VolunteerDTO> getVolunteerFilter(VolunteerDTO volunteerDTO, String processingResult){// 봉사 신청자 명단을 바탕으로 해당 유저의 정보들을 리스트로 반환
         return dao.getVolunteerFilter(volunteerDTO, processingResult);

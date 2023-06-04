@@ -15,6 +15,7 @@ import persistence.dto.VolunteerDTO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ServerMsg { //client to server
     private byte type, code, kind;
@@ -187,26 +188,6 @@ public class ServerMsg { //client to server
                     }
                 }
 
-            } else if (code == ProtocolCode.SET_NEW_PW) {// 새로운 비밀번호로 재설정
-
-                if (kind == ProtocolKind.COMMON) {
-
-                    try {
-                        UserDTO userDTO = (UserDTO) objectInput.readObject();
-                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        userDAO.updateUser(userDTO);
-
-                        String result = "비밀번호 재설정";
-                        oos.writeObject(result);
-                        oos.flush();
-
-                    } catch (ClassNotFoundException e) {
-                        System.out.println("Error");
-                        e.printStackTrace();
-                    }
-
-                }
-
             }
         } else if (type == ProtocolType.INQUIRY) {// TODO 조회
             if (code == ProtocolCode.SERVICE_LIST_INQUIRY) {// 봉사활동 목록 조회
@@ -225,75 +206,166 @@ public class ServerMsg { //client to server
                         e.printStackTrace();
                     }
 
-                } else if (kind == ProtocolKind.MANAGER) { //자신이 속한 기관의 봉사 활동  리스트 출력
+                }
 
-                } else if (code == ProtocolCode.SERVICE_CONTENT_INQUIRY) {// 봉사활동 선택 시 세부 내용
+            } else if (code == ProtocolCode.MY_PARTICIPATE_IN_LIST) {// 내가 참여한 봉사활동
 
-                    if (kind == ProtocolKind.VOLUNTEER) {
+                if (kind == ProtocolKind.VOLUNTEER) {
+                    List<Map<String, Object>> first = null;
+                    List<Map<String, Object>> second = null;
+                    try {
+                        UserDTO userDTO = (UserDTO) objectInput.readObject();
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        first = volunteerDAO.getVolunteerService(userDTO.getFacility());
+                        second = volunteerDAO.getVolunteerServiceHistory(userDTO.getFacility());
 
-                    }
-
-                } else if (code == ProtocolCode.MY_PARTICIPATE_IN_LIST) {// 내가 참여한 봉사활동
-
-                    if (kind == ProtocolKind.VOLUNTEER) {
-
-                    }
-
-                } else if (code == ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST) {// 봉사활동 참여한 봉사자 리스트
-
-                    if (kind == ProtocolKind.MANAGER) {
-
-                    }
-
-                } else if (code == ProtocolCode.MY_ORGANIZATION_ACTIVITY_LIST) {// 본인 소속 기관의 봉사활동 리스트
-                    if (kind == ProtocolKind.MANAGER) {
-
+                        oos.writeObject(first);
+                        oos.writeObject(second);
+                    } catch (ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
                     }
                 }
-            } else if (type == ProtocolType.ACCEPTANCE) {// TODO 승인 여부
-                if (code == ProtocolCode.ACCEPT) { // 봉사활동 참여에 승인
 
-                    if (kind == ProtocolKind.MANAGER) {
+            } else if (code == ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST) {// 봉사활동 참여한 봉사자 리스트[신청]
 
-                    }
+                if (kind == ProtocolKind.MANAGER) {
+                    List<VolunteerDTO> list = null;
+                    List<UserDTO> userDTOS = null;
+                    try {
+                        ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        list = volunteerDAO.getVolunteerApplicant(serviceInfoDTO.getServiceInfoPK());
+                        userDTOS = userDAO.getUsersByPk(list);
 
-                } else if (code == ProtocolCode.REJECT) {// 봉사활동 참여에 거절
-
-                    if (kind == ProtocolKind.MANAGER) {
-
-                    }
-
-                }
-            } else if (type == ProtocolType.REGISTER) {// TODO 등록
-                if (code == ProtocolCode.REGISTER_SERVICE_ACTIVITY) {
-
-                    if (kind == ProtocolKind.VOLUNTEER) {
-
-                    }
-                } else if (code == ProtocolCode.MANNER_TEMPERATURE) {
-
-                    if (kind == ProtocolKind.MANAGER) {
-
-                    }
-
-                }
-            } else if (type == ProtocolType.FILTERING) {// TODO 필터링
-                if (code == ProtocolCode.FILTER) {//필터링
-
-                    if (kind == ProtocolKind.VOLUNTEER) {
-                        try {
-                            ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
-                            ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-
-                        } catch (IOException | ClassNotFoundException e) {
-                            System.out.println("Error");
-                            e.printStackTrace();
-                        }
+                        oos.writeObject(list);
+                        oos.writeObject(userDTOS);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
                     }
                 }
-            } else {
-                System.out.println("매칭되는 프로토콜 type이 없습니다.");
+
+            } else if (code == ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_Result) {// 봉사활동 참여한 봉사자 리스트[결과]
+
+                if (kind == ProtocolKind.MANAGER) {
+                    List<VolunteerDTO> list = null;
+                    List<UserDTO> userDTOS = null;
+                    try {
+                        ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        list = volunteerDAO.getVolunteerDone(serviceInfoDTO.getServiceInfoPK());
+                        userDTOS = userDAO.getUsersByPk(list);
+
+                        oos.writeObject(list);
+                        oos.writeObject(userDTOS);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
+            } else if (code == ProtocolCode.MY_ORGANIZATION_ACTIVITY_LIST) {// 본인 소속 기관의 봉사활동 리스트
+                if (kind == ProtocolKind.MANAGER) {
+
+                }
             }
+        } else if (type == ProtocolType.ACCEPTANCE) {// TODO 승인 여부
+            if (code == ProtocolCode.ACCEPT) { // 봉사활동 참여에 승인
+
+                if (kind == ProtocolKind.MANAGER) {
+                    try {
+                        VolunteerDTO volunteerDTO = (VolunteerDTO) objectInput.readObject();
+                        volunteerDTO.setProcessingResult("별점 미등록");
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        volunteerDAO.updateVolunteer(volunteerDTO);
+                        String result = "승인 완료";
+
+                        oos.writeObject(result);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
+
+            } else if (code == ProtocolCode.REJECT) {// 봉사활동 참여에 거절
+
+                if (kind == ProtocolKind.MANAGER) {
+                    try {
+                        VolunteerDTO volunteerDTO = (VolunteerDTO) objectInput.readObject();
+                        volunteerDTO.setProcessingResult("거절");
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        volunteerDAO.updateVolunteer(volunteerDTO);
+                        String result = "승인 거절";
+
+                        oos.writeObject(result);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        } else if (type == ProtocolType.REGISTER) {// TODO 등록
+            if (code == ProtocolCode.REGISTER_SERVICE_ACTIVITY) {
+
+                if (kind == ProtocolKind.VOLUNTEER) {
+                    try {
+                        VolunteerDTO volunteerDTO = (VolunteerDTO) objectInput.readObject();
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        volunteerDAO.insertVolunteer(volunteerDTO);
+
+                        String result = "등록 완료";
+                        oos.writeObject(result);
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
+            } else if (code == ProtocolCode.MANNER_TEMPERATURE) {
+
+                if (kind == ProtocolKind.MANAGER) {
+                    try {
+                        UserDTO userDTO = (UserDTO) objectInput.readObject();
+                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        userDAO.updateUser(userDTO);
+
+                        String result = "매너 온도 업데이트 완료";
+                        oos.writeObject(result);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        } else if (type == ProtocolType.FILTERING) {// TODO 필터링
+            if (code == ProtocolCode.FILTER) {//필터링
+
+                if (kind == ProtocolKind.VOLUNTEER) {
+                    List<ServiceInfoDTO> list = null;
+                    try {
+                        ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
+                        ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        list = serviceInfoDAO.getServiceInfoByFilter(serviceInfoDTO, 1);
+
+                        oos.writeObject(list);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } else {
+            System.out.println("매칭되는 프로토콜 type이 없습니다.");
         }
     }
 }
+
