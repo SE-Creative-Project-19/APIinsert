@@ -53,6 +53,11 @@
         ORDER BY noticeEndde,progrmBgnde LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
+    <select id="selectByMnnstNm" resultMap="serviceInfoResultMap">
+        SELECT *
+        FROM serviceInfo
+        WHERE mnnstNm = #{mnnstNm}
+    </select>
 
     <insert id="insertServiceInfo" parameterType="persistence.dto.ServiceInfoDTO">
         INSERT INTO serviceInfo (
