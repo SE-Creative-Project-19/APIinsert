@@ -4,21 +4,16 @@ import Network.Protocol.ProtocolCode;
 import Network.Protocol.ProtocolHeader;
 import Network.Protocol.ProtocolKind;
 import Network.Protocol.ProtocolType;
-import persistence.MyBatisConnectionFactory;
-import persistence.dao.ServiceInfoDAO;
-import persistence.dao.UserDAO;
 import persistence.dto.ServiceInfoDTO;
 import persistence.dto.UserDTO;
 import persistence.dto.VolunteerDTO;
-import service.UserService;
 import view.ServiceInfoView;
 import view.UserView;
-import view.VolunteerView;
 
 import java.io.*;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserEventController {
@@ -113,7 +108,7 @@ public class UserEventController {
         try {
             userDTO = (UserDTO) ois.readObject();
             if (userDTO != null) {
-                System.out.printf("로그인 성공");
+                System.out.println("로그인 성공");
             } else {
                 System.out.println("로그인 실패");
             }
@@ -125,8 +120,8 @@ public class UserEventController {
     }
 
     public void findMyID() {
-        userDTO.setName("admin");
-        userDTO.setPhoneNumber("010-3333-4444");
+        userDTO.setName("chanjin");
+        userDTO.setPhoneNumber("010-1111-2222");
         protocolHeader = new ProtocolHeader(ProtocolType.FIND_MY_INFO, ProtocolCode.FIND_ID, ProtocolKind.COMMON);
         try {
             oos.writeObject(protocolHeader);
@@ -150,9 +145,10 @@ public class UserEventController {
     }
 
     public void findMyPW() {
-        userDTO.setID("test");//setID
-        userDTO.setPhoneNumber("010-1111-2222");//setPhone
-        userDTO.setName("chanjin");//setName
+        userDTO.setName("chanjin");
+        userDTO.setID("test");
+        userDTO.setPhoneNumber("010-1111-2222");
+        userDTO.setPW("PW");
         protocolHeader = new ProtocolHeader(ProtocolType.FIND_MY_INFO, ProtocolCode.FIND_PW, ProtocolKind.COMMON);
         try {
             oos.writeObject(protocolHeader);
@@ -161,32 +157,13 @@ public class UserEventController {
         } catch (IOException e) {
             System.out.println("Error: send findMyPW");
         }
-        boolean result = true;
+        boolean result = false;
         try {
             result = (boolean) ois.readObject(); //비밀번호 재설정 해주세요. true 이면
             System.out.println(result);
+
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: receive findMyPW");
-        }
-    }
-
-    public void setUpdatePW() {
-        //새로운 비번 set -> 비밀번호 찾기와 회원 정보 수정에서의 비밀번호 재설정 기능이 같아서 하나로 묶음.
-        userDTO.setPW("PW");
-        try {
-            protocolHeader = new ProtocolHeader(ProtocolType.MYPAGE, ProtocolCode.SET_NEW_PW, ProtocolKind.COMMON);
-            oos.writeObject(protocolHeader);
-            oos.writeObject(userDTO);
-            oos.flush();
-        } catch (IOException e) {
-            System.out.println("Error: send UpdatePW");
-        }
-        String result = "";
-        try {
-            result = (String) ois.readObject();
-            System.out.println(result);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error: receive UpdatePW");
         }
     }
 
@@ -205,7 +182,7 @@ public class UserEventController {
         UserView userView = new UserView();
         try {
             list = (List<UserDTO>) ois.readObject();
-            for(int i=0; i<list.size(); i++) {
+            for (int i = 0; i < list.size(); i++) {
                 userView.showInfoUser(list.get(i));
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -215,9 +192,11 @@ public class UserEventController {
     }
 
     public void updateMyInfo() {
-        userDTO.setName("PCJ");
+        userDTO.setID("test");
+        userDTO.setName("LSH");
         userDTO.setAddress("경상북도 구미시 옥계북로 33 105동 1402호");
-        userDTO.setPhoneNumber("010-3333-4444");
+        userDTO.setPhoneNumber("010-2222-3333");
+        userDTO.setPW("1234");
         if (userDTO.getType() == 3) { //담당자의 경우
             userDTO.setFacility("기관");
         }
@@ -241,9 +220,8 @@ public class UserEventController {
         }
     }
 
-    public void inquiryServiceList() {
-        System.out.print("페이지 번호를 입력해주세요: ");
-        int page = sc.nextInt();
+    public void inquiryServiceList() { //TODO CLI 환경에서 기능 테스트 완료 밑에서부터는 GUI 연결하면서 해야함.
+        int page = 1;
         ServiceInfoView serviceInfoView = new ServiceInfoView();
         protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.SERVICE_LIST_INQUIRY, ProtocolKind.VOLUNTEER);
         try {
@@ -262,28 +240,81 @@ public class UserEventController {
             System.out.println("Error: receive Service list");
             e.printStackTrace();
         }
+        //TODO 봉사활동 세부 정보는 각 리스트의 클릭 이벤트로 객체 반환 후 정보 빼오기
     }
-
-    public void inquiryServiceContent() {
-        //TODO 범석이 세부 정보 봉사 활동 조회하는 부분 없는 거 같음..
-    }
-
     public void myParticipateInList() { //내가 참여한 봉사활동 리스트
-        //TODO 상철이 getVolunteer부분 파라미터 수정 및 내용 수정 바람.
-        //TODO id가 파라미터로 받아야 내 아이디에 맞는 것들만 나오는 게 아닌가?
+        protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.MY_PARTICIPATE_IN_LIST, ProtocolKind.VOLUNTEER);
+        userDTO.setID("test");
+        userDTO.setType(2);
+        List<Map<String, Object>> first = null;
+        List<Map<String, Object>> second = null;
+        //이미 로그인 하면 여기에 저장되는 userDTO는 유저이게 된다.
+        if (userDTO.getType() == 2) {
+            try {
+                oos.writeObject(protocolHeader);
+                oos.writeObject(userDTO);
+                oos.flush();
+            } catch (IOException e) {
+                System.out.println("Error: myParticipateInList");
+                e.printStackTrace();
+            }
+            try {
+                first = (List<Map<String, Object>>) ois.readObject();
+                second = (List<Map<String, Object>>) ois.readObject();
+                System.out.println(first.toString());
+                System.out.println(second.toString());
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Error: receive Error");
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void participateInServiceListManagement() { // 봉사활동에 참여한 봉사자 리스트 -> 신청 관리
-        //TODO 이거는 해당 되는 부분이 어디 있는 지 모르겠음 있으면 주석 지우고 있는 부분 작성 좀
-        //활동 리스트 출력
-        //showuserlist신청(servpk) //유저정보 리스트
+    public void participateInServiceListManagement(ServiceInfoDTO eventDTO) { // 봉사활동에 참여한 봉사자 리스트 -> 신청 관리
+        ServiceInfoDTO serviceInfoDTO = eventDTO; //TODO 클릭 시 객체와 대입해야함
+        protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST, ProtocolKind.MANAGER);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(serviceInfoDTO);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        List<UserDTO> list = null;
+        List<VolunteerDTO> volunteerList = null;
+        try {
+            volunteerList = (List<VolunteerDTO>) ois.readObject();
+            list = (List<UserDTO>) ois.readObject();
+            System.out.println(list.toString());
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("receive Error");
+            e.printStackTrace();
+        }
 
     }
-    public void participateInServiceListResult() { // 봉사활동에 참여한 봉사자 리스트 -> 결과 관리
-        //TODO 이거는 해당 되는 부분이 어디 있는 지 모르겠음 있으면 주석 지우고 있는 부분 작성 좀
-        //활동 리스트 출력
-        //showuserlist별점미등록(servpk)
 
+    public void participateInServiceListResult(ServiceInfoDTO eventDTO) { // 봉사활동에 참여한 봉사자 리스트 -> 결과 관리
+        ServiceInfoDTO serviceInfoDTO = eventDTO; //TODO 클릭 시 객체와 대입해야함
+        protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_Result, ProtocolKind.MANAGER);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(serviceInfoDTO);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        List<UserDTO> list = null;
+        List<VolunteerDTO> volunteerList = null;
+        try {
+            volunteerList = (List<VolunteerDTO>) ois.readObject();
+            list = (List<UserDTO>) ois.readObject();
+            System.out.println(list.toString());
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("receive Error");
+            e.printStackTrace();
+        }
     }
 
     public void myOrganizationActivityList() { // 본인 소속 기관의 봉사활동 리스트
@@ -298,61 +329,137 @@ public class UserEventController {
                 System.out.println("Error: send UpdateMyInfo");
                 e.printStackTrace();
             }
-
+            List<ServiceInfoDTO> list = null;
             try {
-                //TODO 범석: UserDTO로 입력받은 기관으로 API에 접근하여 입력받은 기관에 속한 봉사활동들을 뽑은 리스트 출력에 관해서 어떻게 하는 지 모르겠음.
-                ois.readObject();
+                list = (List<ServiceInfoDTO>) ois.readObject();
+                for (int i = 0; i < list.size(); i++) {
+                    System.out.println(list.get(i).toString());
+                }
             } catch (IOException | ClassNotFoundException e) {
                 System.out.println("Error: receive VolunteerDTO List");
                 e.printStackTrace();
             }
-            //매너 온도를 입력한다면. 아래 작업 만들기.
         } else {
             System.out.println("권한이 없습니다.");
         }
 
     }
 
-    public void activityAccept() { //봉사 승인
-
+    public void activityAccept(VolunteerDTO volunteerDTO) { //봉사 승인
+        VolunteerDTO volunteer = volunteerDTO;
+        protocolHeader = new ProtocolHeader(ProtocolType.ACCEPTANCE, ProtocolCode.ACCEPT, ProtocolKind.MANAGER);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(volunteer);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        String result = "";
+        try {
+            result = (String) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
     }
-    public void activityReject() { // 봉사 거절
 
+    public void activityReject(VolunteerDTO volunteerDTO) { // 봉사 거절
+        VolunteerDTO volunteer = volunteerDTO;
+        protocolHeader = new ProtocolHeader(ProtocolType.ACCEPTANCE, ProtocolCode.REJECT, ProtocolKind.MANAGER);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(volunteer);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        String result = "";
+        try {
+            result = (String) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
     }
 
-    public void registerServiceActivity() { //봉사 활동 신청
-
+    public void registerServiceActivity(ServiceInfoDTO serviceInfoDTO) { //봉사 활동 신청
+        VolunteerDTO volunteerDTO = new VolunteerDTO();
+        volunteerDTO.setUser_UserPK(userDTO.getUserPK());
+        volunteerDTO.setProcessingResult("승인 전");
+        volunteerDTO.setServiceInfo_ServiceInfoPK(serviceInfoDTO.getServiceInfoPK());
+        protocolHeader = new ProtocolHeader(ProtocolType.REGISTER, ProtocolCode.REGISTER_SERVICE_ACTIVITY, ProtocolKind.VOLUNTEER);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(volunteerDTO);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        String result = "";
+        try {
+            result = (String) ois.readObject();
+            System.out.println(result);
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
     }
 
-    public void mannerTemperature() {// 매너온도 입력 -> updateUser
-
+    public void mannerTemperature(UserDTO userDTO, int manner) {// 매너온도 입력 -> updateUser
+        //클릭 시 해당 유저 정보를 가져옴
+        userDTO.setMannerTemperature(manner);
+        protocolHeader = new ProtocolHeader(ProtocolType.REGISTER, ProtocolCode.MANNER_TEMPERATURE, ProtocolKind.MANAGER);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(userDTO);
+            oos.flush();
+        }catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        String result = "";
+        try {
+            result = (String) ois.readObject();
+            System.out.println(result);
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
     }
 
-    public void fieldServiceSelect() {//필터링
-        ServiceInfoDTO serviceInfoDTO = new ServiceInfoDTO();
-        String srvcCLCode = null, srvcCSCode = null, progrmSj =null, MnnstNm =null;
-        int sidocd = 0;
-        Date progrmBgnde = null, progrmEndde = null;
+    public void fieldServiceSelect(ServiceInfoDTO serviceInfoDTO) {
+        ServiceInfoDTO service = serviceInfoDTO;
+        String srvcCLCode = serviceInfoDTO.getSrvcCLCode(), srvcCSCode = serviceInfoDTO.getSrvcCSCode(),
+                progrmSj = serviceInfoDTO.getProgrmSj(), MnnstNm = serviceInfoDTO.getMnnstNm();
+
+        int sidocd = serviceInfoDTO.getSidoCd();
+
+        Date progrmBgnde = serviceInfoDTO.getProgrmBgnde(), progrmEndde = serviceInfoDTO.getProgrmEndde();
+
         //각각의 변수에 매핑을 필터링란에 있는 것들과 해야할 듯.
-        if(srvcCLCode != null ){
+        if (srvcCLCode != null) {
             serviceInfoDTO.setSrvcCLCode(srvcCLCode);
         }
-        if(srvcCSCode != null ){
+        if (srvcCSCode != null) {
             serviceInfoDTO.setSrvcCSCode(srvcCSCode);
         }
-        if(progrmSj != null ){
+        if (progrmSj != null) {
             serviceInfoDTO.setProgrmSj(progrmSj);
         }
-        if(MnnstNm != null ){
+        if (MnnstNm != null) {
             serviceInfoDTO.setMnnstNm(MnnstNm);
         }
-        if(sidocd != 0 ){
+        if (sidocd != 0) {
             serviceInfoDTO.setSidoCd(sidocd);
         }
-        if(progrmBgnde != null ){
+        if (progrmBgnde != null) {
             serviceInfoDTO.setProgrmBgnde(progrmBgnde);
         }
-        if(progrmEndde != null ){
+        if (progrmEndde != null) {
             serviceInfoDTO.setProgrmEndde(progrmEndde);
         }
         protocolHeader = new ProtocolHeader(ProtocolType.FILTERING, ProtocolCode.FILTER, ProtocolKind.VOLUNTEER);
@@ -361,6 +468,17 @@ public class UserEventController {
             oos.writeObject(serviceInfoDTO);
             oos.flush();
         } catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        List<ServiceInfoDTO> list = null;
+
+        try {
+            list = (List<ServiceInfoDTO>) ois.readObject();
+            for(int i=0; i<list.size(); i++) {
+                System.out.println(list.get(i).toString());
+            }
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error");
             e.printStackTrace();
         }
