@@ -53,7 +53,7 @@
         AND ServiceInfo_ServiceInfoPK = #{serviceInfoPK}
     </select>
 
-    <select id="getVolunteerDone" parameterType="int"  resultMap="volunteerResultMap">
+    <select id="getVolunteerDone" parameterType="int"  resultType="persistence.dto.VolunteerDTO">
         <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* 단 처리상태가 별점 미등록인  것들만-->
         SELECT *
         FROM volunteer
