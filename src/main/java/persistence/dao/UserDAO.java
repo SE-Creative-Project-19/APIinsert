@@ -113,17 +113,13 @@ public class UserDAO {
         return userDTO;
     }
 
-    public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS, int pageNo) { //TODO 봉사자 리스트를 바탕으로 해당 유저DTO 리스트를  return
+    public List<UserDTO> getUsersByPk(List<VolunteerDTO> volunteerDTOS) { //TODO 봉사자 리스트를 바탕으로 해당 유저DTO 리스트를  return
         List<UserDTO> list = null;
         if(volunteerDTOS.size() == 0) return null;
-        int pageSize = 10;
-        int offset = (pageNo - 1) * pageSize;
         SqlSession session = sqlSessionFactory.openSession();
 
         try{
             Map<String, Object> parameterMap = new HashMap<>();
-            parameterMap.put("pageSize", pageSize);
-            parameterMap.put("offset", offset);
             parameterMap.put("volunteerDTOS", volunteerDTOS);
             list = session.selectList("mapper.UserMapper.getUsersByPk", parameterMap);
         } finally {
