@@ -10,40 +10,39 @@
         <result property="userPK" column="User_UserPK" />
     </resultMap>
 
-
-    <!-- 추가적인 쿼리들... -->
-
-    <select id="getServiceHistory" resultMap="volunteerResultMap">
+    <select id="getVolunteerService" resultType="java.util.Map">
         SELECT
             u.Name AS 신청자명,
             s.progrmSj AS 봉사제목,
             s.mnnstNm AS 기관명,
             s.nanmmbyNm AS 주소,
             s.nanmmbyNmAdmn AS 담당자명,
-            s.actPlace AS 봉사장소
+            s.actPlace AS 봉사장소,
+            v.processingResult AS 신청상태
         FROM
             serviceinfo AS s
                 INNER JOIN volunteer AS v ON s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK
                 INNER JOIN user AS u ON u.UserPK = v.User_UserPK
         WHERE
-            s.ProcessingResult in ('별점 미등록', '봉사 완료')
-    </select> <!-- 봉사 이력 조회 -->
+            u.ID = #{id} AND v.ProcessingResult in ('신청', '취소', '승인', '거절')
+    </select> <!-- 봉사 신청 조회 -->
 
-    <select id="getVolunteer" resultMap="volunteerResultMap">
+    <select id="getVolunteerServiceHistory" resultType="java.util.Map">
         SELECT
             u.Name AS 신청자명,
             s.progrmSj AS 봉사제목,
             s.mnnstNm AS 기관명,
             s.nanmmbyNm AS 주소,
             s.nanmmbyNmAdmn AS 담당자명,
-            s.actPlace AS 봉사장소
+            s.actPlace AS 봉사장소,
+            v.processingResult AS 신청상태
         FROM
             serviceinfo AS s
                 INNER JOIN volunteer AS v ON s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK
                 INNER JOIN user AS u ON u.UserPK = v.User_UserPK
         WHERE
-            s.ProcessingResult in ('신청', '취소', '승인', '거절')
-    </select> <!-- 신청한 봉사활동 조회 -->
+            u.ID = #{id} AND v.ProcessingResult in ('별점 미등록', '봉사 완료')
+    </select> <!-- 봉사 내역 조회 -->
 
     <select id="getVolunteerApplicant" resultMap="volunteerResultMap">
         <!-- 기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer 테이블과 비교하여 같은 infoPk를 가진 row를 select* -->
@@ -62,6 +61,7 @@
         WHERE v.processingResult = '별점 미등록'
         AND si.mnnstNm = #{facility}
     </select>
+
     <update id="updateVolunteer">
         UPDATE volunteer
         <set>
@@ -77,6 +77,7 @@
         </set>
         WHERE volunteerPK = #{volunteerDTO.volunteerPK}
     </update>
+
     <update id="updateVolunteerByTime">
         UPDATE volunteer
         SET processingResult = '별점 미등록'
