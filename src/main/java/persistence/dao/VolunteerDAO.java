@@ -49,9 +49,10 @@ public class VolunteerDAO {
 
     }
 
-    public List<VolunteerDTO> getVolunteerApplicant(String facility) {// 기관이름으 바탕으로 해당하는 servieInfoPk를 조인한 후 volunteer와 비교해서 가져옵니다.
+    public List<VolunteerDTO> getVolunteerApplicant(int serviceInfoPK) {//TODO serviceinfo_pk를 가지고 해당하는 volunteerDTO list를 출력합니다.
+
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerApplicant", facility);
+            List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerApplicant", serviceInfoPK);
             return volunteerDTOList;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,10 +74,12 @@ public class VolunteerDAO {
     }
 
 
-    public List<VolunteerDTO> getVolunteerDone(String facility) { // 봉사 완료 후 별점을 등록하지 못한 봉사 신청 리스트를 return
+
+    public List<VolunteerDTO> getVolunteerDone(int serviceInfoPK) { //TODO 봉사 완료 후 별점을 등록하지 못한 봉사 신청 리스트를 return
+
         try(SqlSession session = sqlSessionFactory.openSession()) {
 
-            List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerDone", facility);
+            List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerDone", serviceInfoPK);
             return volunteerDTOList;
         } catch (Exception e){
             e.printStackTrace();

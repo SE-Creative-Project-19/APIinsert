@@ -3,6 +3,7 @@ package persistence.dao;
 import org.apache.ibatis.session.SqlSession;
 import persistence.dto.ServiceInfoDTO;
 import org.apache.ibatis.session.SqlSessionFactory;
+import persistence.dto.VolunteerDTO;
 
 import java.util.*;
 
@@ -12,7 +13,19 @@ public class ServiceInfoDAO {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
+    public  List<ServiceInfoDTO> selectByMnnstNm(String facility) { // 담당기관에 해당하는 기관명을 바탕으로 해당 기관의 봉사활동 내역을 리스트로 가져옵니다.
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            List<ServiceInfoDTO> serviceInfoDTOS = session.selectList("mapper.ServiceInfoMapper.selectByMnnstNm", facility);
+            return serviceInfoDTOS;
+        } catch (Exception e) {
+            System.out.println("에러발생");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<ServiceInfoDTO> getServiceInfoList(int pageNo) { // 전체 리스트 중에서 원하는 페이지의 리스트를 10개씩 출력
+
         int pageSize = 10;
         int offset = (pageNo - 1) * pageSize;
 

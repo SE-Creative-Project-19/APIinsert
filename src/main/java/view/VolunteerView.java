@@ -29,9 +29,9 @@ public class VolunteerView {
             System.out.println("");
         }
     }
-    public void showVolunteerApplicant(String facility){ //TODO 봉사 담당자는 자신의 봉사 기관에 신청한 사람의 명단을 확인합니다 및 처리 이미지
-        List<VolunteerDTO> volunteerDTOS = service.getVolunteerApplicant(facility); //TODO 봉사 담당자는 volunteerService에서 신청자를 얻음, serviceInfo.progrmEndde의 날짜가 지났을 경우 select 제외
-        List<UserDTO> userDTOS = userService.getUsersByPK(volunteerDTOS, 1);
+    public void showVolunteerApplicant(int serviceInfoPK){ //TODO 봉사 담당자는 자신의 봉사 기관에 신청한 사람의 명단을 확인합니다 및 처리 이미지
+        List<VolunteerDTO> volunteerDTOS = service.getVolunteerApplicant(serviceInfoPK); //TODO 봉사 담당자는 volunteerService에서 신청자를 얻음, serviceInfo.progrmEndde의 날짜가 지났을 경우 select 제외
+        List<UserDTO> userDTOS = userService.getUsersByPK(volunteerDTOS);
 
         for(int i = 0; i < volunteerDTOS.size(); i++){
             VolunteerDTO volunteerDTO = volunteerDTOS.get(i);
@@ -46,10 +46,10 @@ public class VolunteerView {
             service.updateVolunteer(volunteerDTO); //TODO  변경된 ProcessingResult를 업데이트 합니다.
         }
     }
-    public void showVolunteerDone(String facility){//TODO 담당자는 활동이 완료되어 매너온도를 등록할 봉사자들을 출력합니다.
-        List<VolunteerDTO> volunteerDTOS = service.getVolunteerDone(facility); //TODO 해당 기관에서 봉사 처리 상태가 봉사 완료인 volunteer를 select함.
+    public void showVolunteerDone(int serviceInfoPK){//TODO 담당자는 활동이 완료되어 매너온도를 등록할 봉사자들을 출력합니다.
+        List<VolunteerDTO> volunteerDTOS = service.getVolunteerDone(serviceInfoPK); //TODO 해당 기관에서 봉사 처리 상태가 봉사 완료인 volunteer를 select함.
 
-        List<UserDTO> userDTOS = userService.getUsersByPK(volunteerDTOS, 1);
+        List<UserDTO> userDTOS = userService.getUsersByPK(volunteerDTOS);
         for(int i = 0; i < volunteerDTOS.size(); i++){
             VolunteerDTO volunteerDTO = volunteerDTOS.get(i);
             UserDTO userDTO = userDTOS.get(i);

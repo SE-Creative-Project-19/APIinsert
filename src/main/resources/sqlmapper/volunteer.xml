@@ -50,7 +50,7 @@
         FROM serviceinfo si
         JOIN volunteer v ON si.serviceInfoPK = v.ServiceInfo_ServiceInfoPK
         WHERE v.processingResult = '신청'
-        AND si.mnnstNm = #{facility}
+        AND si.ServiceInfoPK = #{serviceInfoPK}
     </select>
 
     <select id="getVolunteerDone" resultMap="volunteerResultMap">
@@ -59,7 +59,7 @@
         FROM serviceinfo si
         JOIN volunteer v ON si.serviceInfoPK = v.ServiceInfo_ServiceInfoPK
         WHERE v.processingResult = '별점 미등록'
-        AND si.mnnstNm = #{facility}
+        AND si.ServiceInfoPK = #{serviceInfoPK}
     </select>
 
     <update id="updateVolunteer">
