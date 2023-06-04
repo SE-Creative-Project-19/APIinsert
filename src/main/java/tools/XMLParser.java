@@ -16,17 +16,13 @@ import java.net.URLEncoder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 
 
 import persistence.dao.ServiceInfoDAO;
 import persistence.dao.VolunteerDAO;
 import persistence.dto.ServiceInfoDTO;
-import service.ServiceInfoService;
-import view.ServiceInfoView;
 
 public class XMLParser {
 	final String SERVICE_KEY = "j2AFfROSPcDKEoCNFRK5BwwauKN5RhguWzqMhZp235enHvWCS0lr4Uh6c6oP1bBpCmnTLCwg%2BigmE65B5FsdkA%3D%3D"; // PERSONAL SERVICE_KEY
@@ -41,7 +37,11 @@ public class XMLParser {
 	}
 
 	public void getInfoByAPI() throws IOException { // Get Information By using API
-
+        String resource = "config/config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(sqlSessionFactory);
 		StringBuilder urlBuilder = new StringBuilder(
 				"http://openapi.1365.go.kr/openapi/service/rest/VolunteerPartcptnService/getVltrPartcptnItem"); /*
 		 * URL
@@ -83,7 +83,7 @@ public class XMLParser {
 
 		ServiceInfoDAO dao = new ServiceInfoDAO(sqlSessionFactory);
 		VolunteerDAO volunteerDAO = new VolunteerDAO(sqlSessionFactory);
-		ServiceInfoService service = new ServiceInfoService(dao,volunteerDAO);
+
 
 
 		if (name.text().equals("")) {
@@ -230,7 +230,7 @@ public class XMLParser {
 			serviceInfoDTO.setSidoCd(sidoCd);
 			System.out.println("실행결과");
 			System.out.println(serviceInfoDTO.toString());
-			service.insertServiceInfo(serviceInfoDTO);
+            dao.insertServiceInfo(serviceInfoDTO);
 
 		}
 

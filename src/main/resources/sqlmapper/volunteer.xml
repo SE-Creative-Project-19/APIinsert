@@ -10,6 +10,7 @@
         <result property="userPK" column="User_UserPK" />
     </resultMap>
 
+
     <select id="getVolunteerService" resultType="java.util.Map">
         SELECT
             u.Name AS 신청자명,
@@ -44,38 +45,36 @@
             u.ID = #{id} AND v.ProcessingResult in ('별점 미등록', '봉사 완료')
     </select> <!-- 봉사 내역 조회 -->
 
-    <select id="getVolunteerApplicant" resultMap="volunteerResultMap">
+    <select id="getVolunteerApplicant" parameterType="int" resultType="persistence.dto.VolunteerDTO">
         <!-- 기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer 테이블과 비교하여 같은 infoPk를 가진 row를 select* -->
         SELECT *
-        FROM serviceinfo si
-        JOIN volunteer v ON si.serviceInfoPK = v.ServiceInfo_ServiceInfoPK
-        WHERE v.processingResult = '신청'
-        AND si.ServiceInfoPK = #{serviceInfoPK}
+        FROM volunteer
+        WHERE processingResult = '신청'
+        AND ServiceInfo_ServiceInfoPK = #{serviceInfoPK}
     </select>
 
-    <select id="getVolunteerDone" resultMap="volunteerResultMap">
+    <select id="getVolunteerDone" parameterType="int"  resultMap="volunteerResultMap">
         <!--기관 명을 바탕으로 serviceInfo 테이블을 조인한 후 volunteer  테이블과 비교하여 같은 infoPk를 가진 row를 select* 단 처리상태가 별점 미등록인  것들만-->
         SELECT *
-        FROM serviceinfo si
-        JOIN volunteer v ON si.serviceInfoPK = v.ServiceInfo_ServiceInfoPK
-        WHERE v.processingResult = '별점 미등록'
-        AND si.ServiceInfoPK = #{serviceInfoPK}
+        FROM volunteer
+        WHERE processingResult = '별점 미등록'
+        AND ServiceInfo_ServiceInfoPK = #{serviceInfoPK}
     </select>
 
-    <update id="updateVolunteer">
+    <update id="updateVolunteer" parameterType="java.util.Map">
         UPDATE volunteer
         <set>
-            <if test="volunteerDTO.processingResult != null">
-                processingResult = #{volunteerDTO.processingResult},
+            <if test="processingResult != null">
+                processingResult = #{processingResult},
             </if>
-            <if test="volunteerDTO.serviceInfoPK != 0">
-                ServiceInfo_ServiceInfoPK = #{volunteerDTO.serviceInfoPK},
+            <if test="ServiceInfo_ServiceInfoPK != 0">
+                ServiceInfo_ServiceInfoPK = #{ServiceInfo_ServiceInfoPK},
             </if>
-            <if test="volunteerDTO.userPK != 0">
-                User_UserPK = #{volunteerDTO.userPK},
+            <if test="User_UserPK != 0">
+                User_UserPK = #{User_UserPK}
             </if>
         </set>
-        WHERE volunteerPK = #{volunteerDTO.volunteerPK}
+        WHERE volunteerPK = #{volunteerPK}
     </update>
 
     <update id="updateVolunteerByTime">

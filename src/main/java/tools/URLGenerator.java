@@ -19,9 +19,9 @@ public class URLGenerator {
 	String WEB_DRIVER_PATH = "C:\\SeleniumBasic\\chromedriver.exe"; // Set ChromeDriver PATH
 
 	private String url = "https://www.1365.go.kr/vols/1572247904127/partcptn/timeCptn.do"; // URL that contains Program No.
-	
+
 	private int page;
-	
+
 	private Vector<String> v = new Vector<String>();
 
 	public URLGenerator() {
@@ -39,11 +39,11 @@ public class URLGenerator {
 		options.addArguments("--remote-allow-origins=*");
 
 		driver = new ChromeDriver(options);
-		
+
 		// crawl
 		crawl();
 	}
-	
+
 	public Vector<String> getVector() {
 		return v;
 	}
@@ -51,41 +51,41 @@ public class URLGenerator {
 	private void crawl() {
 		try {
 			driver.get(url);
-			
+
 			// Create JavaScriptExecutor for Using JavaScript in Selenium
 			JavascriptExecutor js = (JavascriptExecutor)driver;
-			
+
 			try {
 				Thread.sleep(1000); // Waiting For Loading
 			} catch(InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+
 			WebElement pageNum = driver.findElement(By.className("search_result"));
 			String[] tmpArr = pageNum.getAttribute("innerHTML").split("/");
 			String tmp = tmpArr[3].replace("]<", "");
-			
+
 			page = Integer.parseInt(tmp); // Total Page
-			
-			for(int i = 1; i < 20; i++) {
+
+			for(int i = 1; i < 3; i++) {
 				if(i != 1) {
 					js.executeScript("fnPage(" + i + ")"); // Next Page Script Function
 				}
-				
+
 				WebElement progUl = driver.findElement(By.className("list_wrap")); // Get ul Element
 				List<WebElement> progLi = progUl.findElements(By.tagName("li")); // Get li Elements
-				
+
 				for(WebElement item : progLi) {
 					WebElement inputTag = item.findElement(By.tagName("input")); // Get input Tag
-					System.out.println(inputTag.getAttribute("value")); 
+					System.out.println(inputTag.getAttribute("value"));
 					v.add(inputTag.getAttribute("value")); // Add Program No. to Vector
 				}
-				
+
 				System.out.println();
 			}
-			
-			
-			
+
+
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
