@@ -37,10 +37,8 @@ public class ProtocolCode {
     public final static byte MANNER_TEMPERATURE = 2;
 
     //TYPE FILTERING
-    public final static byte FIELD_SERVICE_SELECT = 1;
-    public final static byte PERIOD_SERVICE_SELECT = 2;
-    public final static byte SERVICE_AREA_SELECT = 3;
-    public final static byte SERVICE_NAME_SELECT = 4;
+    public final static byte FILTER = 1;
+
 
     //TYPE CHATTING
 

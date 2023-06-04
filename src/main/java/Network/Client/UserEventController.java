@@ -5,6 +5,7 @@ import Network.Protocol.ProtocolHeader;
 import Network.Protocol.ProtocolKind;
 import Network.Protocol.ProtocolType;
 import persistence.MyBatisConnectionFactory;
+import persistence.dao.ServiceInfoDAO;
 import persistence.dao.UserDAO;
 import persistence.dto.ServiceInfoDTO;
 import persistence.dto.UserDTO;
@@ -15,6 +16,7 @@ import view.UserView;
 import view.VolunteerView;
 
 import java.io.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -188,7 +190,7 @@ public class UserEventController {
         }
     }
 
-    public void showMyInfo() {//정상 작동
+    public void showMyInfo() {
         userDTO.setID("test");
         try {
             protocolHeader = new ProtocolHeader(ProtocolType.MYPAGE, ProtocolCode.SHOW_MY_INFO, ProtocolKind.COMMON);
@@ -212,8 +214,7 @@ public class UserEventController {
         }
     }
 
-    public void updateMyInfo() { //TODO 상철: 값이 안 바뀜
-        userDTO.setID("updateTest");
+    public void updateMyInfo() {
         userDTO.setName("PCJ");
         userDTO.setAddress("경상북도 구미시 옥계북로 33 105동 1402호");
         userDTO.setPhoneNumber("010-3333-4444");
@@ -272,14 +273,22 @@ public class UserEventController {
         //TODO id가 파라미터로 받아야 내 아이디에 맞는 것들만 나오는 게 아닌가?
     }
 
-    public void participateInServiceList() { // 봉사활동에 참여한 봉사자 리스트
+    public void participateInServiceListManagement() { // 봉사활동에 참여한 봉사자 리스트 -> 신청 관리
         //TODO 이거는 해당 되는 부분이 어디 있는 지 모르겠음 있으면 주석 지우고 있는 부분 작성 좀
+        //활동 리스트 출력
+        //showuserlist신청(servpk) //유저정보 리스트
+
+    }
+    public void participateInServiceListResult() { // 봉사활동에 참여한 봉사자 리스트 -> 결과 관리
+        //TODO 이거는 해당 되는 부분이 어디 있는 지 모르겠음 있으면 주석 지우고 있는 부분 작성 좀
+        //활동 리스트 출력
+        //showuserlist별점미등록(servpk)
+
     }
 
     public void myOrganizationActivityList() { // 본인 소속 기관의 봉사활동 리스트
         if (userDTO.getType() == 3) { //담당자 일 때만 가능
             userDTO.setFacility("어린이집"); //테스트 용
-
             try {
                 protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.MY_ORGANIZATION_ACTIVITY_LIST, ProtocolKind.MANAGER);
                 oos.writeObject(protocolHeader);
@@ -307,33 +316,54 @@ public class UserEventController {
     public void activityAccept() { //봉사 승인
 
     }
-
     public void activityReject() { // 봉사 거절
 
     }
 
-    public void registerServiceActivity() { //봉사 활동 등록 [봉사 승인 이후]
+    public void registerServiceActivity() { //봉사 활동 신청
 
     }
 
-    public void mannerTemperature() {// 매너온도 입력
+    public void mannerTemperature() {// 매너온도 입력 -> updateUser
 
     }
 
     public void fieldServiceSelect() {//필터링
-
-    }
-
-    public void periodServiceSelect() {//필터링
-
-    }
-
-    public void serviceAreaSelect() {// 필터링
-
-    }
-
-    public void serviceNameSelect() { //필터링
-
+        ServiceInfoDTO serviceInfoDTO = new ServiceInfoDTO();
+        String srvcCLCode = null, srvcCSCode = null, progrmSj =null, MnnstNm =null;
+        int sidocd = 0;
+        Date progrmBgnde = null, progrmEndde = null;
+        //각각의 변수에 매핑을 필터링란에 있는 것들과 해야할 듯.
+        if(srvcCLCode != null ){
+            serviceInfoDTO.setSrvcCLCode(srvcCLCode);
+        }
+        if(srvcCSCode != null ){
+            serviceInfoDTO.setSrvcCSCode(srvcCSCode);
+        }
+        if(progrmSj != null ){
+            serviceInfoDTO.setProgrmSj(progrmSj);
+        }
+        if(MnnstNm != null ){
+            serviceInfoDTO.setMnnstNm(MnnstNm);
+        }
+        if(sidocd != 0 ){
+            serviceInfoDTO.setSidoCd(sidocd);
+        }
+        if(progrmBgnde != null ){
+            serviceInfoDTO.setProgrmBgnde(progrmBgnde);
+        }
+        if(progrmEndde != null ){
+            serviceInfoDTO.setProgrmEndde(progrmEndde);
+        }
+        protocolHeader = new ProtocolHeader(ProtocolType.FILTERING, ProtocolCode.FILTER, ProtocolKind.VOLUNTEER);
+        try {
+            oos.writeObject(protocolHeader);
+            oos.writeObject(serviceInfoDTO);
+            oos.flush();
+        } catch (IOException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
     }
 
 }

@@ -60,7 +60,7 @@ public class ServerMsg { //client to server
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
-                        int result = userDAO.insertManager(userDTO);
+                        int result = userDAO.insertManager(userDTO, userDTO.getFacility());
                         String resultStr = "";
                         if (result == 1) {
                             resultStr = "중복된 아이디 입니다.";
@@ -142,7 +142,7 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        boolean result = userDAO.findUserPassword(userDTO.getName(), userDTO.getID(), userDTO.getPhoneNumber());
+                        boolean result = userDAO.updatePassword(userDTO);
 
                         oos.writeObject(result);
                         oos.flush();
@@ -278,29 +278,19 @@ public class ServerMsg { //client to server
 
                 }
             } else if (type == ProtocolType.FILTERING) {// TODO 필터링
-                if (code == ProtocolCode.FIELD_SERVICE_SELECT) {// 분야별 필터링
+                if (code == ProtocolCode.FILTER) {//필터링
 
                     if (kind == ProtocolKind.VOLUNTEER) {
+                        try {
+                            ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
+                            ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
 
-                    }
-                } else if (code == ProtocolCode.PERIOD_SERVICE_SELECT) {// 기간별 필터링
-
-                    if (kind == ProtocolKind.VOLUNTEER) {
-
-                    }
-                } else if (code == ProtocolCode.SERVICE_AREA_SELECT) {// 지역별 필터링
-
-                    if (kind == ProtocolKind.VOLUNTEER) {
-
-                    }
-                } else if (code == ProtocolCode.SERVICE_NAME_SELECT) {// 분야명 필터링
-
-                    if (kind == ProtocolKind.VOLUNTEER) {
-
+                        } catch (IOException | ClassNotFoundException e) {
+                            System.out.println("Error");
+                            e.printStackTrace();
+                        }
                     }
                 }
-            } else if (type == ProtocolType.CHATTING) {// TODO 채팅
-
             } else {
                 System.out.println("매칭되는 프로토콜 type이 없습니다.");
             }
