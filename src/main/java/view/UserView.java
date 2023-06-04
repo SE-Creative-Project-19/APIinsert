@@ -46,15 +46,15 @@ public class UserView {
         }
     }
 
-    public void findUserID(String name, String phoneNumber) {
-        // UserService를 이용하여 ID 찾기 로직을 처리하는 코드
-        String userID = userService.findUserId(name, phoneNumber);
-        if (userID != null) {
-            System.out.println("찾은 사용자 ID: " + userID);
-        } else {
-            System.out.println("해당 전화번호로 등록된 사용자가 없습니다.");
-        }
-    }
+//    public void findUserID(String name, String phoneNumber) {
+//        // UserService를 이용하여 ID 찾기 로직을 처리하는 코드
+//        String userID = userService.findUserId(name, phoneNumber);
+//        if (userID != null) {
+//            System.out.println("찾은 사용자 ID: " + userID);
+//        } else {
+//            System.out.println("해당 전화번호로 등록된 사용자가 없습니다.");
+//        }
+//    }
 
     public void resetPassword(String id, String phoneNumber, String newPassword) {
         // 사용자의 존재 여부 확인

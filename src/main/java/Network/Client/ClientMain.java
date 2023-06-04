@@ -17,6 +17,15 @@ public class ClientMain {
 
             UserEventController userEventController = new UserEventController(oos, ois);
 
+//            userEventController.signUp();
+//            userEventController.login();
+//            userEventController.checkID();
+//            userEventController.findMyID();
+//            userEventController.findMyPW();
+//            userEventController.updateMyInfo();
+//            userEventController.showMyInfo();
+//            userEventController.inquiryServiceList();
+
 
 
         }

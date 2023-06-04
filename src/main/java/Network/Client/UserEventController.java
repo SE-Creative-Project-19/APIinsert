@@ -108,7 +108,7 @@ public class UserEventController {
         try {
             userDTO = (UserDTO) ois.readObject();
             if (userDTO != null) {
-                System.out.printf("로그인 성공");
+                System.out.println("로그인 성공");
             } else {
                 System.out.println("로그인 실패");
             }
@@ -120,8 +120,8 @@ public class UserEventController {
     }
 
     public void findMyID() {
-        userDTO.setName("admin");
-        userDTO.setPhoneNumber("010-3333-4444");
+        userDTO.setName("chanjin");
+        userDTO.setPhoneNumber("010-1111-2222");
         protocolHeader = new ProtocolHeader(ProtocolType.FIND_MY_INFO, ProtocolCode.FIND_ID, ProtocolKind.COMMON);
         try {
             oos.writeObject(protocolHeader);
@@ -145,9 +145,10 @@ public class UserEventController {
     }
 
     public void findMyPW() {
-        userDTO.setID("test");//setID
-        userDTO.setPhoneNumber("010-1111-2222");//setPhone
-        userDTO.setName("chanjin");//setName
+        userDTO.setName("chanjin");
+        userDTO.setID("test");
+        userDTO.setPhoneNumber("010-1111-2222");
+        userDTO.setPW("PW");
         protocolHeader = new ProtocolHeader(ProtocolType.FIND_MY_INFO, ProtocolCode.FIND_PW, ProtocolKind.COMMON);
         try {
             oos.writeObject(protocolHeader);
@@ -156,32 +157,13 @@ public class UserEventController {
         } catch (IOException e) {
             System.out.println("Error: send findMyPW");
         }
-        boolean result = true;
+        boolean result = false;
         try {
             result = (boolean) ois.readObject(); //비밀번호 재설정 해주세요. true 이면
             System.out.println(result);
+
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: receive findMyPW");
-        }
-    }
-
-    public void setUpdatePW() {
-        //새로운 비번 set -> 비밀번호 찾기와 회원 정보 수정에서의 비밀번호 재설정 기능이 같아서 하나로 묶음.
-        userDTO.setPW("PW");
-        try {
-            protocolHeader = new ProtocolHeader(ProtocolType.MYPAGE, ProtocolCode.SET_NEW_PW, ProtocolKind.COMMON);
-            oos.writeObject(protocolHeader);
-            oos.writeObject(userDTO);
-            oos.flush();
-        } catch (IOException e) {
-            System.out.println("Error: send UpdatePW");
-        }
-        String result = "";
-        try {
-            result = (String) ois.readObject();
-            System.out.println(result);
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error: receive UpdatePW");
         }
     }
 
@@ -210,9 +192,11 @@ public class UserEventController {
     }
 
     public void updateMyInfo() {
-        userDTO.setName("PCJ");
+        userDTO.setID("test");
+        userDTO.setName("LSH");
         userDTO.setAddress("경상북도 구미시 옥계북로 33 105동 1402호");
-        userDTO.setPhoneNumber("010-3333-4444");
+        userDTO.setPhoneNumber("010-2222-3333");
+        userDTO.setPW("1234");
         if (userDTO.getType() == 3) { //담당자의 경우
             userDTO.setFacility("기관");
         }
@@ -236,9 +220,8 @@ public class UserEventController {
         }
     }
 
-    public void inquiryServiceList() {
-        System.out.print("페이지 번호를 입력해주세요: ");
-        int page = sc.nextInt();
+    public void inquiryServiceList() { //TODO CLI 환경에서 기능 테스트 완료 밑에서부터는 GUI 연결하면서 해야함.
+        int page = 1;
         ServiceInfoView serviceInfoView = new ServiceInfoView();
         protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.SERVICE_LIST_INQUIRY, ProtocolKind.VOLUNTEER);
         try {

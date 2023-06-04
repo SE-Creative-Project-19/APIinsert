@@ -188,26 +188,6 @@ public class ServerMsg { //client to server
                     }
                 }
 
-            } else if (code == ProtocolCode.SET_NEW_PW) {// 새로운 비밀번호로 재설정
-
-                if (kind == ProtocolKind.COMMON) {
-
-                    try {
-                        UserDTO userDTO = (UserDTO) objectInput.readObject();
-                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        userDAO.updateUser(userDTO);
-
-                        String result = "비밀번호 재설정";
-                        oos.writeObject(result);
-                        oos.flush();
-
-                    } catch (ClassNotFoundException e) {
-                        System.out.println("Error");
-                        e.printStackTrace();
-                    }
-
-                }
-
             }
         } else if (type == ProtocolType.INQUIRY) {// TODO 조회
             if (code == ProtocolCode.SERVICE_LIST_INQUIRY) {// 봉사활동 목록 조회
