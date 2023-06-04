@@ -55,7 +55,7 @@ public class ServiceInfoView {
         this.service = service;
     }
 
-    public void serviceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo){//TODO dto 정보를 기준으로 필터링하고 pageNo에 해당하는 페이지를 출력합니다.
+    public void serviceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo){// dto 정보를 기준으로 필터링하고 pageNo에 해당하는 페이지를 출력합니다.
         List<ServiceInfoDTO> serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO, pageNo);
         for (ServiceInfoDTO serviceInfo : serviceInfoList) {
             System.out.println(serviceInfo.toString());
@@ -63,7 +63,7 @@ public class ServiceInfoView {
         System.out.println("실행 종료");
     }
 
-    public void displayServiceInfo(ServiceInfoDTO serviceInfoDTO) { //TODO 필터링을 적용한 봉사활동 정보를 출력합니   0+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++다. 만약 dto가 null일경우 처음 전체 리스트를 출력합니다.555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555
+    public void displayServiceInfo(ServiceInfoDTO serviceInfoDTO) { // 필터링을 적용한 봉사활동 정보를 출력합니다. 만약 dto가 null일경우 처음 전체 리스트를 출력합니다.
         Scanner scanner = new Scanner(System.in);
         List<ServiceInfoDTO> serviceInfoList = null;
 
@@ -72,12 +72,12 @@ public class ServiceInfoView {
             System.out.print("페이지 번호를 입력하세요: (0: 종료)");
             int pageNo = scanner.nextInt();
             if(pageNo == 0) break;
-            if (serviceInfoDTO == null){  //TODO DTO에 아무것도 없다는건 필터를 적용할게 없으므로 페이지 수에 맞게 출력한다.
+            if (serviceInfoDTO == null){  // DTO에 아무것도 없다는건 필터를 적용할게 없으므로 페이지 수에 맞게 출력한다.
                 System.out.println("필터링이 된것이 없습니다");
                 serviceInfoList = service.getServiceInfoList(pageNo);
                 printMainServiceInfo(serviceInfoList);
             }
-            else{ //TODO  해당 dto에 있는 정보를 바탕으로 필터링하여 list를 만들고 페이지에 맞게 가져온다.
+            else{ //  해당 dto에 있는 정보를 바탕으로 필터링하여 list를 만들고 페이지에 맞게 가져온다.
                 System.out.println("필터링이 되었습니다");
                 serviceInfoList = service.getServiceInfoByFilter(serviceInfoDTO,pageNo);
                 printMainServiceInfo(serviceInfoList);
@@ -85,8 +85,10 @@ public class ServiceInfoView {
         }
     }
 
+
     public void printMainServiceInfo(List<ServiceInfoDTO> list){  //TODO 봉사활동 정보에 대한 리스트를 메인이미지 기준으로 출력합니다
         int i= 1;
+
         for (ServiceInfoDTO serviceInfo : list) {
             Integer sidoCd = serviceInfo.getSidoCd();
             String sidoName = population.get(sidoCd);
@@ -105,7 +107,7 @@ public class ServiceInfoView {
             i++;
         }
     }
-    public void displayAllServiceInfo() { //TODO 그냥 실험용 출력 검사
+    public void displayAllServiceInfo() { // 그냥 실험용 출력 검사
         List<ServiceInfoDTO> serviceInfoList = service.getAllServiceInfo();
         for (ServiceInfoDTO serviceInfo : serviceInfoList) {
             System.out.println(serviceInfo.toString());

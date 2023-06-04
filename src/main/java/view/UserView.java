@@ -17,9 +17,15 @@ public class UserView {
         this.userService = userService;
     }
 
-    public void signUp(UserDTO user) {
+    public void signUpUser(UserDTO user) {
         // UserService를 이용하여 회원가입 로직을 처리하는 코드
         userService.insertUser(user);
+        System.out.println("회원가입이 완료되었습니다.");
+    }
+
+    public void signUpManager(UserDTO user, String facility) {
+        // UserService를 이용하여 회원가입 로직을 처리하는 코드
+        userService.insertManager(user, facility);
         System.out.println("회원가입이 완료되었습니다.");
     }
 
@@ -40,9 +46,9 @@ public class UserView {
         }
     }
 
-    public void findUserID(String phoneNumber) {
+    public void findUserID(String name, String phoneNumber) {
         // UserService를 이용하여 ID 찾기 로직을 처리하는 코드
-        String userID = userService.findUserId(phoneNumber);
+        String userID = userService.findUserId(name, phoneNumber);
         if (userID != null) {
             System.out.println("찾은 사용자 ID: " + userID);
         } else {
@@ -73,7 +79,7 @@ public class UserView {
         }
     }
 
-    public void showInfoUser(UserDTO userDTO) { //TODO  봉사 담당자 기준 봉사 신청자의 개인정보를 열람합니다. 아이디, 비번 제외
+    public void showInfoUser(UserDTO userDTO) {
         System.out.printf("이름 : %s \n", userDTO.getName() );
         System.out.printf("주소 : %s \n", userDTO.getAddress() );
         System.out.printf("전화번호 : %s \n", userDTO.getPhoneNumber() );
