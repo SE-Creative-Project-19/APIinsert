@@ -30,7 +30,7 @@
         FROM user
         WHERE UserPk IN
         <foreach collection="volunteerDTOS" item="volunteerDTO" separator="," open="(" close=")">
-            #{volunteerDTO.userPK}
+            #{volunteerDTO.User_UserPK}
         </foreach>
     </select> <!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.--><!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.-->
 
@@ -45,7 +45,6 @@
         SET PW = #{newPassword}
         WHERE ID = #{id} AND Name = #{name} AND PhoneNumber = #{phoneNumber}
     </update> <!-- 비밀번호 재설정 -->
-
 
     <update id="updateUser" parameterType="persistence.dto.UserDTO">
         UPDATE user
