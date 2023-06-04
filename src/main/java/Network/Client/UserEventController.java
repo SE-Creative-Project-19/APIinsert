@@ -19,6 +19,7 @@ import java.io.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserEventController {
@@ -269,8 +270,31 @@ public class UserEventController {
     }
 
     public void myParticipateInList() { //내가 참여한 봉사활동 리스트
-        //TODO 상철이 getVolunteer부분 파라미터 수정 및 내용 수정 바람.
-        //TODO id가 파라미터로 받아야 내 아이디에 맞는 것들만 나오는 게 아닌가?
+        protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.MY_PARTICIPATE_IN_LIST, ProtocolKind.VOLUNTEER);
+        userDTO.setID("test");
+        userDTO.setType(2);
+        List<Map<String, Object>> first = null;
+        List<Map<String, Object>> second = null;
+        //이미 로그인 하면 여기에 저장되는 userDTO는 유저이게 된다.
+        if(userDTO.getType() == 2) {
+            try {
+                oos.writeObject(protocolHeader);
+                oos.writeObject(userDTO);
+                oos.flush();
+            } catch (IOException e) {
+                System.out.println("Error: myParticipateInList");
+                e.printStackTrace();
+            }
+            try {
+                first = (List<Map<String,Object>>) ois.readObject();
+                second = (List<Map<String,Object>>) ois.readObject();
+                System.out.println(first.toString());
+                System.out.println(second.toString());
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Error: receive Error");
+                e.printStackTrace();
+            }
+        }
     }
 
     public void participateInServiceListManagement() { // 봉사활동에 참여한 봉사자 리스트 -> 신청 관리

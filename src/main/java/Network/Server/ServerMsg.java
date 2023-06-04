@@ -15,6 +15,7 @@ import persistence.dto.VolunteerDTO;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ServerMsg { //client to server
     private byte type, code, kind;
@@ -236,7 +237,20 @@ public class ServerMsg { //client to server
                 } else if (code == ProtocolCode.MY_PARTICIPATE_IN_LIST) {// 내가 참여한 봉사활동
 
                     if (kind == ProtocolKind.VOLUNTEER) {
+                        List<Map<String, Object>> first = null;
+                        List<Map<String, Object>> second = null;
+                        try {
+                            UserDTO userDTO = (UserDTO) objectInput.readObject();
+                            VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                            first = volunteerDAO.getVolunteerService(userDTO.getFacility());
+                            second = volunteerDAO.getVolunteerServiceHistory(userDTO.getFacility());
 
+                            oos.writeObject(first);
+                            oos.writeObject(second);
+                        } catch (ClassNotFoundException e) {
+                            System.out.println("Error");
+                            e.printStackTrace();
+                        }
                     }
 
                 } else if (code == ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST) {// 봉사활동 참여한 봉사자 리스트
