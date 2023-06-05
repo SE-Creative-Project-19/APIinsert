@@ -1,3 +1,4 @@
+
 package Network.Client;
 
 import Network.Protocol.ProtocolCode;
@@ -485,3 +486,4 @@ public class UserEventController {
     }
 
 }
+

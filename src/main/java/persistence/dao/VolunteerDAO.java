@@ -64,9 +64,13 @@ public class VolunteerDAO {
     public void updateVolunteer(VolunteerDTO volunteerDTO) {// 봉사 처리 결과를 수정합니다.  다른용도로도 가능
         SqlSession session = sqlSessionFactory.openSession();
         Map<String, Object> parameterMap = new HashMap<>();
-        parameterMap.put("volunteerDTO", volunteerDTO);
+        parameterMap.put("volunteerPK", volunteerDTO.getVolunteerPK());
+        parameterMap.put("processingResult", volunteerDTO.getProcessingResult());
+        parameterMap.put("User_UserPK", volunteerDTO.getUser_UserPK());
+        parameterMap.put("ServiceInfo_ServiceInfoPK", volunteerDTO.getServiceInfo_ServiceInfoPK());
+
         try {
-            session.update("mapper.VolunteerMapper.updateVolunteer", parameterMap);
+            session.update("mapper.VolunteerMapper.updateVolunteer", volunteerDTO);
             session.commit();
         } finally {
             session.close();
