@@ -35,9 +35,9 @@
     </select> <!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.--><!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.-->
 
     <select id="getId" resultType="String">
-        select ID
-        from mydb.user as u
-        where Name = #{Name} And PhoneNumber = #{PhoneNumber};
+        SELECT ID
+        FROM mydb.user AS u
+        WHERE Name = #{name} AND phoneNumber = #{phoneNumber};
     </select> <!-- ID찾기 -->
 
     <update id="updateUserPassword" parameterType="java.util.Map">
@@ -52,9 +52,11 @@
             <if test="mannerTemperature != 0">mannerTemperature = #{mannerTemperature},</if>
             <if test="address != null">address = #{address}, </if>
             <if test="name != null">name = #{name},</if>
-            <if test="facility != null">facility = #{facility}</if>
+            <if test="facility != null">facility = #{facility},</if>
+            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
+            <if test="PW != null">PW = #{PW}</if>
         </set>
-        WHERE ID = #{ID} AND phoneNumber = #{phoneNumber}
+        WHERE ID = #{ID}
     </update> <!-- 개인정보수정 -->
 
     <select id="checkDuplicateId" parameterType="String" resultType="int">
