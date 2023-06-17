@@ -56,6 +56,18 @@ public class ServiceInfoDAO {
             return null;
         }
     }
+    public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO) { // dto를 기준으로 필터링
+
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> parameterMap = new HashMap<>();
+            parameterMap.put("serviceInfoDTO", serviceInfoDTO);
+            List<ServiceInfoDTO> serviceInfoList = session.selectList("mapper.ServiceInfoMapper.getServiceInfoByFilter", parameterMap);
+            return serviceInfoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO){//  api에서 받아온 활동 정보를 insert할 때 사용합니다
         SqlSession session = sqlSessionFactory.openSession();
