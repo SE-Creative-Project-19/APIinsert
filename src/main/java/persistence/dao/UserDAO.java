@@ -122,6 +122,19 @@ public class UserDAO {
         }
     }   // 개인정보수정
 
+    public void updateManager(UserDTO userDTO, String selectedOrganization) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            userDTO.setFacility(selectedOrganization);
+            session.update("mapper.UserMapper.updateUser", userDTO);
+            session.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    } // 담당자 개인정보수정
+
     public String findUserId(String name, String phoneNumber) {
         SqlSession session = sqlSessionFactory.openSession();
         String userId = null;
