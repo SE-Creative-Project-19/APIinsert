@@ -46,6 +46,7 @@ public class functionTest {
             // 담당자의 봉사활동 조회 부터 승인, 별점 미등록자 조회, 별점 등록 까지
             List<ServiceInfoDTO> serviceInfoDTOS = serviceInfoDAO.selectByMnnstNm("사단법인 나눔세상 휴먼플러스"); //해당 기관의 현재 serviceInfoDTO list를 가져옴
             // 봉사활동 리스트에서 하나 선택했다면 volunteer리스트에서 해당 serviceInfo를 가진 애들만 출력한 후 user의 정보를 가지고온다.
+            System.out.println(serviceInfoDTOS.size());
             List<VolunteerDTO> list = volunteerDAO.getVolunteerApplicant(serviceInfoDTOS.get(0).getServiceInfoPK()); //해당 serviceInfoDTO 신청자 명단을 가져옴
             List<UserDTO> userDTOS = userDao.getUsersByPk(list); //봉사 신청자의 개인정보 리턴
             System.out.println("굿");
@@ -57,6 +58,7 @@ public class functionTest {
                 System.out.println();
             }
             list = volunteerDAO.getVolunteerDone(serviceInfoDTOS.get(0).getServiceInfoPK()); //특정 serviceInfo의 별점 미등록 상태인 volunteer list return
+
             userDTOS = userDao.getUsersByPk(list); // 특정 봉사활동에 신청한 별점 미등록 상태의 신청자의 userDTO list return
 
             System.out.println("별점 등록 시작합니다");
@@ -73,15 +75,18 @@ public class functionTest {
                 System.out.println();
             }
 
-
-
             serviceInfoDTO = new ServiceInfoDTO();
+            System.out.println("필터링 결과 출력");
 
-            serviceInfoDTO.setProgrmBgnde(Date.valueOf("2023-05-01"));
-            serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-06-30"));
-            serviceInfoDTOS = dao.getServiceInfoByFilter(serviceInfoDTO,1);
+            serviceInfoDTO.setSidoCd(6110000);
+
+//            serviceInfoDTO.setProgrmBgnde(Date.valueOf("2023-05-01"));
+//            serviceInfoDTO.setProgrmEndde(Date.valueOf("2023-06-30"));
+            serviceInfoDTOS = dao.getServiceInfoByFilter(serviceInfoDTO,2);
             for(ServiceInfoDTO serviceInfoDTO1 : serviceInfoDTOS){
+
                 System.out.println(serviceInfoDTO1.toString());
+                System.out.println();
             }
 
 
