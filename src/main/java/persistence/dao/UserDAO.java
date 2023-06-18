@@ -1,7 +1,6 @@
 package persistence.dao;
 
 import org.apache.ibatis.session.SqlSession;
-import persistence.dto.ServiceInfoDTO;
 import persistence.dto.UserDTO;
 import org.apache.ibatis.session.SqlSessionFactory;
 import persistence.dto.VolunteerDTO;
@@ -139,7 +138,7 @@ public class UserDAO {
         return userId;
     }   // ID 찾기 테스트 해봐야함
 
-    public boolean updatePassword(UserDTO userDTO) {
+    public boolean isExistPW(UserDTO userDTO) {
         SqlSession session = sqlSessionFactory.openSession();
         boolean isSuccess = false;
         try {
@@ -147,10 +146,8 @@ public class UserDAO {
             params.put("id", userDTO.getID());
             params.put("name", userDTO.getName());
             params.put("phoneNumber", userDTO.getPhoneNumber());
-            params.put("newPassword", userDTO.getPW());
 
-            int rowsAffected = session.update("mapper.UserMapper.updateUserPassword", params);
-            session.commit();
+            int rowsAffected = session.selectOne("mapper.UserMapper.isExistPW", params);
             isSuccess = rowsAffected > 0;
         } catch (Exception e) {
             e.printStackTrace();

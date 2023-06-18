@@ -40,13 +40,12 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-
                         int result = userDAO.insertUser(userDTO);
                         String resultStr = "";
                         if (result == 1) {
-                            resultStr = "중복된 아이디 입니다.";
+                            resultStr = "아이디 중복";
                         } else if (result == 2) {
-                            resultStr = "중복된 전화번호 입니다.";
+                            resultStr = "전화번호 중복";
                         } else {
                             resultStr = "회원가입 완료";
                         }
@@ -64,9 +63,9 @@ public class ServerMsg { //client to server
                         int result = userDAO.insertManager(userDTO, userDTO.getFacility());
                         String resultStr = "";
                         if (result == 1) {
-                            resultStr = "중복된 아이디 입니다.";
+                            resultStr = "아이디 중복";
                         } else if (result == 2) {
-                            resultStr = "중복된 전화번호 입니다.";
+                            resultStr = "전화번호 중복";
                         } else {
                             resultStr = "회원가입 완료";
                         }
@@ -81,19 +80,11 @@ public class ServerMsg { //client to server
             } else if (code == ProtocolCode.CHECKID) {
                 if (kind == ProtocolKind.COMMON) {
                     try {
-                        UserDTO userDTO = (UserDTO) objectInput.readObject();
+                        String id = (String)objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        boolean result = userDAO.isIdDuplicate(userDTO.getID());
-                        String resultStr = "";
-                        if (result) {
-                            resultStr = "중복된 아이디가 있습니다.";
-                            oos.writeObject(resultStr);
-                            oos.flush();
-                        } else {
-                            resultStr = "사용 가능한 아이디 입니다.";
-                            oos.writeObject(resultStr);
-                            oos.flush();
-                        }
+                        boolean result = userDAO.isIdDuplicate(id);
+                        oos.writeObject(result);
+                        oos.flush();
                     } catch (ClassNotFoundException e) {
                         System.out.println("Error");
                         e.printStackTrace();
@@ -143,7 +134,7 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        boolean result = userDAO.updatePassword(userDTO);
+                        boolean result = userDAO.isExistPW(userDTO);
 
                         oos.writeObject(result);
                         oos.flush();

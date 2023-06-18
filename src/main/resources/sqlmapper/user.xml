@@ -40,11 +40,11 @@
         WHERE Name = #{name} AND phoneNumber = #{phoneNumber};
     </select> <!-- ID찾기 -->
 
-    <update id="updateUserPassword" parameterType="java.util.Map">
-        UPDATE user
-        SET PW = #{newPassword}
+    <select id="isExistPW" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(*)
+        FROM user
         WHERE ID = #{id} AND Name = #{name} AND PhoneNumber = #{phoneNumber}
-    </update> <!-- 비밀번호 재설정 -->
+    </select>
 
     <update id="updateUser" parameterType="persistence.dto.UserDTO">
         UPDATE user
