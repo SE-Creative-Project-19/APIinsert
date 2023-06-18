@@ -18,6 +18,8 @@ public class UserDTO implements Serializable {
     private int Type; //사용자 유형
     private String Name;
     private String Facility; // serviceInfo 테이블의 mnnstNm를가짐
+    private String confirmPassword; // 비밀번호 확인 필드
+
 
     public UserDTO() {
     }
@@ -33,4 +35,5 @@ public class UserDTO implements Serializable {
         this.Name = Name;
         this.Facility = Facility;
     }
+
 }

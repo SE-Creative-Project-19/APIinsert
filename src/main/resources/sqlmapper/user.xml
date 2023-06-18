@@ -30,14 +30,14 @@
         FROM user
         WHERE UserPk IN
         <foreach collection="volunteerDTOS" item="volunteerDTO" separator="," open="(" close=")">
-            #{volunteerDTO.User_UserPK}
+            #{volunteerDTO.userPK}
         </foreach>
     </select> <!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.--><!--유저들 정보 조회  select * 하기에는 비번은 개인정보이고, 아이디는 나중에 업데이트 할 때 필요합니다.-->
 
     <select id="getId" resultType="String">
-        SELECT ID
-        FROM mydb.user AS u
-        WHERE Name = #{name} AND phoneNumber = #{phoneNumber};
+        select ID
+        from mydb.user as u
+        where Name = #{Name} And PhoneNumber = #{PhoneNumber};
     </select> <!-- ID찾기 -->
 
     <update id="updateUserPassword" parameterType="java.util.Map">
@@ -46,18 +46,54 @@
         WHERE ID = #{id} AND Name = #{name} AND PhoneNumber = #{phoneNumber}
     </update> <!-- 비밀번호 재설정 -->
 
+
+    <!--    <update id="updateUser" parameterType="persistence.dto.UserDTO">-->
+    <!--        UPDATE user-->
+    <!--        <set>-->
+    <!--            <if test="password != null">PW = #{PW},</if>-->
+    <!--            <if test="mannerTemperature != 0">mannerTemperature = #{mannerTemperature},</if>-->
+    <!--            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>-->
+    <!--            <if test="address != null">address = #{address}, </if>-->
+    <!--            <if test="name != null">name = #{name},</if>-->
+    <!--            <if test="facility != null">facility = #{facility}</if>-->
+    <!--        </set>-->
+    <!--        WHERE ID = #{ID}-->
+    <!--    </update> &lt;!&ndash; 개인정보수정 &ndash;&gt;-->
+
     <update id="updateUser" parameterType="persistence.dto.UserDTO">
         UPDATE user
         <set>
-            <if test="mannerTemperature != 0">mannerTemperature = #{mannerTemperature},</if>
-            <if test="address != null">address = #{address}, </if>
-            <if test="name != null">name = #{name},</if>
-            <if test="facility != null">facility = #{facility},</if>
-            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
-            <if test="PW != null">PW = #{PW}</if>
+            <if test="PW != null and confirmPassword != null and PW == confirmPassword">
+                <if test="PW != null">PW = #{PW},</if>
+                <if test="mannerTemperature != 0">mannerTemperature = #{mannerTemperature},</if>
+                <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
+                <if test="address != null">address = #{address},</if>
+                <if test="name != null">name = #{name},</if>
+                <if test="facility != null">facility = #{facility}</if>
+            </if>
+            <if test="PW == null and confirmPassword == null">
+                <if test="mannerTemperature != 0">mannerTemperature = #{mannerTemperature},</if>
+                <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
+                <if test="address != null">address = #{address},</if>
+                <if test="name != null">name = #{name},</if>
+                <if test="facility != null">facility = #{facility}</if>
+            </if>
         </set>
         WHERE ID = #{ID}
-    </update> <!-- 개인정보수정 -->
+    </update> <!-- 개인정보 수정 -->
+    <!-- Todo 비밀번호와 비밀번호 확인이 다른경우에는 자바에서 처리해야함 -->
+    <!-- Todo 비밀번호와 비밀번호를 입력하지 않은 경우에 회원정보를 수정하는건 자바에서 해야함 -->
+
+    <!--    <update id="updateManager" parameterType="persistence.dto.UserDTO">-->
+    <!--        UPDATE user-->
+    <!--        <set>-->
+    <!--            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>-->
+    <!--            <if test="address != null">address = #{address}, </if>-->
+    <!--            <if test="name != null">name = #{name},</if>-->
+    <!--            <if test="facility != null">facility = #{facility}</if>-->
+    <!--        </set>-->
+    <!--        WHERE ID = #{ID}-->
+    <!--    </update> &lt;!&ndash; 담당자 개인정보 수정 &ndash;&gt;-->
 
     <select id="checkDuplicateId" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM user WHERE id = #{id}
