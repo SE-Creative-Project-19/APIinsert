@@ -25,7 +25,7 @@ public class ProtocolCode {
 
     //TYPE INQUIRY, MANAGER
     public final static byte PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST = 4;
-    public final static byte PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_Result = 5;
+    public final static byte PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_RESULT = 5;
     public final static byte MY_ORGANIZATION_ACTIVITY_LIST = 6;
 
     //TYPE ACCEPTANCE, MANAGER
@@ -39,6 +39,7 @@ public class ProtocolCode {
 
     //TYPE FILTERING
     public final static byte FILTER = 1;
+    public final static byte SEARCH = 2;
 
 
     //TYPE CHATTING

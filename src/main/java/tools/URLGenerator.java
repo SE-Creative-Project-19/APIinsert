@@ -16,7 +16,7 @@ public class URLGenerator {
 	// ChromeDriver Setting for using Selenium
 	String WEB_DRIVER_ID = "webdriver.chrome.driver"; // Set ChromeDriver ID
 
-	String WEB_DRIVER_PATH = "C:\\SeleniumBasic\\chromedriver.exe"; // Set ChromeDriver PATH
+	String WEB_DRIVER_PATH = "C:\\Users\\qarkc\\AppData\\Local\\SeleniumBasic\\chromedriver.exe"; // Set ChromeDriver PATH
 
 	private String url = "https://www.1365.go.kr/vols/1572247904127/partcptn/timeCptn.do"; // URL that contains Program No.
 
@@ -67,7 +67,7 @@ public class URLGenerator {
 
 			page = Integer.parseInt(tmp); // Total Page
 
-			for(int i = 1; i < 3; i++) {
+			for(int i = 1; i < page+1; i++) {
 				if(i != 1) {
 					js.executeScript("fnPage(" + i + ")"); // Next Page Script Function
 				}

@@ -121,7 +121,17 @@ public class UserDAO {
             session.close();
         }
     }   // 개인정보수정
-
+    public void updateUserManner(UserDTO userDTO) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            session.update("mapper.UserMapper.updateUserManner", userDTO);
+            session.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
     public void updateManager(UserDTO userDTO, String selectedOrganization) {
         SqlSession session = sqlSessionFactory.openSession();
         try {

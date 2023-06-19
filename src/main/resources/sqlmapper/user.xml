@@ -26,7 +26,7 @@
     </select> <!--유저 정보 조회 -->
 
     <select id="getUsersByPk" resultMap="userResultMap">
-        SELECT ID, name, PhoneNumber, Address, MannerTemperature
+        SELECT ID, name, PhoneNumber, Address, MannerTemperature,userPK
         FROM user
         WHERE UserPk IN
         <foreach collection="volunteerDTOS" item="volunteerDTO" separator="," open="(" close=")">
@@ -37,7 +37,7 @@
     <select id="getId" resultType="String">
         select ID
         from mydb.user as u
-        where Name = #{Name} And PhoneNumber = #{PhoneNumber};
+        WHERE Name = #{name} AND phoneNumber = #{phoneNumber};
     </select> <!-- ID찾기 -->
 
     <select id="isExistPW" parameterType="java.util.Map" resultType="int">
@@ -123,5 +123,11 @@
         FROM serviceInfo si
         WHERE si.mnnstNm LIKE CONCAT('%', #{keyword}, '%')
     </select> <!-- 기관 조회 -->
-
+    <update id="updateUserManner" parameterType="persistence.dto.UserDTO">
+        UPDATE user
+        <set>
+            mannerTemperature = #{mannerTemperature}
+        </set>
+        WHERE ID = #{ID}
+    </update>
 </mapper>

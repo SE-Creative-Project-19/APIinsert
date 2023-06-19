@@ -107,11 +107,16 @@
         SET progrmSttusSe = 3
         WHERE noticeEndde &lt; #{currentDate}
     </update>
-    <update id="updateApptotal">
+    <update id="updateApptotal" parameterType="int">
         UPDATE serviceinfo
         SET appTotal = appTotal + 1,
-            progrmSttusSe = CASE WHEN appTotal + 1 => rcritNmpr THEN 3 ELSE progrmSttusSe END
+            progrmSttusSe = CASE WHEN appTotal + 1 >= rcritNmpr THEN 3 ELSE progrmSttusSe END
         WHERE  serviceInfoPK = #{serviceInfoServiceInfoPK}
     </update>
+    <select id="selectByServiceInfo" resultMap="serviceInfoResultMap">
+        SELECT *
+        FROM serviceInfo
+        WHERE serviceInfoPK = #{pk}
+    </select>
 
 </mapper>

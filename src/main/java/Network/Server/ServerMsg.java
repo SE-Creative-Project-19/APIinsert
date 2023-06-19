@@ -184,22 +184,30 @@ public class ServerMsg { //client to server
             if (code == ProtocolCode.SERVICE_LIST_INQUIRY) {// 봉사활동 목록 조회
 
                 if (kind == ProtocolKind.VOLUNTEER) {// 신청할 수 있는 봉사활동 리스트 출력
+                    ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                    List<ServiceInfoDTO> list = new ArrayList<>();
+                    list = serviceInfoDAO.getAllServiceInfo();
+                    oos.writeObject(list);
+                    oos.flush();
+                }
+
+            }else if(code == ProtocolCode.SERVICE_CONTENT_INQUIRY) {
+                if (kind == ProtocolKind.VOLUNTEER) {
                     try {
-                        int page = (int) objectInput.readObject();
+                        int servicePK = (Integer) objectInput.readObject();
+                        ServiceInfoDTO serviceInfoDTO = new ServiceInfoDTO();
                         ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        List<ServiceInfoDTO> list = new ArrayList<>();
-                        list = serviceInfoDAO.getServiceInfoList(page);
-                        oos.writeObject(list);
+                        serviceInfoDTO = serviceInfoDAO.selectByServiceInfo(servicePK);
+
+                        oos.writeObject(serviceInfoDTO);
                         oos.flush();
 
                     } catch (ClassNotFoundException e) {
                         System.out.println("Error");
                         e.printStackTrace();
                     }
-
                 }
-
-            } else if (code == ProtocolCode.MY_PARTICIPATE_IN_LIST) {// 내가 참여한 봉사활동
+            }else if (code == ProtocolCode.MY_PARTICIPATE_IN_LIST) {// 내가 참여한 봉사활동
 
                 if (kind == ProtocolKind.VOLUNTEER) {
                     List<Map<String, Object>> first = null;
@@ -207,8 +215,8 @@ public class ServerMsg { //client to server
                     try {
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        first = volunteerDAO.getVolunteerService(userDTO.getFacility());
-                        second = volunteerDAO.getVolunteerServiceHistory(userDTO.getFacility());
+                        first = volunteerDAO.getVolunteerService(userDTO.getID());
+                        second = volunteerDAO.getVolunteerServiceHistory(userDTO.getID());
 
                         oos.writeObject(first);
                         oos.writeObject(second);
@@ -223,15 +231,24 @@ public class ServerMsg { //client to server
                 if (kind == ProtocolKind.MANAGER) {
                     List<VolunteerDTO> list = null;
                     List<UserDTO> userDTOS = null;
+                    List<Integer> counts = new ArrayList<>();
                     try {
                         ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
                         VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
                         list = volunteerDAO.getVolunteerApplicant(serviceInfoDTO.getServiceInfoPK());
                         userDTOS = userDAO.getUsersByPk(list);
+                        VolunteerDTO volunteerDTO = new VolunteerDTO();
+                        if(userDTOS != null ) {
+                            for (int i = 0; i < userDTOS.size(); i++) {
+                                counts.add(volunteerDAO.countService(userDTOS.get(i).getUserPK()));
+                            }
+                        }else {
+                            counts = null;
+                        }
 
-                        oos.writeObject(list);
                         oos.writeObject(userDTOS);
+                        oos.writeObject(counts);
                         oos.flush();
                     } catch (IOException | ClassNotFoundException e) {
                         System.out.println("Error");
@@ -239,20 +256,29 @@ public class ServerMsg { //client to server
                     }
                 }
 
-            } else if (code == ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_Result) {// 봉사활동 참여한 봉사자 리스트[결과]
+            } else if (code == ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_RESULT) {// 봉사활동 참여한 봉사자 리스트[결과]
 
                 if (kind == ProtocolKind.MANAGER) {
                     List<VolunteerDTO> list = null;
                     List<UserDTO> userDTOS = null;
+                    List<Integer> counts = new ArrayList<>();
                     try {
                         ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
                         VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
                         list = volunteerDAO.getVolunteerDone(serviceInfoDTO.getServiceInfoPK());
                         userDTOS = userDAO.getUsersByPk(list);
+                        VolunteerDTO volunteerDTO = new VolunteerDTO();
+                        if(userDTOS != null ) {
+                            for (int i = 0; i < userDTOS.size(); i++) {
+                                counts.add(volunteerDAO.countService(userDTOS.get(i).getUserPK()));
+                            }
+                        }else {
+                            counts = null;
+                        }
 
-                        oos.writeObject(list);
                         oos.writeObject(userDTOS);
+                        oos.writeObject(counts);
                         oos.flush();
                     } catch (IOException | ClassNotFoundException e) {
                         System.out.println("Error");
@@ -261,7 +287,18 @@ public class ServerMsg { //client to server
                 }
             } else if (code == ProtocolCode.MY_ORGANIZATION_ACTIVITY_LIST) {// 본인 소속 기관의 봉사활동 리스트
                 if (kind == ProtocolKind.MANAGER) {
+                    List<ServiceInfoDTO> list = null;
+                    try {
+                        UserDTO userDTO = (UserDTO) objectInput.readObject();
+                        ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        list = serviceInfoDAO.selectByMnnstNm(userDTO.getFacility());
 
+                        oos.writeObject(list);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
                 }
             }
         } else if (type == ProtocolType.ACCEPTANCE) {// TODO 승인 여부
@@ -273,6 +310,8 @@ public class ServerMsg { //client to server
                         volunteerDTO.setProcessingResult("별점 미등록");
                         VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
                         volunteerDAO.updateVolunteer(volunteerDTO);
+                        ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        serviceInfoDAO.updateApptotal(volunteerDTO.getServiceInfo_ServiceInfoPK());
                         String result = "승인 완료";
 
                         oos.writeObject(result);
@@ -306,13 +345,14 @@ public class ServerMsg { //client to server
             if (code == ProtocolCode.REGISTER_SERVICE_ACTIVITY) {
 
                 if (kind == ProtocolKind.VOLUNTEER) {
+                    boolean result = false;
                     try {
                         VolunteerDTO volunteerDTO = (VolunteerDTO) objectInput.readObject();
                         VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        volunteerDAO.insertVolunteer(volunteerDTO);
 
-                        String result = "등록 완료";
+                        result = volunteerDAO.insertVolunteer(volunteerDTO);
                         oos.writeObject(result);
+                        oos.flush();
                     } catch (IOException | ClassNotFoundException e) {
                         System.out.println("Error");
                         e.printStackTrace();
@@ -322,9 +362,13 @@ public class ServerMsg { //client to server
 
                 if (kind == ProtocolKind.MANAGER) {
                     try {
+                        VolunteerDTO volunteerDTO = (VolunteerDTO) objectInput.readObject();
                         UserDTO userDTO = (UserDTO) objectInput.readObject();
                         UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        userDAO.updateUser(userDTO);
+                        userDAO.updateUserManner(userDTO);
+                        volunteerDTO.setProcessingResult("봉사 완료");
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        volunteerDAO.updateVolunteer(volunteerDTO);
 
                         String result = "매너 온도 업데이트 완료";
                         oos.writeObject(result);
@@ -344,11 +388,27 @@ public class ServerMsg { //client to server
                     try {
                         ServiceInfoDTO serviceInfoDTO = (ServiceInfoDTO) objectInput.readObject();
                         ServiceInfoDAO serviceInfoDAO = new ServiceInfoDAO(MyBatisConnectionFactory.getSqlSessionFactory());
-                        list = serviceInfoDAO.getServiceInfoByFilter(serviceInfoDTO, 1);
+                        list = serviceInfoDAO.getServiceInfoByFilter(serviceInfoDTO);
 
                         oos.writeObject(list);
                         oos.flush();
                     } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
+            }else if (code == ProtocolCode.SEARCH) {
+
+                if(kind == ProtocolKind.MANAGER) {
+                    List<String> list = null;
+                    try {
+                        String keyword = (String) objectInput.readObject();
+                        UserDAO userDAO = new UserDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        list = userDAO.searchOrganizations(keyword);
+
+                        oos.writeObject(list);
+                        oos.flush();
+                    } catch (ClassNotFoundException | IOException e) {
                         System.out.println("Error");
                         e.printStackTrace();
                     }

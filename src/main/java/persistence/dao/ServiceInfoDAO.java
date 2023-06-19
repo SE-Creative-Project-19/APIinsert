@@ -8,11 +8,12 @@ import java.util.*;
 
 public class ServiceInfoDAO {
     private final SqlSessionFactory sqlSessionFactory;
+
     public ServiceInfoDAO(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
-    public  List<ServiceInfoDTO> selectByMnnstNm(String facility) { // 담당기관에 해당하는 기관명을 바탕으로 해당 기관의 봉사활동 내역을 리스트로 가져옵니다.
+    public List<ServiceInfoDTO> selectByMnnstNm(String facility) { // 담당기관에 해당하는 기관명을 바탕으로 해당 기관의 봉사활동 내역을 리스트로 가져옵니다.
         try (SqlSession session = sqlSessionFactory.openSession()) {
             List<ServiceInfoDTO> serviceInfoDTOS = session.selectList("mapper.ServiceInfoMapper.selectByMnnstNm", facility);
             return serviceInfoDTOS;
@@ -40,6 +41,7 @@ public class ServiceInfoDAO {
             return null;
         }
     }
+
     public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO, int pageNo) { // dto를 기준으로 필터링
         int pageSize = 10;
         int offset = (pageNo - 1) * pageSize;
@@ -55,6 +57,7 @@ public class ServiceInfoDAO {
             return null;
         }
     }
+
     public List<ServiceInfoDTO> getServiceInfoByFilter(ServiceInfoDTO serviceInfoDTO) { // dto를 기준으로 필터링
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
@@ -68,19 +71,20 @@ public class ServiceInfoDAO {
         }
     }
 
-    public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO){//  api에서 받아온 활동 정보를 insert할 때 사용합니다
+    public void insertServiceInfo(ServiceInfoDTO serviceInfoDTO) {//  api에서 받아온 활동 정보를 insert할 때 사용합니다
         SqlSession session = sqlSessionFactory.openSession();
-        try{
-            session.insert("mapper.ServiceInfoMapper.insertServiceInfo",serviceInfoDTO);
+        try {
+            session.insert("mapper.ServiceInfoMapper.insertServiceInfo", serviceInfoDTO);
             session.commit();
         } finally {
             session.close();
         }
     }
+
     public List<ServiceInfoDTO> getAllServiceInfo() {
         List<ServiceInfoDTO> list = null;
         SqlSession session = sqlSessionFactory.openSession();
-        try{
+        try {
             list = session.selectList("mapper.ServiceInfoMapper.getAllServiceInfo");
         } finally {
             session.close();
@@ -94,7 +98,7 @@ public class ServiceInfoDAO {
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("currentDate", currentDate);
         try {
-            session.update("mapper.ServiceInfoMapper.updateServiceInfoByTime",parameterMap);
+            session.update("mapper.ServiceInfoMapper.updateServiceInfoByTime", parameterMap);
             session.commit();
         } finally {
             session.close();
@@ -104,11 +108,22 @@ public class ServiceInfoDAO {
 
     public void updateApptotal(int serviceInfoServiceInfoPK) {
         SqlSession session = sqlSessionFactory.openSession();
-        try{
-            session.update("mapper.ServiceInfoMapper.updateApptotal",serviceInfoServiceInfoPK);
+        try {
+            session.update("mapper.ServiceInfoMapper.updateApptotal", serviceInfoServiceInfoPK);
             session.commit();
         } finally {
             session.close();
+        }
+    }
+
+    public ServiceInfoDTO selectByServiceInfo(int pk) { // 담당기관에 해당하는 기관명을 바탕으로 해당 기관의 봉사활동 내역을 리스트로 가져옵니다.
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            ServiceInfoDTO serviceInfoDTO = session.selectOne("mapper.ServiceInfoMapper.selectByServiceInfo", pk);
+            return serviceInfoDTO;
+        } catch (Exception e) {
+            System.out.println("에러발생");
+            e.printStackTrace();
+            return null;
         }
     }
 }

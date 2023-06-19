@@ -297,7 +297,7 @@ public class UserEventController {
 
     public void participateInServiceListResult(ServiceInfoDTO eventDTO) { // 봉사활동에 참여한 봉사자 리스트 -> 결과 관리
         ServiceInfoDTO serviceInfoDTO = eventDTO; //TODO 클릭 시 객체와 대입해야함
-        protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_Result, ProtocolKind.MANAGER);
+        protocolHeader = new ProtocolHeader(ProtocolType.INQUIRY, ProtocolCode.PARTICIPATE_IN_SERVICE_VOLUNTEER_LIST_RESULT, ProtocolKind.MANAGER);
         try {
             oos.writeObject(protocolHeader);
             oos.writeObject(serviceInfoDTO);

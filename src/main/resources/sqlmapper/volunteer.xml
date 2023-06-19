@@ -74,7 +74,7 @@
                 User_UserPK = #{User_UserPK}
             </if>
         </set>
-        WHERE volunteerPK = #{volunteerPK}
+        WHERE User_UserPK = #{User_UserPK} AND ServiceInfo_ServiceInfoPK =#{ServiceInfo_ServiceInfoPK}
     </update>
 
     <update id="updateVolunteerByTime">
@@ -100,6 +100,11 @@
         INSERT INTO volunteer (volunteerPK, processingResult, ServiceInfo_ServiceInfoPK, User_UserPK)
         VALUES (#{volunteerPK}, '신청', #{ServiceInfo_ServiceInfoPK}, #{User_UserPK})
     </insert> <!-- 봉사 신청 -->
+
+    <select id="countServiceCompleteUser" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM volunteer
+        WHERE User_UserPK = #{userPK} AND processingResult = '봉사 완료'
+    </select> <!-- 봉사 완료 카운트 확인 -->
 
 
 

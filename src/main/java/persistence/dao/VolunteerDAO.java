@@ -8,7 +8,8 @@ import java.util.*;
 
 public class VolunteerDAO {
     private final SqlSessionFactory sqlSessionFactory;
-    public VolunteerDAO( SqlSessionFactory sqlSessionFactory) {
+
+    public VolunteerDAO(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
@@ -35,14 +36,14 @@ public class VolunteerDAO {
     } // 봉사 활동 내역 조회
 
     public List<VolunteerDTO> getVolunteerFilter(VolunteerDTO volunteerDTO, String processingResult) {
-        try(SqlSession session = sqlSessionFactory.openSession()) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> parameterMap = new HashMap<>();
             parameterMap.put("processingResult", processingResult);
             parameterMap.put("VolunteerDTO", volunteerDTO);
 
             List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteer", parameterMap);
             return volunteerDTOList;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -78,14 +79,13 @@ public class VolunteerDAO {
     }
 
 
-
     public List<VolunteerDTO> getVolunteerDone(int serviceInfoPK) { //TODO 봉사 완료 후 별점을 등록하지 못한 봉사 신청 리스트를 return
 
-        try(SqlSession session = sqlSessionFactory.openSession()) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
 
             List<VolunteerDTO> volunteerDTOList = session.selectList("mapper.VolunteerMapper.getVolunteerDone", serviceInfoPK);
             return volunteerDTOList;
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -97,29 +97,46 @@ public class VolunteerDAO {
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("currentDate", currentDate);
         try {
-            session.update("mapper.VolunteerMapper.updateVolunteerByTime",parameterMap);
+            session.update("mapper.VolunteerMapper.updateVolunteerByTime", parameterMap);
             session.commit();
         } finally {
             session.close();
         }
     }
-    public void insertVolunteer(VolunteerDTO volunteerDTO) {
+
+    public boolean insertVolunteer(VolunteerDTO volunteerDTO) {
+        boolean result = false;
         SqlSession session = sqlSessionFactory.openSession();
         try {
             int count = session.selectOne("mapper.VolunteerMapper.countVolunteerByUserPKAndServiceInfoPK", volunteerDTO);
             if (count > 0) {
                 // 중복 처리 로직
-                return;
+                return result;
             }
 
             session.insert("mapper.VolunteerMapper.insertVolunteer", volunteerDTO);
+            result = true;
             session.commit();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             session.close();
         }
+        return result;
     } // 봉사 신청
+
+    public int countService(int userPK ) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            int count = session.selectOne("mapper.VolunteerMapper.countServiceCompleteUser", userPK);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return 0;
+    }
 
 }
 
