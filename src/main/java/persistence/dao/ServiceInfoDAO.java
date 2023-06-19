@@ -3,7 +3,6 @@ package persistence.dao;
 import org.apache.ibatis.session.SqlSession;
 import persistence.dto.ServiceInfoDTO;
 import org.apache.ibatis.session.SqlSessionFactory;
-import persistence.dto.VolunteerDTO;
 
 import java.util.*;
 
@@ -101,5 +100,15 @@ public class ServiceInfoDAO {
             session.close();
         }
 
+    }
+
+    public void updateApptotal(int serviceInfoServiceInfoPK) {
+        SqlSession session = sqlSessionFactory.openSession();
+        try{
+            session.update("mapper.ServiceInfoMapper.updateApptotal",serviceInfoServiceInfoPK);
+            session.commit();
+        } finally {
+            session.close();
+        }
     }
 }
