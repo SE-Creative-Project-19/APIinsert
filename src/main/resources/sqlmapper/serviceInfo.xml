@@ -32,17 +32,19 @@
     <select id="getServiceInfoList" resultMap="serviceInfoResultMap">
         SELECT *
         FROM serviceInfo
+        WHERE progrmSttusSe=2
         ORDER BY noticeEndde
         LIMIT #{pageSize} OFFSET #{offset}
     </select>
     <select id="getAllServiceInfo" resultMap="serviceInfoResultMap">
         SELECT *
         FROM serviceInfo
+        WHERE progrmSttusSe=2
     </select>
     <select id="getServiceInfoByFilter" resultMap="serviceInfoResultMap" >
         SELECT *
         FROM serviceInfo
-        WHERE 1=1
+        WHERE progrmSttusSe=2
         <if test="serviceInfoDTO.srvcCLCode != null">AND srvcCLCode = #{serviceInfoDTO.srvcCLCode}</if>
         <if test="serviceInfoDTO.srvcCSCode != null">AND srvcCSCode = #{serviceInfoDTO.srvcCSCode}</if>
         <if test="serviceInfoDTO.progrmSj != null">AND progrmSj LIKE CONCAT('%', #{serviceInfoDTO.progrmSj}, '%')</if>
@@ -104,6 +106,12 @@
         UPDATE serviceinfo
         SET progrmSttusSe = 3
         WHERE noticeEndde &lt; #{currentDate}
+    </update>
+    <update id="updateApptotal">
+        UPDATE serviceinfo
+        SET appTotal = appTotal + 1,
+            progrmSttusSe = CASE WHEN appTotal + 1 => rcritNmpr THEN 3 ELSE progrmSttusSe END
+        WHERE  serviceInfoPK = #{serviceInfoServiceInfoPK}
     </update>
 
 </mapper>
