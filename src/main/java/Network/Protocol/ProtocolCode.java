@@ -31,6 +31,7 @@ public class ProtocolCode {
     //TYPE ACCEPTANCE, MANAGER
     public final static byte ACCEPT = 1;
     public final static byte REJECT = 2;
+    public final static byte CANCEL = 3;
 
     //TYPE REGISTER, VOLUNTEER
     public final static byte REGISTER_SERVICE_ACTIVITY = 1;

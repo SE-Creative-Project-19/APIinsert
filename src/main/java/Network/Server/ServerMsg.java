@@ -340,6 +340,22 @@ public class ServerMsg { //client to server
                     }
                 }
 
+            }else if(code == ProtocolCode.CANCEL) { //취소
+                if(kind == ProtocolKind.VOLUNTEER) {
+                    try {
+                        VolunteerDTO volunteerDTO = (VolunteerDTO) objectInput.readObject();
+                        volunteerDTO.setProcessingResult("취소"); //혹여나 해당 단계 포맷이랑 안 맞으면 맞추어주셈
+                        VolunteerDAO volunteerDAO = new VolunteerDAO(MyBatisConnectionFactory.getSqlSessionFactory());
+                        volunteerDAO.updateVolunteer(volunteerDTO);
+                        String result = "정상 취소";
+
+                        oos.writeObject(result);
+                        oos.flush();
+                    } catch (IOException | ClassNotFoundException e) {
+                        System.out.println("Error");
+                        e.printStackTrace();
+                    }
+                }
             }
         } else if (type == ProtocolType.REGISTER) {// TODO 등록
             if (code == ProtocolCode.REGISTER_SERVICE_ACTIVITY) {

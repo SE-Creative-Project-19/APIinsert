@@ -19,7 +19,9 @@
             s.nanmmbyNm AS 주소,
             s.nanmmbyNmAdmn AS 담당자명,
             s.actPlace AS 봉사장소,
-            v.processingResult AS 신청상태
+            v.processingResult AS 신청상태,
+            u.userPK as 유저PK,
+            s.serviceInfoPK as 서비스PK
         FROM
             serviceinfo AS s
                 INNER JOIN volunteer AS v ON s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK
@@ -36,7 +38,9 @@
             s.nanmmbyNm AS 주소,
             s.nanmmbyNmAdmn AS 담당자명,
             s.actPlace AS 봉사장소,
-            v.processingResult AS 신청상태
+            v.processingResult AS 신청상태,
+            u.userPK as 유저PK,
+            s.serviceInfoPK as 서비스PK
         FROM
             serviceinfo AS s
                 INNER JOIN volunteer AS v ON s.ServiceInfoPK = v.ServiceInfo_ServiceInfoPK
